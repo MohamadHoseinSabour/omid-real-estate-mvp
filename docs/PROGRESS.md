@@ -55,10 +55,11 @@
   - [x] Button Wrapping Prevention: Added `whitespace-nowrap shrink-0` across all action buttons, pills, badges, and table headers (`<th>`) in all dashboard views.
   - [x] Direct Route 404 Resolution: Converted all relative internal links to absolute `${baseUrl}/dashboard/...` and added instant fallback redirect pages (`/sales/`, `/wallet/`, `/co-filing/`, `/leads/`).
   - [x] Client Base URL Injection: Global `window.__BASE_URL__` injected in `DashboardLayout.astro` for dynamic client-side links.
-  - [x] All 17 automated tests passing; clean static build with 28 static HTML routes.
+  - [x] Sold Properties Exclusion in Co-Filing MLS: Peer filing grid strictly filters out `status === 'sold'` files and prevents co-sale registration on sold properties.
+  - [x] All 18 automated tests passing (including `E2E-11: Co-filing MLS strictly excludes sold properties`); clean static build with 28 static HTML routes.
 
 ### Current Status
-🎉 **Dashboard Design Polish & Route 404 Resolution 100% Complete & Verified!**
+🎉 **Dashboard Design Polish, Route 404 Resolution & Co-Filing Sold Filter 100% Complete & Verified!**
 
 ---
 

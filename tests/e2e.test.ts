@@ -144,4 +144,22 @@ describe('Omid Real Estate E2E Workflow & Data Integrity Tests', () => {
     expect(advisor1Props.length).toBeGreaterThan(0);
     expect(advisor1Props.length).toBeLessThan(propertiesData.length);
   });
+
+  // ۱۱. عدم نمایش املاک فروخته‌شده در فایلینگ اشتراکی همکاران (MLS)
+  it('E2E-11: Co-filing MLS strictly excludes sold properties', () => {
+    const rawProps = propertiesData;
+    // حداقل یک ملک فروخته‌شده در دیتا وجود دارد
+    const soldProps = rawProps.filter((p) => p.status === 'sold');
+    expect(soldProps.length).toBeGreaterThan(0);
+
+    // فیلتر فایلینگ اشتراکی همکاران
+    const coFilingProps = rawProps.filter((p) => p.status !== 'sold');
+    expect(coFilingProps.length).toBe(rawProps.length - soldProps.length);
+
+    // تضمین اینکه هیچ ملک فروخته‌شده‌ای در خروجی نباشد
+    coFilingProps.forEach((prop) => {
+      expect(prop.status).not.toBe('sold');
+      expect(['available', 'negotiating']).toContain(prop.status);
+    });
+  });
 });

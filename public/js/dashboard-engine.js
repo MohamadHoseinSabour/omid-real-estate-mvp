@@ -590,6 +590,7 @@
     const sales = getSales();
     const prop = getPropertyById(data.propertyId);
     if (!prop) throw new Error('ملک یافت نشد.');
+    if (prop.status === 'sold') throw new Error('این ملک قبلاً به فروش رسیده است و امکان معامله مجدد آن وجود ندارد.');
 
     const currentUser = getCurrentUser();
     const finalPrice = Number(data.finalPriceToman);

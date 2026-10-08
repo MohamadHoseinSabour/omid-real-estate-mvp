@@ -13,7 +13,7 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
         </span>
       </div>
       <p class="text-xs text-slate-500 mt-1">
-        مشاهده تمام فایل‌های دیگر مشاوران آژانس امید جهت همکاری در جذب خریدار و ثبت فروش دوطرفه
+        مشاهده تمام فایل‌های فعال دیگر مشاوران آژانس امید جهت همکاری در جذب خریدار و ثبت فروش دوطرفه (فایل‌های فروخته‌شده به صورت خودکار حذف می‌شوند)
       </p>
     </div>
   </div>
@@ -80,7 +80,7 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
 
   <div id="noCoFilesFound" class="hidden bg-white rounded-3xl p-12 text-center text-slate-400 text-xs border border-slate-200">
     <span class="text-3xl block mb-2">📂</span>
-    فایلی متعلق به سایر همکاران با مشخصات مد نظر یافت نشد.
+    فایل فعال و قابل همکاری از سایر همکاران با مشخصات مد نظر یافت نشد (فایل‌های فروخته‌شده پنهان شده‌اند).
   </div>
 
   <!-- مودال ثبت فروش مشارکتی (همکاری) -->
@@ -186,8 +186,10 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
       const typeFilter = document.getElementById('coTypeFilter')?.value || 'all';
 
       // فیلتر فایل‌های همکاران:
-      // اگر کاربر مشاور است، فایل‌های خودش را پنهان می‌کنیم تا فقط فایل دیگران را ببیند
-      let coProps = allProps;
+      // ۱. حذف قطعی فایل‌های فروخته‌شده (فقط فایل‌های موجود و در حال مذاکره نمایش داده می‌شوند)
+      let coProps = allProps.filter((p) => p.status !== 'sold');
+
+      // ۲. اگر کاربر مشاور است، فایل‌های خودش را پنهان می‌کنیم تا فقط فایل دیگران را ببیند
       if (!isStaff) {
         coProps = coProps.filter((p) => p.advisor.id !== currentUser.id);
       }
@@ -213,7 +215,7 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
       const emptyState = document.getElementById('noCoFilesFound');
 
       if (counter) {
-        counter.innerText = `نمایش ${coProps.length} فایل از سایر همکاران`;
+        counter.innerText = `نمایش ${coProps.length} فایل فعال از سایر همکاران`;
       }
 
       if (coProps.length === 0) {
@@ -348,6 +350,10 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
     function openCoSaleModal(propId) {
       const prop = window.OmidDashboard.getPropertyById(propId);
       if (!prop) return;
+      if (prop.status === 'sold') {
+        alert('این فایل قبلاً فروخته شده و امکان معامله مجدد آن وجود ندارد.');
+        return;
+      }
 
       document.getElementById('modalPropId').value = prop.id;
       document.getElementById('modalPropTitle').innerText = prop.title;
