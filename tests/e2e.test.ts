@@ -163,10 +163,13 @@ describe('Omid Real Estate E2E Workflow & Data Integrity Tests', () => {
     });
   });
 
-  // ۱۲. بررسی ساختار و یکپارچگی کامپوننت هیرو سه‌بعدی (TiltedGridHero)
-  it('E2E-12: TiltedGridHero and HeroSection contract verification', async () => {
+  // ۱۲. بررسی ساختار و یکپارچگی کامپوننت‌های هیرو سه‌بعدی (ImageStreamHero و TiltedGridHero)
+  it('E2E-12: TiltedGridHero and ImageStreamHero contract verification', async () => {
     const { TiltedGridHero } = await import('../src/components/ui/tilted-grid-hero');
     expect(typeof TiltedGridHero).toBe('function');
+
+    const { ImageStreamHero } = await import('../src/components/ui/image-stream-hero');
+    expect(typeof ImageStreamHero).toBe('function');
 
     const { cn } = await import('../src/lib/utils');
     expect(typeof cn).toBe('function');

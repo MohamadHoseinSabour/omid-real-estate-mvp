@@ -72,8 +72,17 @@
     - Glassmorphic stats bar displaying agency track record (+11 years, +1450 deals, +8 advisors, 98% satisfaction).
   - [x] Testing & Quality: Added `E2E-12` test verifying `TiltedGridHero` and `cn` utilities; all 19 tests passing; 28 static HTML routes built cleanly.
 
+## Phase 11: Image Stream 3D Corridor Hero & Sold Properties Showcase ✅
+- Completed: 2026-10-09
+- Deliverables completed:
+  - [x] UI Component: Created `src/components/ui/image-stream-hero.tsx` with perspective corridor projection, dual rail stream, resolution-independent geometry, and reduced-motion support.
+  - [x] Demo Component: Created `src/components/ui/demo.tsx` demonstrating ImageStreamHero.
+  - [x] Sold Properties 3D Showcase: Integrated real estate catalog of sold homes (پنت‌هاوس آبان، ویلایی بوستان، آپارتمان اردیبهشت، تجاری بلوار اصلی) with luxury dark gradient cards and prominent sold tags.
+  - [x] Minimalist Hero Layout: Unobstructed 3D corridor in center with elegant typography above and interactive intent buttons below; stats bar placed seamlessly beneath hero.
+  - [x] Testing & Build: Verified E2E-12 covering ImageStreamHero; 19 tests passing; 28 static pages built with zero errors.
+
 ### Current Status
-🎉 **Phase 10: Tilted Grid 3D Hero Integration & Landing Redesign Complete & Verified!**
+🎉 **Phase 11: Image Stream 3D Corridor Hero & Sold Properties Showcase Complete & Verified!**
 
 ---
 

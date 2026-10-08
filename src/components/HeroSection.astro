@@ -1,48 +1,68 @@
 ---
-import TiltedGridHero from './ui/tilted-grid-hero';
+import ImageStreamHero from './ui/image-stream-hero';
 import agencyData from '../data/agency.json';
 
-// Curated high-resolution real estate images showcasing Golestan Ahvaz listings & modern luxury architecture
-const heroImages = [
-  {
-    src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
-    alt: "آپارتمان ۱۶۵ متری ۳ خواب فول‌امکانات خیابان اردیبهشت گلستان اهواز",
-  },
+// کاتالوگ عکس خانه‌ها و املاک فروخته شده در محله گلستان اهواز با استایل کارت‌های سه‌بعدی
+const soldPropertiesImages = [
   {
     src: "https://images.unsplash.com/photo-1512915922686-57c11dde9b6b?auto=format&fit=crop&w=1200&q=80",
-    alt: "پنت‌هاوس ۲۱۰ متری لوکس با روف‌گاردن اختصاصی خیابان آبان",
+    alt: "پنت‌هاوس ۲۱۰ متری لوکس با روف‌گاردن خیابان آبان",
+    tag: "پنت‌هاوس ۲۱۰ متری آبان",
+    badge: "فروخته شد (۶.۲ میلیارد)",
   },
   {
     src: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
-    alt: "ویلایی ۲۵۰ متری بازسازی کامل کوی بوستان گلستان",
+    alt: "ویلایی ۲۵۰ متری بازسازی کامل کوی بوستان",
+    tag: "ویلایی ۲۵۰ متری بوستان",
+    badge: "فروخته شد (۶.۷ میلیارد)",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+    alt: "آپارتمان ۱۶۵ متری ۳ خواب خیابان اردیبهشت",
+    tag: "آپارتمان ۱۶۵م اردیبهشت",
+    badge: "معامله موفق (۴.۲ میلیارد)",
   },
   {
     src: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
-    alt: "نمای داخلی آپارتمان ۱۱۰ متری خیابان فروردین",
+    alt: "آپارتمان ۱۱۰ متری ۲ خواب رو به نما خیابان فروردین",
+    tag: "آپارتمان ۱۱۰م فروردین",
+    badge: "فروخته شد (۲.۸ میلیارد)",
   },
   {
     src: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80",
-    alt: "واحد اداری تجاری ۴۵ متری بر اصلی بلوار گلستان",
+    alt: "واحد تجاری اداری ۴۵ متری بر اصلی بلوار گلستان",
+    tag: "واحد اداری بلوار اصلی",
+    badge: "واگذار شد (۱.۹ میلیارد)",
   },
   {
     src: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
-    alt: "عمارت مسکونی ویلایی مدرن گلستان اهواز",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80",
-    alt: "آشپزخانه مدرن های‌گلاس آپارتمان اردیبهشت",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
-    alt: "حیاط مشجر و استخر روباز ویلایی بوستان",
+    alt: "عمارت مسکونی ویلایی مدرن خیابان اسفند",
+    tag: "عمارت ویلایی اسفند",
+    badge: "فروخته شد (۸.۵ میلیارد)",
   },
   {
     src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
-    alt: "سالن نشیمن مدرن و دلباز با نور طبیعی",
+    alt: "پنت‌هاوس دوبلکس خیابان آذر",
+    tag: "پنت‌هاوس دوبلکس آذر",
+    badge: "معامله موفق (۷.۳ میلیارد)",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
+    alt: "باغ‌ویلای اختصاصی کوی بوستان",
+    tag: "باغ‌ویلا کوی بوستان",
+    badge: "فروخته شد (۹.۱ میلیارد)",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80",
+    alt: "واحد ۳ خواب لوکس خیابان فروردین",
+    tag: "واحد ۳ خواب فروردین",
+    badge: "واگذار شد (۳.۶ میلیارد)",
   },
   {
     src: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&q=80",
-    alt: "اتاق خواب مستر با کمد دیواری سرتاسری",
+    alt: "مستر روم کینگ سایز خیابان اردیبهشت",
+    tag: "مستر کینگ اردیبهشت",
+    badge: "معامله موفق (۴.۹ میلیارد)",
   },
 ];
 ---
@@ -51,26 +71,22 @@ const heroImages = [
   <!-- Subtle ambient decorative glow -->
   <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-accent-500/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-  <!-- Tilted Grid 3D Cylinder Hero (Exact layout matching the demo) -->
-  <TiltedGridHero
+  <!-- Image Stream 3D Corridor Hero (کاتالوگ سه‌بعدی املاک فروخته شده) -->
+  <ImageStreamHero
     client:load
-    images={heroImages}
-    speed={4}
-    tileHeight={30}
-    aspectRatio={16 / 9}
-    gap={6}
+    images={soldPropertiesImages}
+    cards={10}
+    speed={18}
     axis={54}
-    curve={80}
-    fade={12}
     className="h-[620px] sm:h-[660px] lg:h-[700px] w-full bg-[#07090e]"
   >
     <div class="relative z-10 flex h-full flex-col items-center justify-between py-10 sm:py-14 text-center px-4">
       
-      <!-- Top: Heading & Badge (Above the 3D ribbon) -->
+      <!-- Top: Heading & Badge -->
       <div class="px-6 max-w-4xl mx-auto">
         <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent-500/10 border border-accent-500/30 text-accent-400 text-xs sm:text-sm font-semibold mb-4">
           <span class="w-2 h-2 rounded-full bg-accent-400 animate-ping"></span>
-          تخصصی‌ترین مرجع خرید، فروش و رهن در محله گلستان اهواز
+          کاتالوگ معاملات موفق و رسمی املاک امید در محله گلستان اهواز
         </div>
         <h1 class="text-balance text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
           معاملات هوشمند و مطمئن ملک
@@ -79,10 +95,10 @@ const heroImages = [
         </h1>
       </div>
 
-      <!-- Bottom: Subtitle & Dual Action Buttons (Below the 3D ribbon) -->
+      <!-- Bottom: Subtitle & Dual Action Buttons -->
       <div class="px-6 max-w-xl mx-auto flex flex-col items-center">
         <p class="max-w-md text-balance text-xs sm:text-sm text-slate-300 mb-5 leading-relaxed font-normal">
-          مشاوره تخصصی و حقوقی در تمامی مراحل معامله با همراهی بیش از ۸ کارشناس زبده و مورد اعتماد در منطقه گلستان، بوستان و سعدی.
+          بیش از ۱۴۵۰ معامله رسمی و انتقال قطعی سند با نظارت حقوقی کارشناسان زبده املاک امید در منطقه گلستان، بوستان و سعدی.
         </p>
 
         <!-- دکمه‌های دوگانه هیرو با رفتار تعاملی -->
@@ -105,7 +121,7 @@ const heroImages = [
       </div>
 
     </div>
-  </TiltedGridHero>
+  </ImageStreamHero>
 
   <!-- نوار آمار کلیدی آژانس (در زیر هیرو، بدون مسدود کردن استوانه سه‌بعدی) -->
   <div class="bg-[#0b0e17] border-t border-slate-800/90 py-6 sm:py-8">
