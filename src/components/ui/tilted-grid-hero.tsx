@@ -145,10 +145,9 @@ export function TiltedGridHero({
   const tile = `tgh-t-${id}`;
   const bend = (Math.min(85, Math.max(5, curve)) * Math.PI) / 180;
 
-  // Null until the observer has measured the hero. The band stays hidden
-  // until then, so a first paint laid out for the wrong size never shows.
+  // Initialized with a default layout so first paint is immediately rendered without flash
   const [layout, setLayout] = React.useState<ReturnType<typeof measure> | null>(
-    null,
+    () => measure(1200, 600, tileHeight, aspectRatio, gap, bend),
   );
 
   // The image each tile shows, as a position in the run of images. It
@@ -159,16 +158,22 @@ export function TiltedGridHero({
   React.useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    // Measure immediately on mount
+    const rect = el.getBoundingClientRect();
+    const initW = rect.width || el.clientWidth || 1200;
+    const initH = rect.height || el.clientHeight || 600;
+    if (initW > 0 && initH > 0) {
+      setLayout(measure(initW, initH, tileHeight, aspectRatio, gap, bend));
+    }
+
     const ro = new ResizeObserver(([entry]) => {
       const { width, height } = entry.contentRect;
-      const next = measure(width, height, tileHeight, aspectRatio, gap, bend);
-      setLayout((prev) =>
-        prev?.columns === next.columns &&
-        prev.sweep === next.sweep &&
-        prev.unit === next.unit
-          ? prev
-          : next,
-      );
+      const actualW = width || el.clientWidth || 1200;
+      const actualH = height || el.clientHeight || 600;
+      if (actualW > 0 && actualH > 0) {
+        setLayout(measure(actualW, actualH, tileHeight, aspectRatio, gap, bend));
+      }
     });
     ro.observe(el);
     return () => ro.disconnect();
@@ -186,7 +191,7 @@ export function TiltedGridHero({
   }, [images]);
 
   const { columns, sweep, unit, limit } =
-    layout ?? measure(1200, 560, tileHeight, aspectRatio, gap, bend);
+    layout ?? measure(1200, 600, tileHeight, aspectRatio, gap, bend);
 
   // Every length is a multiple of the tile's height, which follows the
   // hero's height until MAX_WIDTH caps it on narrow screens.
@@ -249,9 +254,14 @@ export function TiltedGridHero({
           // Tile `columns - 1` starts nearest the exit and tile 0 furthest
           // back, so this numbers tiles in the order they come on.
           const first = columns - 1 - t;
+          const rawIdx = shown[t] ?? first;
+          const idx =
+            images && images.length > 0
+              ? Math.abs(rawIdx) % images.length
+              : 0;
           const img =
             images && images.length > 0
-              ? images[(shown[t] ?? first) % images.length]
+              ? images[idx]
               : null;
           return (
             <div
