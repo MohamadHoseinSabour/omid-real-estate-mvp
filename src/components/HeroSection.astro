@@ -1,0 +1,134 @@
+---
+import TiltedGridHero from './ui/tilted-grid-hero';
+import agencyData from '../data/agency.json';
+
+// Curated high-resolution real estate images showcasing Golestan Ahvaz listings & modern luxury architecture
+const heroImages = [
+  {
+    src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+    alt: "آپارتمان ۱۶۵ متری ۳ خواب فول‌امکانات خیابان اردیبهشت گلستان اهواز",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1512915922686-57c11dde9b6b?auto=format&fit=crop&w=1200&q=80",
+    alt: "پنت‌هاوس ۲۱۰ متری لوکس با روف‌گاردن اختصاصی خیابان آبان",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+    alt: "ویلایی ۲۵۰ متری بازسازی کامل کوی بوستان گلستان",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+    alt: "نمای داخلی آپارتمان ۱۱۰ متری خیابان فروردین",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80",
+    alt: "واحد اداری تجاری ۴۵ متری بر اصلی بلوار گلستان",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
+    alt: "عمارت مسکونی ویلایی مدرن گلستان اهواز",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80",
+    alt: "آشپزخانه مدرن های‌گلاس آپارتمان اردیبهشت",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
+    alt: "حیاط مشجر و استخر روباز ویلایی بوستان",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+    alt: "سالن نشیمن مدرن و دلباز با نور طبیعی",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&q=80",
+    alt: "اتاق خواب مستر با کمد دیواری سرتاسری",
+  },
+];
+---
+
+<section class="relative bg-gradient-to-b from-[#060f1e] via-[#0a192f] to-[#0b1f38] text-white overflow-hidden border-b-2 border-accent-500/30">
+  <!-- Subtle ambient decorative lights -->
+  <div class="absolute -top-24 right-1/4 w-96 h-96 bg-accent-500/10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute -bottom-24 left-1/4 w-96 h-96 bg-primary-500/15 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#cda34f_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
+
+  <!-- Tilted Grid 3D Cylinder Hero (React Island) -->
+  <TiltedGridHero
+    client:load
+    images={heroImages}
+    speed={4}
+    tileHeight={27}
+    aspectRatio={16 / 9}
+    gap={6}
+    axis={52}
+    curve={76}
+    fade={15}
+    className="w-full min-h-[640px] sm:min-h-[680px] lg:min-h-[720px] flex items-center justify-center"
+  >
+    <!-- Foreground Hero Content -->
+    <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 lg:py-16 flex flex-col items-center justify-between text-center min-h-[640px] sm:min-h-[680px] lg:min-h-[720px]">
+      
+      <!-- Top Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-950/85 backdrop-blur-md border border-accent-500/40 text-accent-300 text-xs sm:text-sm font-bold shadow-lg shadow-accent-500/10 mb-4 transition-all hover:border-accent-400">
+        <span class="w-2.5 h-2.5 rounded-full bg-accent-400 animate-ping"></span>
+        تخصصی‌ترین مرجع خرید، فروش و رهن در محله گلستان اهواز
+      </div>
+
+      <!-- Center Hero Messaging & Action Buttons -->
+      <div class="max-w-4xl mx-auto my-auto py-4">
+        <!-- Backdrop glow to guarantee pristine contrast over moving 3D ribbon -->
+        <div class="relative p-4 sm:p-6 rounded-3xl bg-primary-950/40 backdrop-blur-[2px] border border-white/5 shadow-2xl">
+          <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-4 drop-shadow-md">
+            معاملات هوشمند و مطمئن ملک در <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 via-accent-300 to-accent-500 drop-shadow">گلستان اهواز</span>
+          </h1>
+
+          <p class="text-sm sm:text-lg lg:text-xl text-slate-200 max-w-2xl mx-auto mb-8 leading-relaxed font-normal">
+            مشاوره تخصصی و حقوقی در تمامی مراحل معامله با همراهی بیش از ۸ کارشناس زبده و مورد اعتماد در منطقه گلستان، بوستان و سعدی.
+          </p>
+
+          <!-- دکمه‌های دوگانه هیرو با رفتار تعاملی -->
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+            <button
+              type="button"
+              data-intent="sell"
+              class="hero-intent-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-accent-400 to-accent-600 hover:from-accent-500 hover:to-accent-700 text-primary-950 font-black text-base shadow-xl shadow-accent-500/30 hover:shadow-accent-500/50 transition-all transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-accent-400 cursor-pointer"
+            >
+              🏷️ می‌خواهم بفروشم
+            </button>
+            <button
+              type="button"
+              data-intent="buy"
+              class="hero-intent-btn w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-primary-900/90 hover:bg-primary-800 text-white border-2 border-accent-400/80 hover:border-accent-300 font-black text-base shadow-lg backdrop-blur-md transition-all transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-accent-400 cursor-pointer"
+            >
+              🔍 می‌خواهم بخرم
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- نوار آمار کلیدی با افکت شیشه‌ای (Glassmorphic Stats Bar) -->
+      <div class="w-full max-w-4xl mx-auto mt-6 pt-4 border-t border-slate-700/60 bg-primary-950/75 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-accent-500/25 shadow-2xl">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="text-center p-2 rounded-xl bg-white/5 border border-white/5">
+            <div class="text-2xl sm:text-3xl font-black text-accent-400 font-mono tracking-tight">+{agencyData.stats.yearsExperience}</div>
+            <div class="text-xs sm:text-sm text-slate-300 mt-1 font-medium">سال تجربه در گلستان</div>
+          </div>
+          <div class="text-center p-2 rounded-xl bg-white/5 border border-white/5">
+            <div class="text-2xl sm:text-3xl font-black text-accent-400 font-mono tracking-tight">+{agencyData.stats.successfulDeals}</div>
+            <div class="text-xs sm:text-sm text-slate-300 mt-1 font-medium">معامله موفق و رسمی</div>
+          </div>
+          <div class="text-center p-2 rounded-xl bg-white/5 border border-white/5">
+            <div class="text-2xl sm:text-3xl font-black text-accent-400 font-mono tracking-tight">+{agencyData.stats.activeAdvisors}</div>
+            <div class="text-xs sm:text-sm text-slate-300 mt-1 font-medium">مشاور فعال و متخصص</div>
+          </div>
+          <div class="text-center p-2 rounded-xl bg-white/5 border border-white/5">
+            <div class="text-2xl sm:text-3xl font-black text-accent-400 font-mono tracking-tight">٪{agencyData.stats.customerSatisfactionPercent}</div>
+            <div class="text-xs sm:text-sm text-slate-300 mt-1 font-medium">رضایت مشتریان</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </TiltedGridHero>
+</section>

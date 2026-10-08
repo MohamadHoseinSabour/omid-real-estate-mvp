@@ -162,4 +162,20 @@ describe('Omid Real Estate E2E Workflow & Data Integrity Tests', () => {
       expect(['available', 'negotiating']).toContain(prop.status);
     });
   });
+
+  // ۱۲. بررسی ساختار و یکپارچگی کامپوننت هیرو سه‌بعدی (TiltedGridHero)
+  it('E2E-12: TiltedGridHero and HeroSection contract verification', async () => {
+    const { TiltedGridHero } = await import('../src/components/ui/tilted-grid-hero');
+    expect(typeof TiltedGridHero).toBe('function');
+
+    const { cn } = await import('../src/lib/utils');
+    expect(typeof cn).toBe('function');
+    expect(cn('relative', 'overflow-hidden')).toBe('relative overflow-hidden');
+    expect(cn('p-4', 'p-6')).toBe('p-6'); // tailwind-merge override
+
+    expect(agencyData.stats.yearsExperience).toBeGreaterThan(0);
+    expect(agencyData.stats.successfulDeals).toBeGreaterThan(0);
+    expect(agencyData.stats.activeAdvisors).toBeGreaterThan(0);
+    expect(agencyData.stats.customerSatisfactionPercent).toBeGreaterThanOrEqual(90);
+  });
 });

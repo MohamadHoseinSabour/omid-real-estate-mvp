@@ -4,9 +4,9 @@ import PropertyCard from '../components/PropertyCard.astro';
 import CommissionCalculator from '../components/CommissionCalculator.astro';
 import MortgageCalculator from '../components/MortgageCalculator.astro';
 import ConsultationForm from '../components/ConsultationForm.astro';
+import HeroSection from '../components/HeroSection.astro';
 import propertiesData from '../data/properties.json';
 import blogData from '../data/blog.json';
-import agencyData from '../data/agency.json';
 import SchemaMarkup from '../components/SchemaMarkup.astro';
 import type { Property } from '../types/property';
 
@@ -18,62 +18,8 @@ const featuredProperties = properties.slice(0, 3);
 <Layout title="صفحه اصلی | تخصصی‌ترین معاملات املاک گلستان اهواز">
   <SchemaMarkup type="agency" />
 
-  <!-- ۱. بخش هیرو (Hero Section) -->
-  <section class="relative bg-gradient-to-b from-primary-900 via-primary-800 to-primary-900 text-white overflow-hidden py-20 lg:py-28 border-b-2 border-accent-500/30">
-    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#cda34f_1px,transparent_1px)] [background-size:24px_24px]"></div>
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent-500/10 border border-accent-500/30 text-accent-400 text-xs sm:text-sm font-bold mb-6">
-        <span class="w-2 h-2 rounded-full bg-accent-400 animate-ping"></span>
-        تخصصی‌ترین مرجع خرید، فروش و رهن در محله گلستان اهواز
-      </div>
-
-      <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight max-w-4xl mx-auto mb-6">
-        معاملات هوشمند و مطمئن ملک در <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 via-accent-300 to-accent-500">گلستان اهواز</span>
-      </h1>
-
-      <p class="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
-        مشاوره تخصصی و حقوقی در تمامی مراحل معامله با همراهی بیش از ۸ کارشناس زبده و مورد اعتماد در منطقه گلستان، بوستان و سعدی.
-      </p>
-
-      <!-- دکمه‌های دوگانه هیرو با رفتار تعاملی -->
-      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
-        <button
-          type="button"
-          data-intent="sell"
-          class="hero-intent-btn w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl bg-gradient-to-r from-accent-400 to-accent-600 hover:from-accent-500 hover:to-accent-700 text-primary-900 font-extrabold text-base shadow-lg shadow-accent-500/30 hover:shadow-accent-500/50 transition-all transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-accent-400"
-        >
-          🏷️ می‌خواهم بفروشم
-        </button>
-        <button
-          type="button"
-          data-intent="buy"
-          class="hero-intent-btn w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl bg-primary-700/80 hover:bg-primary-700 text-white border-2 border-accent-400/60 hover:border-accent-400 font-extrabold text-base shadow-md transition-all transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-accent-400"
-        >
-          🔍 می‌خواهم بخرم
-        </button>
-      </div>
-
-      <!-- نوار آمار کلیدی -->
-      <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto pt-10 border-t border-slate-700/60">
-        <div>
-          <div class="text-2xl sm:text-3xl font-black text-accent-400 font-mono">+{agencyData.stats.yearsExperience}</div>
-          <div class="text-xs text-slate-300 mt-1">سال تجربه در گلستان</div>
-        </div>
-        <div>
-          <div class="text-2xl sm:text-3xl font-black text-accent-400 font-mono">+{agencyData.stats.successfulDeals}</div>
-          <div class="text-xs text-slate-300 mt-1">معامله موفق و رسمی</div>
-        </div>
-        <div>
-          <div class="text-2xl sm:text-3xl font-black text-accent-400 font-mono">+{agencyData.stats.activeAdvisors}</div>
-          <div class="text-xs text-slate-300 mt-1">مشاور فعال و متخصص</div>
-        </div>
-        <div>
-          <div class="text-2xl sm:text-3xl font-black text-accent-400 font-mono">٪{agencyData.stats.customerSatisfactionPercent}</div>
-          <div class="text-xs text-slate-300 mt-1">رضایت مشتریان</div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- ۱. بخش هیرو (Hero Section) با اسلایدر سه‌بعدی استوانه‌ای Tilted Grid -->
+  <HeroSection />
 
   <!-- ۲. فایل‌های برگزیده املاک گلستان -->
   <section class="py-16 sm:py-20 bg-slate-50">
@@ -212,22 +158,28 @@ const featuredProperties = properties.slice(0, 3);
 
 <script>
   // هماهنگی اسکرول و انتخاب رادیوباتن فرم مشاوره از دکمه‌های هیرو
-  const buttons = document.querySelectorAll('.hero-intent-btn');
-  buttons.forEach((btn) => {
-    btn.addEventListener('click', () => {
+  function handleHeroIntent(intent: string | null) {
+    if (!intent) return;
+    const radio = document.querySelector(`input[name="intent"][value="${intent}"]`) as HTMLInputElement | null;
+    if (radio) {
+      radio.checked = true;
+    }
+    const target = document.getElementById('consultation');
+    if (target) {
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+        block: 'start',
+      });
+    }
+  }
+
+  // شنود از طریق رویداد عمومی داکیومنت جهت تضمین کارکرد در تمامی شرایط هیدریشن
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as Element | null)?.closest('.hero-intent-btn');
+    if (btn) {
       const intent = btn.getAttribute('data-intent');
-      const radio = document.querySelector(`input[name="intent"][value="${intent}"]`) as HTMLInputElement | null;
-      if (radio) {
-        radio.checked = true;
-      }
-      const target = document.getElementById('consultation');
-      if (target) {
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        target.scrollIntoView({
-          behavior: prefersReducedMotion ? 'auto' : 'smooth',
-          block: 'start',
-        });
-      }
-    });
+      handleHeroIntent(intent);
+    }
   });
 </script>
