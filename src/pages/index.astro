@@ -5,6 +5,7 @@ import CommissionCalculator from '../components/CommissionCalculator.astro';
 import MortgageCalculator from '../components/MortgageCalculator.astro';
 import ConsultationForm from '../components/ConsultationForm.astro';
 import HeroSection from '../components/HeroSection.astro';
+import TrustSection from '../components/TrustSection.astro';
 import propertiesData from '../data/properties.json';
 import blogData from '../data/blog.json';
 import SchemaMarkup from '../components/SchemaMarkup.astro';
@@ -47,47 +48,8 @@ const featuredProperties = properties.slice(0, 3);
     </div>
   </section>
 
-  <!-- ۳. چرا املاک امید؟ -->
-  <section class="py-16 bg-white border-y border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-12">
-        <h2 class="text-2xl sm:text-3xl font-extrabold text-primary-900">چرا اهالی گلستان به املاک امید اعتماد دارند؟</h2>
-        <p class="text-sm text-slate-500 mt-2">اصول کاری ما بر پایه شفافیت مطلق، امنیت اسناد و منافع دوطرفه خریدار و فروشنده است.</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80">
-          <div class="w-12 h-12 rounded-xl bg-accent-100 text-accent-600 flex items-center justify-center text-2xl mb-4 font-bold">
-            ⚖️
-          </div>
-          <h3 class="text-lg font-bold text-primary-900 mb-2">استعلام و نظارت کامل حقوقی</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">
-            بررسی دقیق وضعیت سند ثبتی، استعلام شهرداری، دارایی و اوقاف قبل از هرگونه تبادل وجه یا امضای مبایعه‌نامه.
-          </p>
-        </div>
-
-        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80">
-          <div class="w-12 h-12 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center text-2xl mb-4 font-bold">
-            🤝
-          </div>
-          <h3 class="text-lg font-bold text-primary-900 mb-2">تعرفه کمیسیون عادلانه و شفاف</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">
-            محاسبه حق‌الزحمه طبق نرخنامه مصوب اتحادیه املاک خوزستان بدون مبالغ مخفی و با ارائه فاکتور رسمی قانونی.
-          </p>
-        </div>
-
-        <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200/80">
-          <div class="w-12 h-12 rounded-xl bg-accent-100 text-accent-600 flex items-center justify-center text-2xl mb-4 font-bold">
-            📍
-          </div>
-          <h3 class="text-lg font-bold text-primary-900 mb-2">تسلط مویرگی بر بازار گلستان</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">
-            بیش از ۸ مشاور بومی با شناخت دقیق متری به متری خیابان‌های فروردین، اردیبهشت، بوستان و چشم‌انداز آینده منطقه.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- ۳. چرا املاک امید؟ (اسلایدر سه‌بعدی کاتالوگ املاک فروخته‌شده با مرکز فید شده و کارت‌های لوکس اعتماد) -->
+  <TrustSection />
 
   <!-- ۴. بخش ماشین‌حساب‌های هوشمند آنلاین -->
   <section id="calculators" class="py-16 sm:py-20 bg-slate-100/70 scroll-mt-20">

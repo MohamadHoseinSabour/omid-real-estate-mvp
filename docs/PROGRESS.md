@@ -72,18 +72,28 @@
     - Glassmorphic stats bar displaying agency track record (+11 years, +1450 deals, +8 advisors, 98% satisfaction).
   - [x] Testing & Quality: Added `E2E-12` test verifying `TiltedGridHero` and `cn` utilities; all 19 tests passing; 28 static HTML routes built cleanly.
 
-## Phase 11: Image Stream 3D Corridor Hero & Sold Properties Showcase ✅
+## Phase 12: Hero Restoration & 3D Sold Catalog in Trust Section ("چرا املاک امید؟") ✅
 - Completed: 2026-10-09
 - Deliverables completed:
-  - [x] UI Component: Created `src/components/ui/image-stream-hero.tsx` with perspective corridor projection, dual rail stream, resolution-independent geometry, and reduced-motion support.
-  - [x] Demo Component: Created `src/components/ui/demo.tsx` demonstrating ImageStreamHero.
-  - [x] Sold Properties 3D Showcase: Integrated real estate catalog of sold homes (پنت‌هاوس آبان، ویلایی بوستان، آپارتمان اردیبهشت، تجاری بلوار اصلی) with luxury dark gradient cards and prominent sold tags.
-  - [x] Minimalist Hero Layout: Unobstructed 3D corridor in center with elegant typography above and interactive intent buttons below; stats bar placed seamlessly beneath hero.
-  - [x] Testing & Build: Verified E2E-12 covering ImageStreamHero; 19 tests passing; 28 static pages built with zero errors.
+  - [x] Hero Section Restoration (`src/components/HeroSection.astro`):
+    - Restored `TiltedGridHero` (curved 3D horizontal cylinder ribbon with curated luxury listings of Golestan Ahvaz).
+    - Preserved unblocked central ribbon, top title/badge, bottom dual action buttons (`🏷️ می‌خواهم بفروشم` and `🔍 می‌خواهم بخرم`), and 4-stat agency strip below.
+  - [x] Dedicated Trust Section Component (`src/components/TrustSection.astro`):
+    - Powered by `ImageStreamHero` (3D corridor with dual perspective rails).
+    - Background: Streaming catalog of verified sold properties in Golestan Ahvaz (`soldPropertiesImages` with price, neighborhood, and status badge).
+    - Center Fade & Vignette ("وسطش فید بشه"): Smooth radial and horizontal fade masks (`via-[#07090e]/95` and radial gradient) so the background stream is visible on the sides while the center smoothly dissolves into the dark background.
+    - 3 Luxury Trust Cards with Key Points:
+      1. «استعلام و نظارت کامل حقوقی» with key points (کاتب، استعلام دارایی/شهرداری، حضور کارشناس حقوقی) and 100% guarantee badge.
+      2. «تعرفه کمیسیون عادلانه و شفاف» with key points (فرمول اتحادیه، فاکتور رسمی، تفکیک سهم) and official union tariff badge.
+      3. «تسلط مویرگی بر بازار گلستان» with key points (شناخت پلاک به پلاک، آرشیو معاملات واقعی، فایل‌های ناب بدون واسطه) and 15+ years experience badge.
+    - Bottom 4-Item Guarantee Strip: سلامت سند، قرارداد کاتب، مشاوره حقوقی، همراهی تا دفترخانه.
+  - [x] Homepage Integration (`src/pages/index.astro`): Cleanly imported and replaced static section 3 with `<TrustSection />`.
+  - [x] Testing & Build: Verified in headless browser with visual screenshots (`hero_section` and `trust_section`); 19/19 vitest tests passing; 28 static routes compiled cleanly.
 
 ### Current Status
-🎉 **Phase 11: Image Stream 3D Corridor Hero & Sold Properties Showcase Complete & Verified!**
+🎉 **Phase 12: Hero Restoration & 3D Sold Catalog in Trust Section Complete & Verified!**
 
 ---
 
 *Last updated: 2026-10-09*
+

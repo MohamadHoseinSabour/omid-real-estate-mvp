@@ -150,7 +150,7 @@ export function ImageStreamHero({
                   key={`${name}-${i}`}
                   className={cn(
                     card,
-                    "absolute overflow-hidden shadow-2xl border border-white/20 bg-slate-950 group",
+                    "absolute overflow-hidden shadow-2xl border border-accent-500/30 bg-slate-950 ring-1 ring-white/10 group",
                   )}
                   style={{
                     left: "50%",
@@ -181,15 +181,15 @@ export function ImageStreamHero({
                       {/* Sold badge & property tag (RTL oriented) */}
                       <div
                         dir="rtl"
-                        className="absolute bottom-[0.8cqw] right-[0.8cqw] left-[0.8cqw] flex flex-col gap-[0.2cqw] pointer-events-none text-right"
+                        className="absolute bottom-[0.8cqw] right-[0.8cqw] left-[0.8cqw] flex flex-col gap-[0.3cqw] pointer-events-none text-right"
                       >
                         <div className="flex items-center justify-between">
-                          <span className="inline-flex items-center px-[0.6cqw] py-[0.15cqw] rounded bg-gradient-to-r from-accent-500 to-amber-600 text-primary-950 font-black text-[0.8cqw] shadow-md whitespace-nowrap">
+                          <span className="inline-flex items-center px-2 py-0.5 rounded bg-gradient-to-r from-accent-400 to-amber-500 text-primary-950 font-black text-[clamp(10px,0.85cqw,12px)] shadow-md whitespace-nowrap">
                             {img.badge || "فروخته شد"}
                           </span>
                         </div>
                         {img.tag && (
-                          <span className="truncate text-white text-[0.9cqw] font-black drop-shadow-md">
+                          <span className="truncate text-white text-[clamp(11px,0.95cqw,14px)] font-black drop-shadow-md">
                             {img.tag}
                           </span>
                         )}
