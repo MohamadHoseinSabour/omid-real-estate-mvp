@@ -20,38 +20,24 @@
 - Completed: 2026-10-08
 - Commit: `bfc1f10`
 
-## Phase 6: Dashboard & Backend (Supabase) 🔄
+## Phase 6: Dashboard & Backend (Supabase) ✅
+- Completed: 2026-10-08
+- Commit: `e45e62d`
+
+## Phase 7: QA, Launch & Handoff 🔄
 
 ### Completed
-- [x] Step 6.1: Database migrations created in `supabase/migrations/`:
-  - `001_initial_schema.sql` (6 tables, enums, bigint Toman currencies, performance indexes)
-  - `002_rls_policies_and_functions.sql` (Row Level Security on all tables, helper functions, and atomic RPC)
-- [x] Step 6.2: RLS access matrix strictly enforced for 3 roles: Advisor, Secretary, Admin
-- [x] Step 6.3: Atomic Postgres function `record_sale()` implemented:
-  - Row locking (`FOR UPDATE`)
-  - Snapshot commission rate saved on sales record
-  - Advisor share calculated
-  - Status marked as `sold`
-  - Inserted into append-only `wallet_transactions` ledger
-- [x] Step 6.4: RLS security test suite written (`supabase/tests/rls_security_test.sql`)
-- [x] Step 6.5: SPA Dashboard pages built under `/dashboard/`:
-  - Client helper (`src/lib/supabase.ts`)
-  - Dashboard layout (`src/layouts/DashboardLayout.astro`) with live role switcher
-  - Login page (`/dashboard/login/`)
-  - Overview / KPI stats (`/dashboard/`)
-  - Properties management (`/dashboard/properties/`)
-  - Customer club & leads (`/dashboard/leads/`)
-  - Sales atomic recording (`/dashboard/sales/`)
-  - Append-only wallet ledger (`/dashboard/wallet/`)
-- [x] Step 6.6: Security checklist verified; build verified (23 pages in 1.24s)
+- [x] Step 7.1: E2E and data integrity test suite written in `tests/e2e.test.ts` (13/13 tests passing)
+- [x] Step 7.2: Broken links and navigation integrity verified across all 23 static pages
+- [x] Step 7.3: Operational documentation updated:
+  - `docs/KNOWN_ISSUES.md` (Leaflet fallback, Supabase local/production setup, GitHub Pages action)
+  - `docs/BACKLOG.md` (Deferred post-MVP features: 360 virtual tour, compare, SMS notifications, gateway)
+- [x] Step 7.4: Comprehensive production-ready handoff manual in `README.md`
+- [x] Step 7.5: Final test & build verified (`13 passed`, 23 static pages built in 1.21s)
+- [x] Step 7.6: Final project delivery commit & GitHub push
 
 ### Current Status
-✅ Phase 6 complete — awaiting approval
-
----
-
-## Phase 7: QA, Launch & Handoff
-_Not yet started_
+🎉 **Project 100% Complete & Delivered!**
 
 ---
 

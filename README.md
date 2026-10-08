@@ -1,29 +1,220 @@
-# Omid Real Estate MVP
+# 🏢 وبسایت آژانس املاک امید (محله گلستان، اهواز) — نسخه MVP
 
-A bilingual (Persian/RTL) real estate agency website with a static public-facing site hosted on GitHub Pages and a Supabase-powered internal dashboard.
+> وبسایت مدرن و دومنظوره آژانس املاک امید با طراحی اختصاصی لوکس (سرمه‌ای و طلایی)، زبان فارسی و ساختار راست‌به‌چپ (RTL)، معماری استاتیک فوق‌سریع مبتنی بر **Astro** و **Tailwind CSS**، بهینه‌سازی حداکثری سئو و عملکرد، و داشبورد مدیریتی مجهز به امنیت **Supabase Row Level Security (RLS)** و ثبت تراکنش‌های اتمیک.
 
-## Project Structure
+---
+
+## 📑 فهرست مطالب
+- [ویژگی‌های کلیدی](#ویژگی‌های-کلیدی)
+- [معماری سیستم](#معماری-سیستم)
+- [راه‌اندازی و اجرای محلی](#راه‌اندازی-و-اجرای-محلی)
+- [نحوه افزودن و ویرایش فایل‌های ملکی](#نحوه-افزودن-و-ویرایش-فایل‌های-ملکی)
+- [نحوه انتشار مقالات وبلاگ](#نحوه-انتشار-مقالات-وبلاگ)
+- [راه‌اندازی بک‌اند و دیتابیس Supabase](#راه‌اندازی-بک‌اند-و-دیتابیس-supabase)
+- [استقرار روی GitHub Pages](#استقرار-روی-github-pages)
+- [مستندات پروژه](#مستندات-پروژه)
+
+---
+
+## ✨ ویژگی‌های کلیدی
+
+### ۱. بخش عمومی (Public Static Pages)
+- **هیرو تعاملی دوطرفه:** دو دکمه «می‌خواهم بفروشم» و «می‌خواهم بخرم» با اسکرول نرم هوشمند به سمت فرم مشاوره و تنظیم خودکار فیلد نوع تقاضا (با رعایت `prefers-reduced-motion`).
+- **آرشیو و جستجوی لحظه‌ای املاک:** امکان فیلتر آنی بر اساس نوع ملک (آپارتمان، ویلایی، تجاری)، وضعیت معامله (موجود، در حال مذاکره، فروخته شد) و مرتب‌سازی قیمتی و متراژی بدون نیاز به رفرش صفحه.
+- **صفحات اختصاصی فایل‌های ملکی:** گالری تصاویر، جدول مشخصات و امکانات، نشان وضعیت، نقشه تعاملی موقعیت با Leaflet، و کارت تماس مستقیم با مشاور مسئول.
+- **ماشین‌حساب‌های هوشمند آنلاین:**
+  - **ماشین‌حساب کمیسیون املاک:** محاسبه خودکار حق‌الزحمه طرفین طبق نرخنامه اتحادیه صنف مشاورین املاک خوزستان و مالیات بر ارزش افزوده قانونی.
+  - **ماشین‌حساب اقساط وام مسکن:** محاسبه دقیق مبلغ هر قسط ماهانه، کل سود و مجموع بازپرداخت بانکی.
+- **فرم‌های جذب سرنخ (Lead Capture):** مجهز به تله‌های ضدهرزنامه (Honeypot)، اعتبارسنجی شماره‌های همراه ایران و ذخیره دقیق منبع ورود متقاضی (Source Tracking).
+- **سئو و استانداردهای وب:** مجهز به نشانه‌گذاری ساختاریافته (JSON-LD Schema) برای `RealEstateAgent`، `RealEstateListing`، `Article` و `BreadcrumbList` به همراه `sitemap.xml` و `robots.txt`.
+
+### ۲. داشبورد داخلی مشاوران و پرسنل (Internal SPA Dashboard)
+- **سه نقش کاربری با دسترسی‌های تفکیک‌شده:**
+  - **مشاور:** مدیریت فایل‌های شخصی، مشاهده لیدهای مرتبط با ملک‌های خود، ثبت فروش و مشاهده کیف پول.
+  - **منشی:** مدیریت کلیه فایل‌ها و باشگاه لیدها؛ بدون دسترسی به اطلاعات مالی و کارمزدها.
+  - **مدیرکل:** اشراف کامل به تمام پرونده‌ها، گزارش‌های آژانس، و تنظیم نرخ پیش‌فرض کمیسیون.
+- **ثبت فروش اتمیک (Atomic RPC):** اجرای تابع ایمن پایگاه داده جهت تغییر همزمان وضعیت به «فروخته شد»، ذخیره اسنپ‌شات نرخ کمیسیون روز، و شارژ سهم مشاور در دفتر کل کیف پول (`wallet_transactions`) در یک تراکنش یکپارچه.
+- **حسابداری کیف پول فقط-افزودنی (Append-Only Ledger):** ثبت تمامی ارقام به عدد صحیح تومان (`bigint`) بدون داده‌های ممیز شناور (Float).
+
+---
+
+## 🏛️ معماری سیستم
 
 ```
-├── docs/              # Project documentation
-├── src/               # Source code (to be set up in Phase 3-4)
-├── supabase/          # Database migrations & RLS policies (Phase 6)
-├── .env.example       # Environment variable template
-├── AGENTS.md          # Agent system prompt (this project's spec)
-└── README.md          # This file
+├── .github/workflows/deploy.yml   # استقرار خودکار روی GitHub Pages
+├── docs/                          # اسناد معماری، دیزاین، امنیت و سئو
+│   ├── PRD.md                     # سند مشخصات محصول
+│   ├── SITEMAP.md                 # نقشه مسیرها و آدرس‌ها
+│   ├── DATA_MODEL.md              # مدل داده‌ها و نمودار ERD
+│   ├── ROLES_AND_PERMISSIONS.md   # ماتریس دسترسی‌ها و امنیت RLS
+│   ├── DESIGN.md                  # سیستم طراحی (آبی و طلایی، وزیرمتن)
+│   ├── SEO_AUDIT.md               # ممیزی سئو و دسترسی‌پذیری
+│   ├── KNOWN_ISSUES.md            # مسائل شناخته‌شده و نکات فنی
+│   └── PROGRESS.md                # گزارش مایل‌استون‌های پروژه
+├── src/
+│   ├── components/                # کامپوننت‌های ماژولار Astro
+│   ├── data/                      # داده‌های املاک، مقالات و آژانس (JSON)
+│   ├── layouts/                   # لایوت اصلی سایت و لایوت داشبورد
+│   ├── pages/                     # مسیرهای استاتیک صفحات عمومی و داشبورد
+│   └── utils/                     # توابع خالص محاسباتی و تست‌های واحد
+├── supabase/
+│   ├── migrations/                # اسکریپت‌های DDL و سیاست‌های امنیتی RLS
+│   └── tests/                     # تست‌های اعتبارسنجی امنیتی RLS
+└── tests/                         # تست‌های نرم‌افزاری E2E و یکپارچگی
 ```
 
-## Quick Start
+---
 
-> 🚧 **Under Construction** — This project is being built phase by phase. See `docs/PROGRESS.md` for current status.
+## 🚀 راه‌اندازی و اجرای محلی
 
-## Documentation
+### پیش‌نیازها
+- Node.js نسخه 20 یا بالاتر (تست‌شده روی v24 LTS)
+- npm نسخه 10 یا بالاتر
 
-- [Progress](docs/PROGRESS.md) — What's done and what's next
-- [Decisions](docs/DECISIONS.md) — Architecture Decision Records
-- [Skills](docs/SKILLS.md) — Installed agent skills and their purposes
-- [Backlog](docs/BACKLOG.md) — Ideas beyond MVP scope
+### گام‌های اجرا:
 
-## License
+۱. مخزن را کلون کنید:
+```bash
+git clone https://github.com/MohamadHoseinSabour/omid-real-estate-mvp.git
+cd omid-real-estate-mvp
+```
 
-All rights reserved © Omid Real Estate Agency
+۲. وابستگی‌ها را نصب کنید:
+```bash
+npm install
+```
+
+۳. اجرای تست‌های نرم‌افزاری (Unit & E2E Tests):
+```bash
+npm test
+```
+
+۴. اجرای سرور توسعه محلی:
+```bash
+npm run dev
+```
+سایت در آدرس `http://localhost:4321/omid-real-estate-mvp/` در دسترس خواهد بود.
+
+۵. ساخت خروجی نهایی استاتیک (Production Build):
+```bash
+npm run build:fast
+```
+
+---
+
+## 🏡 نحوه افزودن و ویرایش فایل‌های ملکی
+
+تمامی اطلاعات املاک در فایل خوانا و استاندارد `src/data/properties.json` ذخیره می‌شوند. برای افزودن یک ملک جدید، کافی است یک آبجکت جدید طبق ساختار زیر به آرایه اضافه فرمایید:
+
+```json
+{
+  "id": "prop-106",
+  "slug": "apartment-130m-saadi-golestan",
+  "title": "آپارتمان ۱۳۰ متری ۳ خواب خیابان سعدی",
+  "propertyType": "apartment",
+  "propertyTypeLabel": "آپارتمان",
+  "status": "available",
+  "statusLabel": "موجود",
+  "priceToman": 3200000000,
+  "pricePerMeterToman": 24615384,
+  "areaSqm": 130,
+  "bedrooms": 3,
+  "yearBuilt": 1401,
+  "floor": 3,
+  "totalFloors": 5,
+  "neighborhood": "گلستان، اهواز",
+  "address": "اهواز، گلستان، خیابان سعدی، نبش صائب",
+  "coordinates": {
+    "lat": 31.3035,
+    "lng": 48.6650
+  },
+  "features": [
+    "پارکینگ سندی",
+    "آسانسور",
+    "کابینت MDF",
+    "تراس رو به نما"
+  ],
+  "description": "واحدی دلباز با نورگیری عالی در خیابان آرام سعدی گلستان...",
+  "images": [
+    {
+      "url": "https://example.com/image1.jpg",
+      "alt": "نمای سالن پذیرایی آپارتمان خیابان سعدی",
+      "isPrimary": true
+    }
+  ],
+  "advisor": {
+    "name": "مهندس رضا کریمی",
+    "phone": "۰۹۱۶۱۱۱۱۲۳۴",
+    "avatar": "https://example.com/advisor.jpg",
+    "role": "کارشناس ارشد منطقه گلستان"
+  },
+  "isPublic": true,
+  "sample": false,
+  "createdAt": "2026-10-08T12:00:00Z"
+}
+```
+
+---
+
+## ✍️ نحوه انتشار مقالات وبلاگ
+
+برای افزودن مقالات جدید، فایل `src/data/blog.json` را باز کرده و ساختار زیر را درج کنید:
+
+```json
+{
+  "slug": "title-of-your-article",
+  "title": "عنوان جذاب مقاله به زبان فارسی",
+  "excerpt": "خلاصه دو تا سه خطی از موضوع مقاله جهت نمایش در کارت‌ها و متاتگ‌های سئو...",
+  "date": "۱۴۰۳/۰۷/۱۶",
+  "readingTime": "۵ دقیقه",
+  "category": "راهنمای خرید",
+  "author": "مهندس رضا کریمی",
+  "image": "https://example.com/blog-hero.jpg",
+  "sample": false,
+  "content": "متن کامل مقاله که به صورت خودکار پاراگراف‌بندی و فرمت‌بندی خواهد شد..."
+}
+```
+
+---
+
+## 🗄️ راه‌اندازی بک‌اند و دیتابیس Supabase
+
+برای اتصال داشبورد به پروژه واقعی Supabase:
+
+۱. در پنل [supabase.com](https://supabase.com) یک پروژه رایگان ایجاد کنید.
+۲. وارد بخش **SQL Editor** شوید و دو اسکریپت زیر را به ترتیب اجرا نمایید:
+   - `supabase/migrations/001_initial_schema.sql` (ایجاد جدول‌ها و ایندکس‌ها)
+   - `supabase/migrations/002_rls_policies_and_functions.sql` (اعمال RLS و تابع اتمیک)
+۳. فایل `.env.local` را ایجاد کرده و متغیرهای عمومی زیر را در آن قرار دهید:
+```env
+PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+PUBLIC_SUPABASE_ANON_KEY=your-anon-public-key
+```
+
+> ⚠️ **نکته امنیتی بسیار مهم:** کلید `service_role` سوپابیس **هرگز** نباید در فایل‌های پروژه یا در کد کلاینت وارد شود.
+
+---
+
+## 🌐 استقرار روی GitHub Pages
+
+پروژه به صورت کامل با **GitHub Actions** یکپارچه شده است:
+۱. در مخزن گیت‌هاب به مسیر **Settings > Pages** بروید.
+۲. گزینه **Source** را بر روی **GitHub Actions** قرار دهید.
+۳. با هر `git push` به شاخه `main`، تست‌ها اجرا شده، پروژه بیلد می‌شود و وبسایت به صورت زنده در آدرس زیر منتشر می‌گردد:
+`https://MohamadHoseinSabour.github.io/omid-real-estate-mvp/`
+
+---
+
+## 📚 مستندات کامل پروژه
+- [گزارش پیشرفت فازها](docs/PROGRESS.md)
+- [سند مشخصات محصول (PRD)](docs/PRD.md)
+- [معماری داده‌ها و پایگاه داده](docs/DATA_MODEL.md)
+- [ماتریس دسترسی‌ها و امنیت RLS](docs/ROLES_AND_PERMISSIONS.md)
+- [سیستم طراحی و پالت لوکس](docs/DESIGN.md)
+- [ممیزی سئو و دسترسی‌پذیری](docs/SEO_AUDIT.md)
+- [مسائل شناخته‌شده](docs/KNOWN_ISSUES.md)
+- [نقشه راه و امکانات آینده (Backlog)](docs/BACKLOG.md)
+
+---
+
+**توسعه‌یافته با بالاترین استانداردهای وب و افتخار برای آژانس املاک امید اهواز © ۱۴۰۳**

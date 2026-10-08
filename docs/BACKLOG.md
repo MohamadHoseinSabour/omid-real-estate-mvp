@@ -1,22 +1,20 @@
-# Backlog (Beyond MVP Scope)
+# نقشه راه و ایده‌های خارج از محدوده MVP (Backlog)
 
-Items listed here are explicitly out of scope for the MVP but may be considered for future versions.
+موارد زیر به منظور حفظ چابکی، سبکی و تمرکز محصول بر اهداف اصلی، از محدوده فاز MVP خارج شده‌اند و برای نسخه‌های آتی (نسخه ۱٫۱ و بعد از آن) برنامه‌ریزی گردیده‌اند:
 
-## Deferred Features
-- [ ] Online payment gateway integration
-- [ ] Live chat support
-- [ ] Multi-language support (beyond Persian)
-- [ ] Customer user accounts (public-facing)
-- [ ] CRM automation
-- [ ] Mobile application (native)
-- [ ] User-uploaded photos (public visitors)
-- [ ] Programmatic SEO (area-based pages)
-- [ ] AI-powered property recommendations
-- [ ] SMS/email notification system for leads
-- [ ] Advanced analytics dashboard
-- [ ] Property comparison feature
-- [ ] Virtual tour integration
+## ۱. توسعه‌های قابلیت‌های عمومی (Public Enhancements)
+- [ ] **تور مجازی ۳۶۰ درجه:** یکپارچه‌سازی با سرویس‌های Matterport یا Pannellum برای بازدید مجازی واحدهای لوکس و پنت‌هاوس
+- [ ] **مقایسه هوشمند املاک:** قابلیت انتخاب ۲ تا ۳ ملک و نمایش جدول تفاوت‌های متراژ، قیمت هر متر و متریال
+- [ ] **جستجوی صوتی یا هوش مصنوعی:** چت‌بات مشاور هوشمند برای پیشنهاد فایل بر اساس بودجه اعلامی کاربر
+- [ ] **اشتراک‌گذاری خودکار در شبکه‌های اجتماعی:** اتصال خودکار ثبت فایل به کانال تلگرام و صفحه اینستاگرام آژانس
+- [ ] **چندزبانه بودن سایت:** افزودن زبان‌های انگلیسی یا عربی با توجه به موقعیت استان خوزستان و سرمایه‌گذاران کشورهای همسایه
+
+## ۲. توسعه‌های داشبورد و اتوماسیون (Dashboard & CRM)
+- [ ] **درگاه پرداخت آنلاین تسویه کارمزد:** اتصال به سامانه‌های شاپرک (زرین‌پال / سامان) برای پرداخت سهم کمیسیون
+- [ ] **اتوماسیون پیامکی (SMS Notifications):** ارسال خودکار پیامک تأیید ثبت تقاضا به خریدار و ارسال آلارم لید جدید به مشاور مسئول
+- [ ] **سیستم ارزیابی و امتیازدهی به مشاوران:** نظرسنجی از خریداران و ثبت امتیاز رضایت در پروفایل مشاور
+- [ ] **پشتیبان‌گیری خودکار از دیتابیس در فضای ابری:** گرفتن بک‌آپ هفتگی از جدول‌های معاملات و کیف پول در سرور جداگانه S3
 
 ---
 
-*Items are added as they surface during development. Each item should include context on why it was deferred.*
+*این سند بر اساس بازخوردهای مدیران آژانس به‌صورت دوره‌ای به‌روزرسانی می‌گردد.*
