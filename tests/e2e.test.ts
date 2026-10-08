@@ -181,4 +181,13 @@ describe('Omid Real Estate E2E Workflow & Data Integrity Tests', () => {
     expect(agencyData.stats.activeAdvisors).toBeGreaterThan(0);
     expect(agencyData.stats.customerSatisfactionPercent).toBeGreaterThanOrEqual(90);
   });
+
+  // ۱۳. بررسی کامپوننت‌های ناوبری متحرک BottomNavBar و HeaderNavBar
+  it('E2E-13: BottomNavBar and HeaderNavBar component contract verification', async () => {
+    const { BottomNavBar } = await import('../src/components/ui/bottom-nav-bar');
+    expect(typeof BottomNavBar).toBe('function');
+
+    const { HeaderNavBar } = await import('../src/components/ui/header-nav-bar');
+    expect(typeof HeaderNavBar).toBe('function');
+  });
 });

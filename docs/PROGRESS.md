@@ -110,11 +110,25 @@
     - Compact 2x2 grid for guarantee badges on mobile.
   - [x] Testing & Quality: 19/19 Vitest tests passing; all 28 static HTML routes compiled with zero errors; visual screenshots validated in mobile viewport (390x844).
 
+## Phase 14: Animated Pill Header & Bottom Nav Bar Integration ✅
+- Completed: 2026-10-09
+- Deliverables completed:
+  - [x] Dependency Installation: Installed `framer-motion` for spring-animated pill label transitions.
+  - [x] UI Components:
+    - Created `src/components/ui/bottom-nav-bar.tsx` adhering to shadcn UI structure, Lucide icons, and Framer Motion spring physics.
+    - Created `src/components/ui/header-nav-bar.tsx` tailored to Omid Real Estate's route structure (خانه, املاک گلستان, محاسبه کمیسیون, وبلاگ, درباره ما, تماس با ما) with dynamic URL detection and luxury gold/dark navy styling.
+    - Updated `src/components/ui/demo.tsx` exporting `BottomNavBar` and `Demo`.
+  - [x] Header Integration (`src/components/Header.astro`):
+    - Desktop: Replaced traditional text menu with centered luxury floating pill navbar with icons and animated active labels.
+    - Mobile: Implemented modern floating bottom navigation bar (`isMobileFloating={true}` pinned to bottom-4) giving phone users instantaneous thumb access.
+  - [x] Testing & Quality: Added `E2E-13` verifying `BottomNavBar` and `HeaderNavBar`; 20/20 Vitest tests passing; 28 static routes built cleanly.
+
 ### Current Status
-🎉 **Phase 13: Mobile UX & Responsive Polish Complete & Verified!**
+🎉 **Phase 14: Animated Pill Header & Bottom Nav Bar Complete & Verified!**
 
 ---
 
 *Last updated: 2026-10-09*
+
 
 

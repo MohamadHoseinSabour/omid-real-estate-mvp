@@ -1,63 +1,53 @@
 ---
+import HeaderNavBar from './ui/header-nav-bar';
+
 interface Props {
   baseUrl: string;
 }
 
 const { baseUrl } = Astro.props;
+const currentPath = Astro.url.pathname;
 ---
 
-<header class="bg-primary-900 text-white sticky top-0 z-50 shadow-md border-b-2 border-accent-500">
+<header class="bg-[#07090e]/90 text-white sticky top-0 z-50 shadow-xl border-b border-slate-800/90 backdrop-blur-xl transition-all">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-20">
       <!-- برند و لوگوی متنی -->
-      <a href={`${baseUrl}/`} class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-accent-400 rounded-lg p-1">
-        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-accent-400 to-accent-600 flex items-center justify-center text-primary-900 font-extrabold text-xl shadow-lg shadow-accent-500/20 group-hover:scale-105 transition-transform">
+      <a href={`${baseUrl}/`} class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-accent-400 rounded-lg p-1 shrink-0">
+        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-accent-400 to-accent-600 flex items-center justify-center text-primary-900 font-black text-xl shadow-lg shadow-accent-500/20 group-hover:scale-105 transition-transform">
           ام
         </div>
         <div>
           <div class="text-xl sm:text-2xl font-black text-accent-400 tracking-tight group-hover:text-accent-300 transition-colors">
             املاک امید
           </div>
-          <div class="text-xs text-slate-300 font-medium">
+          <div class="text-[11px] sm:text-xs text-slate-300 font-medium">
             تخصصی محله گلستان اهواز
           </div>
         </div>
       </a>
 
-      <!-- ناوبری اصلی دسکتاپ -->
-      <nav class="hidden md:flex items-center gap-6 lg:gap-8">
-        <a href={`${baseUrl}/`} class="text-white hover:text-accent-400 font-medium text-sm transition-colors focus:outline-none focus:text-accent-400">
-          خانه
-        </a>
-        <a href={`${baseUrl}/properties/`} class="text-white hover:text-accent-400 font-medium text-sm transition-colors focus:outline-none focus:text-accent-400">
-          املاک گلستان
-        </a>
-        <a href={`${baseUrl}/#calculators`} class="text-white hover:text-accent-400 font-medium text-sm transition-colors focus:outline-none focus:text-accent-400">
-          محاسبه کمیسیون و وام
-        </a>
-        <a href={`${baseUrl}/blog/`} class="text-white hover:text-accent-400 font-medium text-sm transition-colors focus:outline-none focus:text-accent-400">
-          وبلاگ
-        </a>
-        <a href={`${baseUrl}/about/`} class="text-white hover:text-accent-400 font-medium text-sm transition-colors focus:outline-none focus:text-accent-400">
-          درباره ما
-        </a>
-        <a href={`${baseUrl}/contact/`} class="text-white hover:text-accent-400 font-medium text-sm transition-colors focus:outline-none focus:text-accent-400">
-          تماس با ما
-        </a>
-      </nav>
+      <!-- ناوبری اصلی پیل دسکتاپ (مشابه کامپوننت نمونه با استایل و رنگ‌بندی لوکس سایت) -->
+      <div class="hidden md:flex items-center justify-center">
+        <HeaderNavBar
+          client:load
+          baseUrl={baseUrl}
+          currentPath={currentPath}
+        />
+      </div>
 
       <!-- دکمه CTA و پنل کاربری -->
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2.5 sm:gap-3 shrink-0">
         <a
           href={`${baseUrl}/dashboard/`}
-          class="hidden sm:inline-flex items-center text-xs text-slate-300 hover:text-accent-400 font-medium py-2 px-3 rounded-lg border border-slate-700 hover:border-accent-400 transition-colors"
+          class="hidden sm:inline-flex items-center text-xs text-slate-300 hover:text-accent-400 font-bold py-2 px-3 rounded-xl border border-slate-700/80 hover:border-accent-400/80 bg-slate-900/60 transition-colors"
           title="ورود پرسنل و مشاوران"
         >
           ورود همکاران
         </a>
         <a
           href={`${baseUrl}/#consultation`}
-          class="inline-flex items-center justify-center bg-gradient-to-r from-accent-400 to-accent-500 hover:from-accent-500 hover:to-accent-600 text-primary-900 font-bold text-sm px-4 py-2.5 rounded-xl shadow-md shadow-accent-500/25 hover:shadow-lg hover:shadow-accent-500/35 transition-all transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-accent-400"
+          class="inline-flex items-center justify-center bg-gradient-to-r from-accent-400 to-accent-500 hover:from-accent-500 hover:to-accent-600 text-primary-950 font-black text-xs sm:text-sm px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl shadow-md shadow-accent-500/25 hover:shadow-lg hover:shadow-accent-500/35 transition-all transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-accent-400 whitespace-nowrap"
         >
           درخواست مشاوره
         </a>
@@ -65,3 +55,13 @@ const { baseUrl } = Astro.props;
     </div>
   </div>
 </header>
+
+<!-- ناوبری شناور زیرین در نسخه موبایل (Floating Bottom Navigation Bar) -->
+<div class="flex md:hidden">
+  <HeaderNavBar
+    client:load
+    baseUrl={baseUrl}
+    currentPath={currentPath}
+    isMobileFloating={true}
+  />
+</div>

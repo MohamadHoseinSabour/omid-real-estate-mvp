@@ -1,3 +1,4 @@
+import BottomNavBar from "@/components/ui/bottom-nav-bar";
 import { ImageStreamHero } from "@/components/ui/image-stream-hero";
 
 const CDN = "https://pub-940ccf6255b54fa799a9b01050e6c227.r2.dev";
@@ -28,33 +29,24 @@ const IMAGES = [
     alt: "Flowing hue gradient",
   },
   {
-    src: `${CDN}/stock-images/98f89cb9994f5c382ab964062c4039db.jpg`,
-    alt: "Figure holding a racket that dissolves into a swirling colourful cloud",
+    src: `${CDN}/stock-images/d8916d863f64062635bc796d192e2e92.jpg`,
+    alt: "Silhouetted couple walking on a dusk beach with reflective wet sand",
   },
   {
-    src: `${CDN}/gradients/moon/moon-grade-03.png`,
-    alt: "Moon-toned gradient",
+    src: `${CDN}/gradients/halo/halo-04.png`,
+    alt: "Glowing halo gradient",
   },
   {
-    src: `${CDN}/stock-images/ddcbee38be8b7274e19e132d7ab35b53.jpg`,
-    alt: "Hand gesture with a colourful cutout of a bird flying through the fingers",
+    src: `${CDN}/stock-images/c8e54546cf7f520be357e60058b75e7a.jpg`,
+    alt: "Close-up portrait with sunset light cutting across the face",
   },
   {
-    src: `${CDN}/gradients/hero_gradient/hero-gradients-03.png`,
-    alt: "Layered hero gradient",
-  },
-  {
-    src: `${CDN}/gradients/hue-flow/hue-flow-02.png`,
-    alt: "Second flowing hue gradient",
-  },
-  {
-    src: `${CDN}/gradients/moon/moon-grade-05.png`,
-    alt: "Deep moon-toned gradient",
+    src: `${CDN}/gradients/ambient_glow/ambient-glow-01.png`,
+    alt: "Ambient gradient glow",
   },
 ];
 
-// ONLY DEFAULT EXPORT WILL BE TREATED AS A DEMO
-export default function DemoOne() {
+export function ImageStreamDemo() {
   return (
     <ImageStreamHero
       images={IMAGES}
@@ -75,4 +67,12 @@ export default function DemoOne() {
       </div>
     </ImageStreamHero>
   );
+}
+
+export function BottomNavBarDemo() {
+  return <BottomNavBar />;
+}
+
+export default function Demo() {
+  return <BottomNavBar />;
 }
