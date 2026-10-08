@@ -143,6 +143,18 @@ export function TiltedGridHero({
   const id = React.useId().replace(/[^a-zA-Z0-9]/g, "");
   const orbit = `tgh-o-${id}`;
   const tile = `tgh-t-${id}`;
+  function getResponsiveBend(w: number, baseCurve: number) {
+    if (w < 480) return (Math.min(baseCurve, 40) * Math.PI) / 180;
+    if (w < 768) return (Math.min(baseCurve, 55) * Math.PI) / 180;
+    return (Math.min(85, Math.max(5, baseCurve)) * Math.PI) / 180;
+  }
+
+  function getResponsiveTileHeight(w: number, baseTile: number) {
+    if (w < 480) return Math.min(baseTile, 22);
+    if (w < 768) return Math.min(baseTile, 25);
+    return baseTile;
+  }
+
   const bend = (Math.min(85, Math.max(5, curve)) * Math.PI) / 180;
 
   // Initialized with a default layout so first paint is immediately rendered without flash
@@ -159,12 +171,18 @@ export function TiltedGridHero({
     const el = ref.current;
     if (!el) return;
 
+    const updateLayout = (w: number, h: number) => {
+      const effBend = getResponsiveBend(w, curve);
+      const effTile = getResponsiveTileHeight(w, tileHeight);
+      setLayout(measure(w, h, effTile, aspectRatio, gap, effBend));
+    };
+
     // Measure immediately on mount
     const rect = el.getBoundingClientRect();
     const initW = rect.width || el.clientWidth || 1200;
     const initH = rect.height || el.clientHeight || 600;
     if (initW > 0 && initH > 0) {
-      setLayout(measure(initW, initH, tileHeight, aspectRatio, gap, bend));
+      updateLayout(initW, initH);
     }
 
     const ro = new ResizeObserver(([entry]) => {
@@ -172,12 +190,12 @@ export function TiltedGridHero({
       const actualW = width || el.clientWidth || 1200;
       const actualH = height || el.clientHeight || 600;
       if (actualW > 0 && actualH > 0) {
-        setLayout(measure(actualW, actualH, tileHeight, aspectRatio, gap, bend));
+        updateLayout(actualW, actualH);
       }
     });
     ro.observe(el);
     return () => ro.disconnect();
-  }, [tileHeight, aspectRatio, gap, bend]);
+  }, [tileHeight, aspectRatio, gap, curve]);
 
   // Fetch every image up front. A tile picks up its next one just before
   // it comes back into view, too late to start loading it then.
@@ -227,6 +245,9 @@ export function TiltedGridHero({
     100 - fade
   }%,transparent)`;
 
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+  const effectiveAxis = isMobile ? Math.min(axis, 45) : axis;
+
   return (
     <div
       ref={ref}
@@ -245,7 +266,7 @@ export function TiltedGridHero({
           // A shared vanishing point on the row's centre line, so the ends
           // grow evenly above and below it as they come toward the viewer.
           perspective: `${+(r * CAMERA).toFixed(3)}cqw`,
-          perspectiveOrigin: `50% ${axis}%`,
+          perspectiveOrigin: `50% ${effectiveAxis}%`,
           maskImage: mask,
           WebkitMaskImage: mask,
         }}
@@ -269,7 +290,7 @@ export function TiltedGridHero({
               className={cn(tile, "absolute")}
               style={{
                 left: `calc(50% - ${u(aspectRatio / 2)})`,
-                top: `calc(${axis}% - ${u(0.5)})`,
+                top: `calc(${effectiveAxis}% - ${u(0.5)})`,
                 width: u(aspectRatio),
                 height: u(1),
                 transformStyle: "preserve-3d",

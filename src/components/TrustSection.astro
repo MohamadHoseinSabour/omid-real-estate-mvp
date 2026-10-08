@@ -74,7 +74,7 @@ const soldPropertiesImages = [
     cards={10}
     speed={22}
     axis={50}
-    className="w-full relative bg-[#07090e] py-16 sm:py-20 lg:py-24"
+    className="w-full relative bg-[#07090e] py-10 sm:py-16 lg:py-24"
   >
     <!-- لایه‌های فید اختصاصی وسط بخش (وسطش فید بشه) -->
     <!-- ۱. فید شعاعی مرکز -->
@@ -84,49 +84,80 @@ const soldPropertiesImages = [
     ></div>
     <!-- ۲. فید افقی جهت حفظ کنتراست عمیق در مرکز و نمایش ریل‌های سه‌بعدی در طرفین -->
     <div
-      class="absolute inset-0 pointer-events-none z-[4] bg-gradient-to-r from-[#07090e]/65 via-[#07090e]/95 sm:via-[#07090e]/92 to-[#07090e]/65"
+      class="absolute inset-0 pointer-events-none z-[4] bg-gradient-to-r from-transparent via-[#07090e]/95 sm:via-[#07090e]/92 to-transparent"
       aria-hidden="true"
     ></div>
     <!-- ۳. گرادیان لبه‌های بالا و پایین جهت ادغام نرم با بخش‌های قبلی و بعدی -->
-    <div class="absolute inset-x-0 top-0 h-20 pointer-events-none z-[4] bg-gradient-to-b from-[#07090e] to-transparent" aria-hidden="true"></div>
-    <div class="absolute inset-x-0 bottom-0 h-20 pointer-events-none z-[4] bg-gradient-to-t from-[#07090e] to-transparent" aria-hidden="true"></div>
+    <div class="absolute inset-x-0 top-0 h-16 sm:h-20 pointer-events-none z-[4] bg-gradient-to-b from-[#07090e] to-transparent" aria-hidden="true"></div>
+    <div class="absolute inset-x-0 bottom-0 h-16 sm:h-20 pointer-events-none z-[4] bg-gradient-to-t from-[#07090e] to-transparent" aria-hidden="true"></div>
 
     <!-- محتوای اصلی روی لایه فید شده: کارت‌ها و نکات کلیدی با استایل جذاب -->
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
       <!-- سرتیتر بخش -->
-      <div class="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-500/10 border border-accent-500/30 text-accent-400 text-xs sm:text-sm font-bold mb-4 shadow-sm">
-          <span class="w-2 h-2 rounded-full bg-accent-400 animate-ping"></span>
+      <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-14">
+        <div class="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 py-1 sm:px-4 sm:py-1.5 rounded-full bg-accent-500/10 border border-accent-500/30 text-accent-400 text-xs sm:text-sm font-bold mb-3 sm:mb-4 shadow-sm">
+          <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-accent-400 animate-ping"></span>
           🛡️ اعتبار و امنیت معاملات ملکی
         </div>
         <h2 class="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight">
           چرا اهالی گلستان به <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 via-accent-300 to-accent-500">املاک امید</span> اعتماد دارند؟
         </h2>
-        <p class="text-slate-300 text-sm sm:text-base mt-4 leading-relaxed font-normal max-w-2xl mx-auto">
+        <p class="text-slate-300 text-xs sm:text-base mt-2.5 sm:mt-4 leading-relaxed font-normal max-w-2xl mx-auto px-2">
           اصول کاری ما بر پایه شفافیت مطلق، امنیت اسناد ثبتی و حفظ بالاترین استانداردهای حقوقی استوار است؛ کاتالوگ معاملات موفق ما گواه این اعتماد دیرینه است.
         </p>
       </div>
 
-      <!-- ۳ کارت کلیدی اعتماد با استایل لوکس شیشه‌ای تیره و طلایی -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+      <!-- تب‌های تعاملی موبایل (جهت سوئیچ سریع و تجربه کاربری بی‌نظیر روی موبایل) -->
+      <div class="flex md:hidden justify-center items-center gap-1.5 mb-5 px-2 overflow-x-auto no-scrollbar">
+        <button
+          type="button"
+          data-trust-tab="0"
+          class="trust-tab-btn active px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-accent-500 text-primary-950 shadow-md"
+        >
+          ⚖️ نظارت حقوقی
+        </button>
+        <button
+          type="button"
+          data-trust-tab="1"
+          class="trust-tab-btn px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-slate-900/90 text-slate-300 border border-slate-700/80"
+        >
+          🤝 کمیسیون شفاف
+        </button>
+        <button
+          type="button"
+          data-trust-tab="2"
+          class="trust-tab-btn px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-slate-900/90 text-slate-300 border border-slate-700/80"
+        >
+          📍 تسلط بومی
+        </button>
+      </div>
+
+      <!-- ۳ کارت کلیدی اعتماد (اسلاید و اسنپ افقی در موبایل / ۳ ستونه منظم در دسکتاپ) -->
+      <div
+        id="trust-cards-slider"
+        class="flex md:grid md:grid-cols-3 gap-4 lg:gap-8 overflow-x-auto md:overflow-visible snap-x snap-mandatory px-2 sm:px-0 pb-2 md:pb-0 scroll-smooth no-scrollbar"
+      >
         
         <!-- کارت ۱: استعلام و نظارت کامل حقوقی -->
-        <div class="relative group bg-slate-900/85 backdrop-blur-xl border border-slate-700/80 hover:border-accent-400/60 rounded-2xl p-6 sm:p-7 shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between overflow-hidden">
+        <div
+          data-card-index="0"
+          class="w-[88vw] max-w-[340px] shrink-0 md:w-auto md:shrink md:max-w-none snap-center relative group bg-slate-900/85 backdrop-blur-xl border border-slate-700/80 hover:border-accent-400/60 rounded-2xl p-5 sm:p-7 shadow-2xl transition-all duration-300 md:hover:-translate-y-1.5 flex flex-col justify-between overflow-hidden"
+        >
           <div class="absolute -top-16 -right-16 w-36 h-36 bg-accent-500/10 rounded-full blur-2xl group-hover:bg-accent-500/25 transition-all pointer-events-none"></div>
           
           <div>
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent-500/20 to-accent-500/5 border border-accent-500/30 text-accent-400 flex items-center justify-center text-2xl mb-5 group-hover:border-accent-400 group-hover:scale-105 transition-all shadow-inner">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-accent-500/20 to-accent-500/5 border border-accent-500/30 text-accent-400 flex items-center justify-center text-xl sm:text-2xl mb-4 sm:mb-5 group-hover:border-accent-400 group-hover:scale-105 transition-all shadow-inner">
               ⚖️
             </div>
-            <h3 class="text-lg sm:text-xl font-black text-white mb-3 group-hover:text-accent-300 transition-colors">
+            <h3 class="text-base sm:text-xl font-black text-white mb-2 sm:mb-3 group-hover:text-accent-300 transition-colors">
               استعلام و نظارت کامل حقوقی
             </h3>
-            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal mb-5">
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal mb-4 sm:mb-5">
               بررسی موشکافانه وضعیت سند ثبتی، استعلام برخط شهرداری، دارایی و اوقاف قبل از هرگونه تبادل وجه یا امضای مبایعه‌نامه.
             </p>
 
             <!-- نکات کلیدی (Key Points) -->
-            <ul class="space-y-2.5 text-xs text-slate-300 font-medium">
+            <ul class="space-y-2 sm:space-y-2.5 text-xs text-slate-300 font-medium">
               <li class="flex items-center gap-2">
                 <span class="text-accent-400 font-bold">✓</span>
                 <span>بررسی اصالت سند در سامانه کاتب و خودنویس</span>
@@ -137,34 +168,37 @@ const soldPropertiesImages = [
               </li>
               <li class="flex items-center gap-2">
                 <span class="text-accent-400 font-bold">✓</span>
-                <span>حضور کارشناس ارشد حقوقی در تمام جلسات قرارداد</span>
+                <span>حضور کارشناس ارشد حقوقی در جلسات قرارداد</span>
               </li>
             </ul>
           </div>
 
-          <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs font-semibold text-accent-400">
-            <span>✨ ۱۰۰٪ استعلام رسمی پیش از قرارداد</span>
+          <div class="mt-5 sm:mt-6 pt-3.5 sm:pt-4 border-t border-slate-800 flex items-center justify-between text-[11px] sm:text-xs font-semibold text-accent-400">
+            <span>✨ استعلام رسمی پیش از قرارداد</span>
             <span class="text-slate-400">سند تک‌برگ</span>
           </div>
         </div>
 
         <!-- کارت ۲: تعرفه کمیسیون عادلانه و شفاف -->
-        <div class="relative group bg-slate-900/85 backdrop-blur-xl border border-slate-700/80 hover:border-accent-400/60 rounded-2xl p-6 sm:p-7 shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between overflow-hidden">
+        <div
+          data-card-index="1"
+          class="w-[88vw] max-w-[340px] shrink-0 md:w-auto md:shrink md:max-w-none snap-center relative group bg-slate-900/85 backdrop-blur-xl border border-slate-700/80 hover:border-accent-400/60 rounded-2xl p-5 sm:p-7 shadow-2xl transition-all duration-300 md:hover:-translate-y-1.5 flex flex-col justify-between overflow-hidden"
+        >
           <div class="absolute -top-16 -right-16 w-36 h-36 bg-accent-500/10 rounded-full blur-2xl group-hover:bg-accent-500/25 transition-all pointer-events-none"></div>
 
           <div>
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent-500/20 to-accent-500/5 border border-accent-500/30 text-accent-400 flex items-center justify-center text-2xl mb-5 group-hover:border-accent-400 group-hover:scale-105 transition-all shadow-inner">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-accent-500/20 to-accent-500/5 border border-accent-500/30 text-accent-400 flex items-center justify-center text-xl sm:text-2xl mb-4 sm:mb-5 group-hover:border-accent-400 group-hover:scale-105 transition-all shadow-inner">
               🤝
             </div>
-            <h3 class="text-lg sm:text-xl font-black text-white mb-3 group-hover:text-accent-300 transition-colors">
+            <h3 class="text-base sm:text-xl font-black text-white mb-2 sm:mb-3 group-hover:text-accent-300 transition-colors">
               تعرفه کمیسیون عادلانه و شفاف
             </h3>
-            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal mb-5">
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal mb-4 sm:mb-5">
               محاسبه دقیق حق‌الزحمه طبق نرخنامه مصوب اتحادیه صنف املاک خوزستان بدون هرگونه مبالغ مخفی یا کارمزد غیرمتعارف.
             </p>
 
             <!-- نکات کلیدی (Key Points) -->
-            <ul class="space-y-2.5 text-xs text-slate-300 font-medium">
+            <ul class="space-y-2 sm:space-y-2.5 text-xs text-slate-300 font-medium">
               <li class="flex items-center gap-2">
                 <span class="text-accent-400 font-bold">✓</span>
                 <span>محاسبه شفاف طبق فرمول رسمی اتحادیه</span>
@@ -180,29 +214,32 @@ const soldPropertiesImages = [
             </ul>
           </div>
 
-          <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs font-semibold text-accent-400">
-            <span>📊 طبق نرخنامه رسمی اتحادیه</span>
+          <div class="mt-5 sm:mt-6 pt-3.5 sm:pt-4 border-t border-slate-800 flex items-center justify-between text-[11px] sm:text-xs font-semibold text-accent-400">
+            <span>📊 طبق نرخنامه مصوب اتحادیه</span>
             <span class="text-slate-400">فاکتور رسمی</span>
           </div>
         </div>
 
         <!-- کارت ۳: تسلط مویرگی بر بازار گلستان -->
-        <div class="relative group bg-slate-900/85 backdrop-blur-xl border border-slate-700/80 hover:border-accent-400/60 rounded-2xl p-6 sm:p-7 shadow-2xl transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between overflow-hidden">
+        <div
+          data-card-index="2"
+          class="w-[88vw] max-w-[340px] shrink-0 md:w-auto md:shrink md:max-w-none snap-center relative group bg-slate-900/85 backdrop-blur-xl border border-slate-700/80 hover:border-accent-400/60 rounded-2xl p-5 sm:p-7 shadow-2xl transition-all duration-300 md:hover:-translate-y-1.5 flex flex-col justify-between overflow-hidden"
+        >
           <div class="absolute -top-16 -right-16 w-36 h-36 bg-accent-500/10 rounded-full blur-2xl group-hover:bg-accent-500/25 transition-all pointer-events-none"></div>
 
           <div>
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent-500/20 to-accent-500/5 border border-accent-500/30 text-accent-400 flex items-center justify-center text-2xl mb-5 group-hover:border-accent-400 group-hover:scale-105 transition-all shadow-inner">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-accent-500/20 to-accent-500/5 border border-accent-500/30 text-accent-400 flex items-center justify-center text-xl sm:text-2xl mb-4 sm:mb-5 group-hover:border-accent-400 group-hover:scale-105 transition-all shadow-inner">
               📍
             </div>
-            <h3 class="text-lg sm:text-xl font-black text-white mb-3 group-hover:text-accent-300 transition-colors">
+            <h3 class="text-base sm:text-xl font-black text-white mb-2 sm:mb-3 group-hover:text-accent-300 transition-colors">
               تسلط مویرگی بر بازار گلستان
             </h3>
-            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal mb-5">
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal mb-4 sm:mb-5">
               بیش از ۸ مشاور بومی با شناخت دقیق متری به متری خیابان‌های فروردین، اردیبهشت، بوستان و ارزیابی واقعی قیمت روز.
             </p>
 
             <!-- نکات کلیدی (Key Points) -->
-            <ul class="space-y-2.5 text-xs text-slate-300 font-medium">
+            <ul class="space-y-2 sm:space-y-2.5 text-xs text-slate-300 font-medium">
               <li class="flex items-center gap-2">
                 <span class="text-accent-400 font-bold">✓</span>
                 <span>شناخت پلاک‌به‌پلاک و سابقه ساخت خیابان‌ها</span>
@@ -213,37 +250,44 @@ const soldPropertiesImages = [
               </li>
               <li class="flex items-center gap-2">
                 <span class="text-accent-400 font-bold">✓</span>
-                <span>دسترسی اختصاصی به فایل‌های شخصی و بدون واسطه</span>
+                <span>دسترسی اختصاصی به فایل‌های ناب بدون واسطه</span>
               </li>
             </ul>
           </div>
 
-          <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs font-semibold text-accent-400">
-            <span>🏢 بیش از ۱۵ سال تمرکز در گلستان</span>
+          <div class="mt-5 sm:mt-6 pt-3.5 sm:pt-4 border-t border-slate-800 flex items-center justify-between text-[11px] sm:text-xs font-semibold text-accent-400">
+            <span>🏢 بیش از ۱۵ سال سابقه در منطقه</span>
             <span class="text-slate-400">۸ مشاور بومی</span>
           </div>
         </div>
 
       </div>
 
+      <!-- نقاط راهنمای اسکرول در موبایل (Dot Indicators) -->
+      <div class="flex md:hidden justify-center items-center gap-2 mt-3 mb-6" id="trust-dots">
+        <span data-dot-index="0" class="w-6 h-1.5 rounded-full bg-accent-400 transition-all"></span>
+        <span data-dot-index="1" class="w-1.5 h-1.5 rounded-full bg-slate-700 transition-all"></span>
+        <span data-dot-index="2" class="w-1.5 h-1.5 rounded-full bg-slate-700 transition-all"></span>
+      </div>
+
       <!-- نوار تضمین‌ها و استانداردهای ۴گانه پایین بخش -->
-      <div class="mt-12 pt-8 border-t border-slate-800/90 max-w-4xl mx-auto">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-center">
-          <div class="p-3.5 rounded-xl bg-slate-900/70 border border-slate-800/90 flex flex-col items-center">
-            <span class="text-accent-400 text-xl mb-1.5">🛡️</span>
-            <span class="text-xs font-bold text-white">تضمین سلامت سند</span>
+      <div class="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-slate-800/90 max-w-4xl mx-auto">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 text-center">
+          <div class="p-3 sm:p-3.5 rounded-xl bg-slate-900/70 border border-slate-800/90 flex flex-col items-center">
+            <span class="text-accent-400 text-lg sm:text-xl mb-1">🛡️</span>
+            <span class="text-[11px] sm:text-xs font-bold text-white">تضمین سلامت سند</span>
           </div>
-          <div class="p-3.5 rounded-xl bg-slate-900/70 border border-slate-800/90 flex flex-col items-center">
-            <span class="text-accent-400 text-xl mb-1.5">📜</span>
-            <span class="text-xs font-bold text-white">قرارداد رسمی کاتب</span>
+          <div class="p-3 sm:p-3.5 rounded-xl bg-slate-900/70 border border-slate-800/90 flex flex-col items-center">
+            <span class="text-accent-400 text-lg sm:text-xl mb-1">📜</span>
+            <span class="text-[11px] sm:text-xs font-bold text-white">قرارداد رسمی کاتب</span>
           </div>
-          <div class="p-3.5 rounded-xl bg-slate-900/70 border border-slate-800/90 flex flex-col items-center">
-            <span class="text-accent-400 text-xl mb-1.5">⚖️</span>
-            <span class="text-xs font-bold text-white">مشاوره حقوقی تخصصی</span>
+          <div class="p-3 sm:p-3.5 rounded-xl bg-slate-900/70 border border-slate-800/90 flex flex-col items-center">
+            <span class="text-accent-400 text-lg sm:text-xl mb-1">⚖️</span>
+            <span class="text-[11px] sm:text-xs font-bold text-white">مشاوره حقوقی تخصصی</span>
           </div>
-          <div class="p-3.5 rounded-xl bg-slate-900/70 border border-slate-800/90 flex flex-col items-center">
-            <span class="text-accent-400 text-xl mb-1.5">🤝</span>
-            <span class="text-xs font-bold text-white">همراهی تا دفترخانه</span>
+          <div class="p-3 sm:p-3.5 rounded-xl bg-slate-900/70 border border-slate-800/90 flex flex-col items-center">
+            <span class="text-accent-400 text-lg sm:text-xl mb-1">🤝</span>
+            <span class="text-[11px] sm:text-xs font-bold text-white">همراهی تا دفترخانه</span>
           </div>
         </div>
       </div>
@@ -251,3 +295,79 @@ const soldPropertiesImages = [
     </div>
   </ImageStreamHero>
 </section>
+
+<script>
+  // همگام‌سازی تب‌ها، اسنپ اسکرول افقی و نشانگرهای نقطه‌ای در نسخه موبایل
+  function setupTrustMobileInteractions() {
+    const slider = document.getElementById('trust-cards-slider');
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.trust-tab-btn');
+    const dots = document.querySelectorAll<HTMLElement>('#trust-dots span');
+    if (!slider || tabs.length === 0) return;
+
+    const cards = slider.querySelectorAll<HTMLElement>('[data-card-index]');
+
+    function updateActive(index: number) {
+      tabs.forEach((tab, i) => {
+        if (i === index) {
+          tab.className = 'trust-tab-btn active px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-accent-500 text-primary-950 shadow-md';
+        } else {
+          tab.className = 'trust-tab-btn px-3.5 py-1.5 rounded-full text-xs font-bold transition-all bg-slate-900/90 text-slate-300 border border-slate-700/80';
+        }
+      });
+      dots.forEach((dot, i) => {
+        if (i === index) {
+          dot.className = 'w-6 h-1.5 rounded-full bg-accent-400 transition-all';
+        } else {
+          dot.className = 'w-1.5 h-1.5 rounded-full bg-slate-700 transition-all';
+        }
+      });
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const idx = Number(tab.getAttribute('data-trust-tab'));
+        const targetCard = cards[idx];
+        if (targetCard && slider) {
+          slider.scrollTo({
+            left: targetCard.offsetLeft - slider.offsetLeft,
+            behavior: 'smooth',
+          });
+          updateActive(idx);
+        }
+      });
+    });
+
+    slider.addEventListener('scroll', () => {
+      let closestIdx = 0;
+      let minDiff = Infinity;
+      const sliderCenter = slider.scrollLeft + slider.clientWidth / 2;
+
+      cards.forEach((card, idx) => {
+        const cardCenter = card.offsetLeft + card.clientWidth / 2;
+        const diff = Math.abs(sliderCenter - cardCenter);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closestIdx = idx;
+        }
+      });
+
+      updateActive(closestIdx);
+    }, { passive: true });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupTrustMobileInteractions);
+  } else {
+    setupTrustMobileInteractions();
+  }
+</script>
+
+<style>
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>

@@ -90,10 +90,31 @@
   - [x] Homepage Integration (`src/pages/index.astro`): Cleanly imported and replaced static section 3 with `<TrustSection />`.
   - [x] Testing & Build: Verified in headless browser with visual screenshots (`hero_section` and `trust_section`); 19/19 vitest tests passing; 28 static routes compiled cleanly.
 
+## Phase 13: Mobile UX & Responsive Polish for 3D Hero & Trust Section ✅
+- Completed: 2026-10-09
+- Deliverables completed:
+  - [x] Responsive TiltedGridHero (`src/components/ui/tilted-grid-hero.tsx`):
+    - Added dynamic curve adaptation (gentle 40°-45° on mobile vs 80° on desktop) preventing harsh geometric distortion on narrow phone screens.
+    - Sized tile height and effective vertical axis (45% on mobile vs 54% on desktop) eliminating overlap between ribbon and bottom text/buttons.
+  - [x] Hero Section Mobile Ergonomics (`src/components/HeroSection.astro`):
+    - Adjusted container height to `h-[550px]` on mobile with full touch targets.
+    - Converted dual intent action buttons to vertical stack (`flex-col sm:flex-row w-full max-w-xs sm:max-w-none`) with tactile `active:scale-[0.98]`.
+    - Added glassmorphic frosted backdrop pill behind subtitle on mobile for 100% legibility.
+    - Clean 2x2 stat boxes with compact mobile spacing.
+  - [x] Responsive 3D Corridor (`src/components/ui/image-stream-hero.tsx`):
+    - Created dedicated mobile corridor keyframes (`MOBILE_PATH`) scaling card width from 18cqw to 28cqw and height to 38cqw so sold property proofs are crisp and prominent along screen edges.
+  - [x] Mobile Interactive Trust Section (`src/components/TrustSection.astro`):
+    - Introduced interactive mobile tab switcher (`[ ⚖️ نظارت حقوقی ] [ 🤝 کمیسیون شفاف ] [ 📍 تسلط بومی ]`).
+    - Implemented smooth horizontal snap-scroll carousel (`snap-x snap-mandatory no-scrollbar`) with dot indicators and scroll-spy sync.
+    - Removed native browser scrollbars via custom `.no-scrollbar` styling.
+    - Compact 2x2 grid for guarantee badges on mobile.
+  - [x] Testing & Quality: 19/19 Vitest tests passing; all 28 static HTML routes compiled with zero errors; visual screenshots validated in mobile viewport (390x844).
+
 ### Current Status
-🎉 **Phase 12: Hero Restoration & 3D Sold Catalog in Trust Section Complete & Verified!**
+🎉 **Phase 13: Mobile UX & Responsive Polish Complete & Verified!**
 
 ---
 
 *Last updated: 2026-10-09*
+
 

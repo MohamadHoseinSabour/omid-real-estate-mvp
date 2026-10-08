@@ -77,6 +77,21 @@ function keyframes(dir: 1 | -1, name: string, p: Required<CorridorPath>) {
   return `@keyframes ${name}{${steps.join("")}}`;
 }
 
+const MOBILE_PATH: Required<CorridorPath> = {
+  perspective: 26,
+  cardWidth: 28,
+  cardHeight: 38,
+  cardRadius: 1.2,
+  birthHeight: 3.2,
+  exitHeight: 52,
+  railBirth: -6,
+  railExit: 41,
+  fan: 2.8,
+  turnBirth: 5,
+  turnExit: 22,
+  stops: 24,
+};
+
 export type StreamImage = {
   src: string;
   alt?: string;
@@ -107,6 +122,8 @@ export function ImageStreamHero({
   const id = React.useId().replace(/[^a-zA-Z0-9]/g, "");
   const right = `ish-r-${id}`;
   const left = `ish-l-${id}`;
+  const mRight = `ish-mr-${id}`;
+  const mLeft = `ish-ml-${id}`;
   const card = `ish-c-${id}`;
 
   const p = React.useMemo(() => ({ ...PATH, ...path }), [path]);
@@ -114,8 +131,14 @@ export function ImageStreamHero({
   const css = React.useMemo(
     () =>
       `${keyframes(1, right, p)}${keyframes(-1, left, p)}` +
+      `${keyframes(1, mRight, MOBILE_PATH)}${keyframes(-1, mLeft, MOBILE_PATH)}` +
+      `@media(max-width: 640px){` +
+      `.${card}{width:${MOBILE_PATH.cardWidth}cqw!important;height:${MOBILE_PATH.cardHeight}cqw!important;margin-left:${-MOBILE_PATH.cardWidth / 2}cqw!important;margin-top:${-MOBILE_PATH.cardHeight / 2}cqw!important;}` +
+      `.${card}-r{animation-name:${mRight}!important;}` +
+      `.${card}-l{animation-name:${mLeft}!important;}` +
+      `}` +
       `@media(prefers-reduced-motion:reduce){.${card}{animation-play-state:paused}}`,
-    [right, left, card, p],
+    [right, left, mRight, mLeft, card, p],
   );
 
   return (
@@ -145,11 +168,13 @@ export function ImageStreamHero({
                 images && images.length > 0
                   ? images[i % images.length]
                   : null;
+              const isRight = name === right;
               return (
                 <div
                   key={`${name}-${i}`}
                   className={cn(
                     card,
+                    isRight ? `${card}-r` : `${card}-l`,
                     "absolute overflow-hidden shadow-2xl border border-accent-500/30 bg-slate-950 ring-1 ring-white/10 group",
                   )}
                   style={{

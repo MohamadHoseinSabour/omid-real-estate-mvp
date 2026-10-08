@@ -51,28 +51,28 @@ const heroImages = [
   <!-- Subtle ambient decorative glow -->
   <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-accent-500/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-  <!-- Tilted Grid 3D Cylinder Hero (Exact layout matching the demo) -->
+  <!-- Tilted Grid 3D Cylinder Hero (Exact layout matching the demo with mobile optimization) -->
   <TiltedGridHero
     client:load
     images={heroImages}
     speed={4}
-    tileHeight={30}
+    tileHeight={28}
     aspectRatio={16 / 9}
     gap={6}
     axis={54}
     curve={80}
     fade={12}
-    className="h-[620px] sm:h-[660px] lg:h-[700px] w-full bg-[#07090e]"
+    className="h-[550px] sm:h-[640px] lg:h-[700px] w-full bg-[#07090e]"
   >
-    <div class="relative z-10 flex h-full flex-col items-center justify-between py-10 sm:py-14 text-center px-4">
+    <div class="relative z-10 flex h-full flex-col items-center justify-between py-6 sm:py-10 lg:py-14 text-center px-4">
       
       <!-- Top: Heading & Badge (Above the 3D ribbon) -->
-      <div class="px-6 max-w-4xl mx-auto">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent-500/10 border border-accent-500/30 text-accent-400 text-xs sm:text-sm font-semibold mb-4">
-          <span class="w-2 h-2 rounded-full bg-accent-400 animate-ping"></span>
+      <div class="px-2 sm:px-6 max-w-4xl mx-auto">
+        <div class="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-accent-500/10 border border-accent-500/30 text-accent-400 text-[11px] sm:text-sm font-semibold mb-2 sm:mb-4">
+          <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-accent-400 animate-ping"></span>
           تخصصی‌ترین مرجع خرید، فروش و رهن در محله گلستان اهواز
         </div>
-        <h1 class="text-balance text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
+        <h1 class="text-balance text-2xl sm:text-4xl lg:text-6xl font-black tracking-tight text-white leading-tight">
           معاملات هوشمند و مطمئن ملک
           <br />
           در <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 via-accent-300 to-accent-500">گلستان اهواز</span>
@@ -80,24 +80,24 @@ const heroImages = [
       </div>
 
       <!-- Bottom: Subtitle & Dual Action Buttons (Below the 3D ribbon) -->
-      <div class="px-6 max-w-xl mx-auto flex flex-col items-center">
-        <p class="max-w-md text-balance text-xs sm:text-sm text-slate-300 mb-5 leading-relaxed font-normal">
+      <div class="px-2 sm:px-6 max-w-xl mx-auto flex flex-col items-center w-full">
+        <p class="max-w-md text-balance text-xs sm:text-sm text-slate-300 mb-3 sm:mb-5 leading-relaxed font-normal px-3 py-1 rounded-lg bg-[#07090e]/75 backdrop-blur-sm sm:bg-transparent">
           مشاوره تخصصی و حقوقی در تمامی مراحل معامله با همراهی بیش از ۸ کارشناس زبده و مورد اعتماد در منطقه گلستان، بوستان و سعدی.
         </p>
 
-        <!-- دکمه‌های دوگانه هیرو با رفتار تعاملی -->
-        <div class="flex flex-row items-center justify-center gap-3 sm:gap-4 w-full">
+        <!-- دکمه‌های دوگانه هیرو با رفتار تعاملی بهینه برای موبایل و دسکتاپ -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-4 w-full max-w-xs sm:max-w-none">
           <button
             type="button"
             data-intent="sell"
-            class="hero-intent-btn inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 rounded-xl bg-gradient-to-r from-accent-400 to-accent-600 hover:from-accent-500 hover:to-accent-700 text-primary-950 font-black text-sm sm:text-base shadow-xl shadow-accent-500/30 hover:shadow-accent-500/50 transition-all transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-accent-400 cursor-pointer whitespace-nowrap"
+            class="hero-intent-btn inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-accent-400 to-accent-600 hover:from-accent-500 hover:to-accent-700 text-primary-950 font-black text-sm sm:text-base shadow-xl shadow-accent-500/30 hover:shadow-accent-500/50 transition-all transform hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-accent-400 cursor-pointer whitespace-nowrap"
           >
             🏷️ می‌خواهم بفروشم
           </button>
           <button
             type="button"
             data-intent="buy"
-            class="hero-intent-btn inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-white border border-accent-400/60 hover:border-accent-400 font-black text-sm sm:text-base shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-accent-400 cursor-pointer whitespace-nowrap"
+            class="hero-intent-btn inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-white border border-accent-400/60 hover:border-accent-400 font-black text-sm sm:text-base shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-accent-400 cursor-pointer whitespace-nowrap"
           >
             🔍 می‌خواهم بخرم
           </button>
@@ -108,24 +108,24 @@ const heroImages = [
   </TiltedGridHero>
 
   <!-- نوار آمار کلیدی آژانس (در زیر هیرو، بدون مسدود کردن استوانه سه‌بعدی) -->
-  <div class="bg-[#0b0e17] border-t border-slate-800/90 py-6 sm:py-8">
+  <div class="bg-[#0b0e17] border-t border-slate-800/90 py-4 sm:py-8">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800/80">
-          <div class="text-2xl sm:text-3xl font-black text-accent-400 font-mono tracking-tight">+{agencyData.stats.yearsExperience}</div>
-          <div class="text-xs sm:text-sm text-slate-400 mt-1 font-medium">سال تجربه در گلستان</div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-6 text-center">
+        <div class="p-2.5 sm:p-3 rounded-xl bg-slate-900/40 border border-slate-800/80">
+          <div class="text-xl sm:text-3xl font-black text-accent-400 font-mono tracking-tight">+{agencyData.stats.yearsExperience}</div>
+          <div class="text-[11px] sm:text-sm text-slate-400 mt-1 font-medium">سال تجربه در گلستان</div>
         </div>
-        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800/80">
-          <div class="text-2xl sm:text-3xl font-black text-accent-400 font-mono tracking-tight">+{agencyData.stats.successfulDeals}</div>
-          <div class="text-xs sm:text-sm text-slate-400 mt-1 font-medium">معامله موفق و رسمی</div>
+        <div class="p-2.5 sm:p-3 rounded-xl bg-slate-900/40 border border-slate-800/80">
+          <div class="text-xl sm:text-3xl font-black text-accent-400 font-mono tracking-tight">+{agencyData.stats.successfulDeals}</div>
+          <div class="text-[11px] sm:text-sm text-slate-400 mt-1 font-medium">معامله موفق و رسمی</div>
         </div>
-        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800/80">
-          <div class="text-2xl sm:text-3xl font-black text-accent-400 font-mono tracking-tight">+{agencyData.stats.activeAdvisors}</div>
-          <div class="text-xs sm:text-sm text-slate-400 mt-1 font-medium">مشاور فعال و متخصص</div>
+        <div class="p-2.5 sm:p-3 rounded-xl bg-slate-900/40 border border-slate-800/80">
+          <div class="text-xl sm:text-3xl font-black text-accent-400 font-mono tracking-tight">+{agencyData.stats.activeAdvisors}</div>
+          <div class="text-[11px] sm:text-sm text-slate-400 mt-1 font-medium">مشاور فعال و متخصص</div>
         </div>
-        <div class="p-3 rounded-xl bg-slate-900/40 border border-slate-800/80">
-          <div class="text-2xl sm:text-3xl font-black text-accent-400 font-mono tracking-tight">٪{agencyData.stats.customerSatisfactionPercent}</div>
-          <div class="text-xs sm:text-sm text-slate-400 mt-1 font-medium">رضایت مشتریان</div>
+        <div class="p-2.5 sm:p-3 rounded-xl bg-slate-900/40 border border-slate-800/80">
+          <div class="text-xl sm:text-3xl font-black text-accent-400 font-mono tracking-tight">٪{agencyData.stats.customerSatisfactionPercent}</div>
+          <div class="text-[11px] sm:text-sm text-slate-400 mt-1 font-medium">رضایت مشتریان</div>
         </div>
       </div>
     </div>
