@@ -1,0 +1,438 @@
+---
+import DashboardLayout from '../../layouts/DashboardLayout.astro';
+---
+
+<DashboardLayout title="فایلینگ اشتراکی همکاران (MLS)" activeNav="co-filing">
+  <!-- هدر صفحه -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    <div>
+      <div class="flex items-center gap-3">
+        <h1 class="text-2xl font-black text-slate-900">فایلینگ اشتراکی همکاران (فروش مشارکتی)</h1>
+        <span class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+          سامانه MLS داخلی
+        </span>
+      </div>
+      <p class="text-xs text-slate-500 mt-1">
+        مشاهده تمام فایل‌های دیگر مشاوران آژانس امید جهت همکاری در جذب خریدار و ثبت فروش دوطرفه
+      </p>
+    </div>
+  </div>
+
+  <!-- بنر قانون تقسیم پورسانت همکاری -->
+  <div class="mb-6 p-4 rounded-2xl bg-gradient-to-r from-primary-950 via-primary-900 to-primary-950 text-white shadow-md border border-accent-500/40 text-xs">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="flex items-start gap-3">
+        <span class="text-2xl">⚖️</span>
+        <div>
+          <strong class="text-accent-400 font-extrabold text-sm block mb-1">
+            قانون رسمی آژانس در فروش مشارکتی (همکاری مشاور ۱ و مشاور ۲):
+          </strong>
+          <p class="text-slate-300 leading-relaxed text-[11px]">
+            اگر مشاور ۲ برای فایل اختصاصی مشاور ۱ خریدار بیاورد و معامله نهایی شود، کل سهم پورسانت مشاوران (۳۰٪ کمیسیون آژانس) به طور مساوی یعنی <strong>۵۰٪ برای مشاور فایل</strong> و <strong>۵۰٪ برای مشاور خریدار</strong> محاسبه می‌شود و با <strong>یک کلیک تایید مدیرکل یا منشی</strong> به کیف پول هر دو مشاور واریز می‌گردد.
+          </p>
+        </div>
+      </div>
+      <div class="shrink-0 bg-primary-800/80 p-3 rounded-xl border border-slate-700 text-center font-mono text-[11px]">
+        <div class="text-accent-300 font-bold">فرمول سهم هر طرف:</div>
+        <div class="text-white font-bold mt-0.5">۱۵٪ کل کمیسیون آژانس</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- نوار فیلتر و جستجو -->
+  <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-6 flex flex-wrap items-center justify-between gap-4 text-xs">
+    <div class="flex flex-wrap items-center gap-3 flex-grow max-w-2xl">
+      <div class="relative flex-grow min-w-[220px]">
+        <input
+          type="text"
+          id="coSearchInput"
+          placeholder="جستجو در فایل‌های همکاران (عنوان، آدرس، متراژ)..."
+          class="w-full ps-9 pe-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-1 focus:ring-accent-500 focus:outline-none"
+        />
+        <span class="absolute start-3 top-2.5 text-slate-400">🔍</span>
+      </div>
+
+      <select id="coAdvisorFilter" class="p-2 rounded-xl border border-slate-300 text-xs bg-slate-50 focus:outline-none">
+        <option value="all">فایل‌های همه مشاوران</option>
+        <option value="user-adv-101">فایل‌های مهندس رضا کریمی</option>
+        <option value="user-adv-102">فایل‌های علیرضا احمدی</option>
+        <option value="user-adv-103">فایل‌های سارا محمدی</option>
+        <option value="user-adv-104">فایل‌های محمدرضا رضایی</option>
+      </select>
+
+      <select id="coTypeFilter" class="p-2 rounded-xl border border-slate-300 text-xs bg-slate-50 focus:outline-none">
+        <option value="all">همه انواع ملک</option>
+        <option value="apartment">آپارتمان</option>
+        <option value="villa">ویلایی</option>
+        <option value="commercial">تجاری / اداری</option>
+      </select>
+    </div>
+
+    <div class="text-slate-500 font-bold" id="coStatsCounter">
+      در حال بارگذاری فایل‌های اشتراکی...
+    </div>
+  </div>
+
+  <!-- گرید کارت‌های املاک همکاران -->
+  <div id="coFilingGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    <!-- به صورت داینامیک توسط اسکریپت رندر می‌شود -->
+  </div>
+
+  <div id="noCoFilesFound" class="hidden bg-white rounded-3xl p-12 text-center text-slate-400 text-xs border border-slate-200">
+    <span class="text-3xl block mb-2">📂</span>
+    فایلی متعلق به سایر همکاران با مشخصات مد نظر یافت نشد.
+  </div>
+
+  <!-- مودال ثبت فروش مشارکتی (همکاری) -->
+  <div id="coSaleModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
+        <div>
+          <h2 class="text-base font-black text-primary-950 border-s-4 border-emerald-500 ps-2">
+            ثبت مشتری یا اعلام فروش مشارکتی (همکاری)
+          </h2>
+          <p class="text-[11px] text-slate-500 mt-0.5">محاسبه خودکار سهم دو مشاور و ارسال جهت تایید و واریز پورسانت</p>
+        </div>
+        <button type="button" id="closeCoModalX" class="text-slate-400 hover:text-slate-700 text-lg">✕</button>
+      </div>
+
+      <form id="coSaleForm" class="space-y-4 text-xs">
+        <input type="hidden" id="modalPropId" />
+
+        <!-- خلاصه ملک انتخابی -->
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 space-y-1">
+          <div class="text-slate-400 text-[10px]">ملک انتخاب‌شده جهت همکاری:</div>
+          <div id="modalPropTitle" class="font-bold text-slate-900 text-sm"></div>
+          <div class="flex items-center justify-between text-[11px] text-slate-600 pt-1">
+            <span>مشاور صاحب فایل: <strong id="modalListingAdvisorName" class="text-primary-800"></strong></span>
+            <span>مشاور فروشنده (شما): <strong id="modalSellingAdvisorName" class="text-emerald-700"></strong></span>
+          </div>
+        </div>
+
+        <!-- فیلدهای مشخصات خریدار -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">نام و نام خانوادگی خریدار *</label>
+            <input type="text" id="coBuyerName" required placeholder="مثال: دکتر کیانی" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">شماره همراه خریدار *</label>
+            <input type="tel" id="coBuyerPhone" required placeholder="۰۹۱۲۳۴۵۶۷۸۹" dir="ltr" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-mono text-end" />
+          </div>
+        </div>
+
+        <!-- قیمت و کمیسیون کل -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">مبلغ نهایی معامله (تومان) *</label>
+            <input type="number" id="coFinalPrice" required class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-mono text-end font-bold" dir="ltr" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">کل کمیسیون آژانس (تومان) *</label>
+            <input type="number" id="coTotalCommission" required class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-mono text-end font-bold" dir="ltr" />
+          </div>
+        </div>
+
+        <!-- باکس ماشین‌حساب زنده تقسیم پورسانت همکاری -->
+        <div class="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-300 text-xs space-y-2">
+          <div class="font-bold text-emerald-950 flex items-center justify-between pb-1.5 border-b border-emerald-200">
+            <span>⚡ پیش‌نمایش محاسبه و تقسیم کمیسیون:</span>
+            <span class="text-[10px] font-mono text-emerald-700">مبنا: ۳۰٪ پورسانت مشاوران (۵۰/۵۰)</span>
+          </div>
+
+          <div class="flex justify-between text-slate-700">
+            <span>سهم مشاور فایل (<span id="calcListingAdvName">مشاور ۱</span>):</span>
+            <strong id="calcListingShare" class="text-slate-900 font-mono">۰ تومان</strong>
+          </div>
+
+          <div class="flex justify-between text-emerald-800 font-bold">
+            <span>سهم شما به عنوان مشاور فروشنده (<span id="calcSellingAdvName">مشاور ۲</span>):</span>
+            <strong id="calcSellingShare" class="text-emerald-700 font-mono text-sm">۰ تومان</strong>
+          </div>
+
+          <div class="flex justify-between text-slate-500 pt-1 border-t border-emerald-200/60 text-[11px]">
+            <span>سهم آژانس و دفتر (۷۰٪):</span>
+            <span id="calcOfficeShare" class="font-mono">۰ تومان</span>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">توضیحات و توافق اولیه با همکار</label>
+          <textarea id="coNotes" rows="2" placeholder="مثال: مشتری خواهان بازدید مجدد با کارشناس است؛ هماهنگی کامل با همکار انجام شد." class="w-full p-2.5 rounded-xl border border-slate-300 text-xs"></textarea>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-3 border-t border-slate-100">
+          <button type="button" id="cancelCoModalBtn" class="px-5 py-2.5 border rounded-xl text-slate-600 font-bold hover:bg-slate-50">انصراف</button>
+          <button type="submit" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-md">
+            ثبت نهایی معامله مشارکتی
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</DashboardLayout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!window.OmidDashboard) return;
+
+    const currentUser = window.OmidDashboard.getCurrentUser();
+    const isStaff = currentUser.role === 'admin' || currentUser.role === 'secretary';
+
+    function renderCoFiling() {
+      const allProps = window.OmidDashboard.getProperties();
+      const searchQuery = (document.getElementById('coSearchInput')?.value || '').toLowerCase().trim();
+      const advisorFilter = document.getElementById('coAdvisorFilter')?.value || 'all';
+      const typeFilter = document.getElementById('coTypeFilter')?.value || 'all';
+
+      // فیلتر فایل‌های همکاران:
+      // اگر کاربر مشاور است، فایل‌های خودش را پنهان می‌کنیم تا فقط فایل دیگران را ببیند
+      let coProps = allProps;
+      if (!isStaff) {
+        coProps = coProps.filter((p) => p.advisor.id !== currentUser.id);
+      }
+
+      if (advisorFilter !== 'all') {
+        coProps = coProps.filter((p) => p.advisor.id === advisorFilter);
+      }
+
+      if (typeFilter !== 'all') {
+        coProps = coProps.filter((p) => p.propertyType === typeFilter);
+      }
+
+      if (searchQuery) {
+        coProps = coProps.filter((p) =>
+          p.title.toLowerCase().includes(searchQuery) ||
+          p.address.toLowerCase().includes(searchQuery) ||
+          p.advisor.name.toLowerCase().includes(searchQuery)
+        );
+      }
+
+      const grid = document.getElementById('coFilingGrid');
+      const counter = document.getElementById('coStatsCounter');
+      const emptyState = document.getElementById('noCoFilesFound');
+
+      if (counter) {
+        counter.innerText = `نمایش ${coProps.length} فایل از سایر همکاران`;
+      }
+
+      if (coProps.length === 0) {
+        grid.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      grid.innerHTML = coProps.map((prop) => {
+        // محاسبه تقریبی کمیسیون همکاری فرضی (۱٪ کل قیمت به عنوان کمیسیون، سهم هر مشاور ۱۵٪ آن)
+        const estimatedCommission = Math.round(prop.priceToman * 0.01);
+        const estimatedShare = Math.round(estimatedCommission * 0.30 * 0.50);
+
+        return `
+          <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+            <!-- تصویر ملک و برچسب‌ها -->
+            <div class="relative h-44 bg-slate-100 overflow-hidden">
+              <img
+                src="${prop.images && prop.images[0] ? prop.images[0].url : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80'}"
+                alt="${prop.title}"
+                class="w-full h-full object-cover"
+              />
+              <div class="absolute top-3 end-3 flex gap-1.5">
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                  prop.status === 'available'
+                    ? 'bg-emerald-600/90 text-white'
+                    : 'bg-amber-600/90 text-white'
+                }">
+                  ${prop.statusLabel}
+                </span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary-950/80 text-white">
+                  ${prop.propertyTypeLabel}
+                </span>
+              </div>
+              <div class="absolute bottom-2 start-2 bg-black/60 backdrop-blur-sm text-white px-2 py-0.5 rounded-lg text-[10px] font-mono">
+                کد: ${prop.id}
+              </div>
+            </div>
+
+            <!-- بدنه کارت -->
+            <div class="p-5 flex-grow flex flex-col justify-between">
+              <div>
+                <h3 class="font-extrabold text-slate-900 text-sm mb-1.5 line-clamp-1">${prop.title}</h3>
+                <p class="text-[11px] text-slate-400 mb-3 flex items-center gap-1">
+                  <span>📍</span>
+                  <span class="line-clamp-1">${prop.address}</span>
+                </p>
+
+                <!-- مشخصات سریع -->
+                <div class="grid grid-cols-3 gap-2 py-2.5 px-3 rounded-2xl bg-slate-50 border border-slate-100 text-center text-[11px] mb-3">
+                  <div>
+                    <span class="text-slate-400 block text-[10px]">متراژ</span>
+                    <strong class="text-slate-800 font-bold">${prop.areaSqm} م²</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 block text-[10px]">اتاق</span>
+                    <strong class="text-slate-800 font-bold">${prop.bedrooms} خواب</strong>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 block text-[10px]">سال ساخت</span>
+                    <strong class="text-slate-800 font-bold">${prop.yearBuilt}</strong>
+                  </div>
+                </div>
+
+                <!-- قیمت کل -->
+                <div class="flex items-center justify-between mb-4">
+                  <span class="text-xs text-slate-500 font-medium">قیمت کارشناسی:</span>
+                  <span class="text-sm font-black text-slate-900 font-mono">${window.OmidDashboard.formatToman(prop.priceToman)}</span>
+                </div>
+
+                <!-- مشخصات مشاور صاحب فایل -->
+                <div class="p-3 rounded-2xl bg-primary-50/70 border border-primary-100 flex items-center justify-between mb-4">
+                  <div class="flex items-center gap-2.5">
+                    <img src="${prop.advisor.avatar}" alt="${prop.advisor.name}" class="w-8 h-8 rounded-full object-cover border border-primary-200" />
+                    <div>
+                      <div class="text-[10px] text-primary-800 font-semibold">مشاور صاحب فایل:</div>
+                      <div class="font-bold text-slate-900 text-xs">${prop.advisor.name}</div>
+                    </div>
+                  </div>
+                  <a
+                    href="tel:${prop.advisor.phone}"
+                    class="px-2.5 py-1 rounded-xl bg-white hover:bg-primary-100 text-primary-900 border border-primary-200 font-bold text-[11px] flex items-center gap-1"
+                    title="تماس جهت هماهنگی بازدید"
+                  >
+                    <span>📞</span>
+                    <span dir="ltr" class="font-mono text-[10px]">${prop.advisor.phone}</span>
+                  </a>
+                </div>
+
+                <!-- باکس سهم پورسانت همکاری -->
+                <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-[11px] flex items-center justify-between mb-4">
+                  <span class="text-emerald-900 font-medium">سهم شما در صورت فروش (همکاری):</span>
+                  <strong class="text-emerald-700 font-mono font-bold">${window.OmidDashboard.formatToman(estimatedShare)}</strong>
+                </div>
+              </div>
+
+              <!-- دکمه اقدام -->
+              <div class="pt-2 border-t border-slate-100 flex items-center gap-2">
+                <button
+                  type="button"
+                  data-action="co-sale"
+                  data-id="${prop.id}"
+                  class="flex-grow py-2.5 px-3 rounded-xl bg-gradient-to-l from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5"
+                >
+                  <span>🤝</span>
+                  <span>اعلام مشتری یا فروش مشارکتی</span>
+                </button>
+                <a
+                  href="../../properties/${prop.slug}/"
+                  target="_blank"
+                  class="p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs"
+                  title="مشاهده مشخصات عمومی"
+                >
+                  👁️
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // اتصال رویداد کلیک دکمه فروش مشارکتی
+      grid.querySelectorAll('button[data-action="co-sale"]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const propId = btn.getAttribute('data-id');
+          openCoSaleModal(propId);
+        });
+      });
+    }
+
+    function openCoSaleModal(propId) {
+      const prop = window.OmidDashboard.getPropertyById(propId);
+      if (!prop) return;
+
+      document.getElementById('modalPropId').value = prop.id;
+      document.getElementById('modalPropTitle').innerText = prop.title;
+      document.getElementById('modalListingAdvisorName').innerText = prop.advisor.name;
+      document.getElementById('modalSellingAdvisorName').innerText = `${currentUser.name} (${currentUser.roleLabel})`;
+
+      document.getElementById('calcListingAdvName').innerText = prop.advisor.name;
+      document.getElementById('calcSellingAdvName').innerText = currentUser.name;
+
+      // مقادیر پیش‌فرض
+      document.getElementById('coFinalPrice').value = prop.priceToman;
+      const initialTotalComm = Math.round(prop.priceToman * 0.01);
+      document.getElementById('coTotalCommission').value = initialTotalComm;
+
+      updateLiveCalc(initialTotalComm);
+
+      document.getElementById('coSaleModal').classList.remove('hidden');
+    }
+
+    function updateLiveCalc(totalComm) {
+      const pool = Math.round(totalComm * 0.30);
+      const share = Math.round(pool * 0.50);
+      const office = totalComm - (share * 2);
+
+      document.getElementById('calcListingShare').innerText = window.OmidDashboard.formatToman(share);
+      document.getElementById('calcSellingShare').innerText = window.OmidDashboard.formatToman(share);
+      document.getElementById('calcOfficeShare').innerText = window.OmidDashboard.formatToman(office);
+    }
+
+    document.getElementById('coTotalCommission')?.addEventListener('input', (e) => {
+      const val = Number(e.target.value) || 0;
+      updateLiveCalc(val);
+    });
+
+    document.getElementById('coFinalPrice')?.addEventListener('input', (e) => {
+      const price = Number(e.target.value) || 0;
+      const comm = Math.round(price * 0.01);
+      document.getElementById('coTotalCommission').value = comm;
+      updateLiveCalc(comm);
+    });
+
+    // بستن مودال
+    const modal = document.getElementById('coSaleModal');
+    document.getElementById('closeCoModalX')?.addEventListener('click', () => modal.classList.add('hidden'));
+    document.getElementById('cancelCoModalBtn')?.addEventListener('click', () => modal.classList.add('hidden'));
+
+    // ثبت فرم فروش مشارکتی
+    document.getElementById('coSaleForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      try {
+        const propId = document.getElementById('modalPropId').value;
+        const buyerName = document.getElementById('coBuyerName').value;
+        const buyerPhone = document.getElementById('coBuyerPhone').value;
+        const finalPriceToman = Number(document.getElementById('coFinalPrice').value);
+        const totalCommissionToman = Number(document.getElementById('coTotalCommission').value);
+        const notes = document.getElementById('coNotes').value;
+
+        window.OmidDashboard.recordCoSale({
+          propertyId: propId,
+          buyerName,
+          buyerPhone,
+          finalPriceToman,
+          totalCommissionToman,
+          notes,
+        });
+
+        window.OmidDashboard.showToast(
+          'فروش مشارکتی با موفقیت ثبت گردید و جهت تایید واریز پورسانت به کارتابل مدیرکل و منشی ارسال شد.',
+          'success'
+        );
+
+        modal.classList.add('hidden');
+        document.getElementById('coSaleForm').reset();
+        renderCoFiling();
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    // فیلترها و جستجو
+    document.getElementById('coSearchInput')?.addEventListener('input', renderCoFiling);
+    document.getElementById('coAdvisorFilter')?.addEventListener('change', renderCoFiling);
+    document.getElementById('coTypeFilter')?.addEventListener('change', renderCoFiling);
+
+    // رندر اولیه
+    renderCoFiling();
+  });
+</script>

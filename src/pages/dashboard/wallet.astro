@@ -1,98 +1,358 @@
 ---
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
-import { formatToman } from '../../utils/calculators';
-
-const sampleTransactions = [
-  {
-    id: 'tx-01',
-    date: '۱۴۰۳/۰۶/۲۸',
-    amount: 18600000,
-    type: 'کارمزد فروش',
-    description: 'سهم کارمزد فروش ملک: پنت‌هاوس ۲۱۰ متری خیابان آبان (نرخ ۳۰٪)',
-    status: 'شارژ شد'
-  },
-  {
-    id: 'tx-02',
-    date: '۱۴۰۳/۰۵/۱۴',
-    amount: 14200000,
-    type: 'کارمزد فروش',
-    description: 'سهم کارمزد فروش ملک: آپارتمان ۱۱۰ متری فروردین (نرخ ۳۰٪)',
-    status: 'شارژ شد'
-  },
-  {
-    id: 'tx-03',
-    date: '۱۴۰۳/۰۴/۰۲',
-    amount: 29200000,
-    type: 'کارمزد فروش',
-    description: 'سهم کارمزد فروش ملک: ویلایی خیابان بوستان (نرخ ۳۰٪)',
-    status: 'شارژ شد'
-  }
-];
-
-const totalBalance = sampleTransactions.reduce((acc, curr) => acc + curr.amount, 0);
 ---
 
 <DashboardLayout title="کیف پول و حسابداری کارمزد" activeNav="wallet">
-  <div class="mb-8">
-    <h1 class="text-2xl font-black text-slate-900">کیف پول و سهم کارمزد مشاور</h1>
-    <p class="text-xs text-slate-500 mt-1">دفتر کل تراکنش‌های حسابداری (فقط افزودنی / Append-Only) بر مبنای ریال و تومان</p>
+  <!-- هدر صفحه -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+    <div>
+      <div class="flex items-center gap-3">
+        <h1 class="text-2xl font-black text-slate-900">کیف پول و حسابداری کارمزد</h1>
+        <span id="walletAccessBadge" class="text-xs px-2.5 py-0.5 rounded-full font-bold"></span>
+      </div>
+      <p class="text-xs text-slate-500 mt-1">
+        دفتر کل تراکنش‌های حسابداری (Append-Only)، تسویه خودکار کمیسیون‌ها و اعمال تعدیلات دستی با ثبت دلیل
+      </p>
+    </div>
   </div>
 
-  <!-- کارت موجودی انباشته -->
-  <div class="bg-gradient-to-r from-primary-900 via-primary-800 to-primary-900 text-white p-8 rounded-3xl shadow-lg border-2 border-accent-500/40 mb-8 max-w-xl">
-    <div class="flex items-center justify-between mb-4">
-      <span class="text-xs text-slate-300 font-bold">مجموع موجودی کارمزد تأییدشده:</span>
-      <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2.5 py-0.5 rounded-full font-bold">
-        حساب فعال
-      </span>
+  <!-- نمای مشاور: کارت موجودی انباشته شخصی -->
+  <div id="advisorWalletView" class="mb-8">
+    <div class="bg-gradient-to-r from-primary-950 via-primary-900 to-primary-950 text-white p-7 rounded-3xl shadow-xl border-2 border-accent-500/40 max-w-2xl">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <span class="text-xs text-slate-300 font-bold block">موجودی کیف پول اختصاصی:</span>
+          <strong id="advisorWalletOwnerName" class="text-accent-300 text-sm">مهندس رضا کریمی</strong>
+        </div>
+        <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 px-3 py-1 rounded-full font-bold">
+          حساب فعال و تسویه‌شده
+        </span>
+      </div>
+      <div id="advisorCurrentBalance" class="text-3xl sm:text-4xl font-black text-accent-400 font-mono mb-2">
+        ۰ تومان
+      </div>
+      <p class="text-xs text-slate-400 leading-relaxed">
+        * ثبت حسابداری رسمی دفتر املاک امید — شامل کارمزدهای فروش مستقیم، سهم فروش‌های مشارکتی (MLS) و پاداش‌های دریافتی.
+      </p>
     </div>
-    <div class="text-3xl sm:text-4xl font-black text-accent-400 font-mono mb-2">
-      {formatToman(totalBalance)}
-    </div>
-    <p class="text-xs text-slate-400">
-      * ثبت حسابداری داخلی دفتر املاک امید — بدون درگاه پرداخت یا تسویه آنلاین خارج از سیستم
-    </p>
   </div>
 
-  <!-- جدول تراکنش‌های دفتر کل (Ledger) -->
-  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-    <div class="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-      <h3 class="text-sm font-bold text-slate-800">ریز تراکنش‌های واریزی کیف پول</h3>
-      <span class="text-[11px] text-slate-400 font-mono">Append-Only Ledger</span>
+  <!-- نمای مدیرکل و منشی: پنل تعدیل دستی موجودی مشاوران و خلاصه حساب‌ها -->
+  <div id="staffWalletPanel" class="hidden mb-10 space-y-8">
+    <!-- گرید خلاصه موجودی تمام مشاوران -->
+    <div>
+      <h2 class="text-base font-black text-slate-900 mb-4 flex items-center gap-2">
+        <span>👥</span> خلاصه موجودی کیف پول مشاوران آژانس
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="advisorsBalanceGrid">
+        <!-- با جاوااسکریپت داینامیک پر می‌شود -->
+      </div>
     </div>
+
+    <!-- فرم افزایش یا کسر دستی موجودی با ثبت دلیل (دستور صریح کاربر) -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border-2 border-primary-900/10">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+        <div>
+          <h2 class="text-base font-black text-primary-950 border-s-4 border-accent-500 ps-2">
+            افزایش یا کسر دستی موجودی کیف پول مشاور (تعدیل مالی)
+          </h2>
+          <p class="text-xs text-slate-500 mt-1">
+            مدیرکل و منشی می‌توانند به حساب مشاور مبلغی اضافه یا کسر کرده و دلیل مستند آن را در پرونده ثبت نمایند.
+          </p>
+        </div>
+        <span class="text-xs bg-accent-500/15 text-accent-700 font-bold px-3 py-1 rounded-full border border-accent-400/30">
+          امکان ویژه مدیریت
+        </span>
+      </div>
+
+      <form id="walletAdjustmentForm" class="space-y-5 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <!-- انتخاب مشاور -->
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5">انتخاب مشاور مورد نظر *</label>
+            <select id="adjAdvisorSelect" required class="w-full p-2.5 rounded-xl border border-slate-300 text-xs bg-slate-50 font-bold">
+              <option value="user-adv-101">مهندس رضا کریمی</option>
+              <option value="user-adv-102">علیرضا احمدی</option>
+              <option value="user-adv-103">سارا محمدی</option>
+              <option value="user-adv-104">محمدرضا رضایی</option>
+            </select>
+            <div class="text-[11px] text-slate-500 mt-1">
+              موجودی کنونی: <strong id="adjAdvisorCurrentBal" class="text-primary-900 font-mono">۰ تومان</strong>
+            </div>
+          </div>
+
+          <!-- نوع عملیات: افزایش یا کسر -->
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5">نوع تغییر موجودی *</label>
+            <div class="grid grid-cols-2 gap-2">
+              <label class="flex items-center justify-center gap-1.5 p-2.5 rounded-xl border border-emerald-300 bg-emerald-50/70 cursor-pointer font-bold text-emerald-800">
+                <input type="radio" name="adjType" value="credit" checked class="text-emerald-600" />
+                <span>➕ افزایش (پاداش)</span>
+              </label>
+              <label class="flex items-center justify-center gap-1.5 p-2.5 rounded-xl border border-rose-300 bg-rose-50/70 cursor-pointer font-bold text-rose-800">
+                <input type="radio" name="adjType" value="debit" class="text-rose-600" />
+                <span>➖ کسر (مساعده)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- مبلغ به تومان -->
+          <div>
+            <label class="block font-bold text-slate-700 mb-1.5">مبلغ تغییر (تومان) *</label>
+            <input
+              type="number"
+              id="adjAmountInput"
+              required
+              placeholder="مثال: ۵۰۰۰۰۰۰"
+              dir="ltr"
+              class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-mono text-end font-bold"
+            />
+            <div class="text-[10px] text-slate-400 mt-1 font-mono text-end" id="adjAmountPreview">
+              ۰ تومان
+            </div>
+          </div>
+        </div>
+
+        <!-- دلیل و شرح تراکنش (اجباری) -->
+        <div>
+          <label class="block font-bold text-slate-700 mb-1.5">
+            دلیل و شرح تراکنش * <span class="text-slate-400 font-normal">(در دفتر کل و پرونده مالی مشاور ثبت خواهد شد)</span>
+          </label>
+          <input
+            type="text"
+            id="adjReasonInput"
+            required
+            placeholder="مثال: پاداش فروش استثنایی پنت‌هاوس خیابان آبان / مساعده نقدی علی‌الحساب کارمزد / جریمه تاخیر در تکمیل مدارک"
+            class="w-full p-3 rounded-xl border border-slate-300 text-xs focus:ring-1 focus:ring-accent-500 focus:outline-none"
+          />
+        </div>
+
+        <div class="flex justify-end pt-2">
+          <button
+            type="submit"
+            class="px-6 py-3 bg-gradient-to-l from-primary-950 to-primary-900 hover:from-primary-900 hover:to-primary-800 text-white rounded-xl font-bold shadow-md transition-all flex items-center gap-2 text-xs"
+          >
+            <span>💾</span>
+            <span>ثبت قطعی تغییر موجودی در دفتر کل</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- جدول دفتر کل تراکنش‌ها (Ledger) -->
+  <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden mb-12">
+    <div class="p-4 sm:p-5 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-4">
+      <div>
+        <h3 class="text-sm font-black text-slate-800 flex items-center gap-2">
+          <span>📜</span> ریز تراکنش‌های دفتر کل حسابداری (Append-Only Ledger)
+        </h3>
+        <p class="text-[11px] text-slate-400 mt-0.5">ثبت غیرقابل حذف کلیه واریزی‌ها، پورسانت‌ها، پاداش‌ها و مساعده‌ها</p>
+      </div>
+
+      <!-- فیلتر تراکنش‌ها -->
+      <div class="flex items-center gap-2 text-xs">
+        <select id="txTypeFilter" class="p-2 rounded-xl border border-slate-300 text-xs bg-white focus:outline-none">
+          <option value="all">همه انواع تراکنش‌ها</option>
+          <option value="commission">کمیسیون فروش مستقیم</option>
+          <option value="co_commission">کمیسیون فروش مشارکتی (MLS)</option>
+          <option value="bonus">پاداش / افزایش دستی</option>
+          <option value="deduction">مساعده / کسر دستی</option>
+        </select>
+      </div>
+    </div>
+
     <div class="overflow-x-auto">
-      <table class="w-full text-xs text-start">
+      <table class="w-full text-xs text-start" id="walletTable">
         <thead class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
           <tr>
-            <th class="p-3.5 text-start">شناسه تراکنش</th>
-            <th class="p-3.5 text-start">نوع</th>
-            <th class="p-3.5 text-start">شرح تراکنش و ملک مربوطه</th>
-            <th class="p-3.5 text-start">مبلغ واریزی</th>
-            <th class="p-3.5 text-start">تاریخ</th>
-            <th class="p-3.5 text-start">وضعیت</th>
+            <th class="p-3.5 text-start">شناسه / تاریخ</th>
+            <th class="p-3.5 text-start">مشاور ذینفع</th>
+            <th class="p-3.5 text-start">نوع عملیات</th>
+            <th class="p-3.5 text-start">شرح و دلیل تراکنش</th>
+            <th class="p-3.5 text-start">مبلغ (تومان)</th>
+            <th class="p-3.5 text-start">تاییدکننده / ثبت‌کننده</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-slate-100">
-          {sampleTransactions.map((tx) => (
-            <tr class="hover:bg-slate-50/70">
-              <td class="p-3.5 font-mono text-slate-400">{tx.id}</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded bg-primary-100 text-primary-800 font-bold text-[11px]">
-                  {tx.type}
-                </span>
-              </td>
-              <td class="p-3.5 text-slate-800">{tx.description}</td>
-              <td class="p-3.5 font-mono font-bold text-emerald-700">{formatToman(tx.amount)}</td>
-              <td class="p-3.5 text-slate-400 font-mono">{tx.date}</td>
-              <td class="p-3.5">
-                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[11px]">
-                  {tx.status}
-                </span>
-              </td>
-            </tr>
-          ))}
+        <tbody class="divide-y divide-slate-100" id="walletTableBody">
+          <!-- با جاوااسکریپت داینامیک رندر می‌شود -->
         </tbody>
       </table>
     </div>
+
+    <div id="noTxsFound" class="hidden p-12 text-center text-slate-400 text-xs">
+      هیچ تراکنشی یافت نشد.
+    </div>
   </div>
 </DashboardLayout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!window.OmidDashboard) return;
+
+    const currentUser = window.OmidDashboard.getCurrentUser();
+    const isStaff = currentUser.role === 'admin' || currentUser.role === 'secretary';
+
+    const accessBadge = document.getElementById('walletAccessBadge');
+    const advisorView = document.getElementById('advisorWalletView');
+    const staffPanel = document.getElementById('staffWalletPanel');
+
+    if (isStaff) {
+      accessBadge.innerText = currentUser.role === 'admin' ? 'دسترسی مدیرکل (امکان افزایش و کسر دستی موجودی)' : 'دسترسی منشی دفتر (امکان تغییر موجودی با ثبت دلیل)';
+      accessBadge.className = currentUser.role === 'admin' ? 'text-xs px-2.5 py-0.5 rounded-full font-bold bg-rose-100 text-rose-800 border border-rose-300' : 'text-xs px-2.5 py-0.5 rounded-full font-bold bg-blue-100 text-blue-800 border border-blue-300';
+      advisorView.classList.add('hidden');
+      staffPanel.classList.remove('hidden');
+    } else {
+      accessBadge.innerText = 'دسترسی مشاور (کیف پول اختصاصی)';
+      accessBadge.className = 'text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
+      document.getElementById('advisorWalletOwnerName').innerText = currentUser.name;
+    }
+
+    function renderWallet() {
+      const allTxs = window.OmidDashboard.getWalletTransactions();
+      const typeFilter = document.getElementById('txTypeFilter')?.value || 'all';
+
+      // فیلتر تراکنش‌ها بر اساس دسترسی مشاور یا کارکنان
+      let userTxs = allTxs;
+      if (!isStaff) {
+        userTxs = userTxs.filter((t) => t.advisorId === currentUser.id);
+        const myBal = window.OmidDashboard.getAdvisorBalance(currentUser.id);
+        document.getElementById('advisorCurrentBalance').innerText = window.OmidDashboard.formatToman(myBal);
+      } else {
+        renderStaffAdvisorBalances();
+      }
+
+      if (typeFilter !== 'all') {
+        userTxs = userTxs.filter((t) => t.type === typeFilter);
+      }
+
+      const tbody = document.getElementById('walletTableBody');
+      const emptyState = document.getElementById('noTxsFound');
+
+      if (userTxs.length === 0) {
+        tbody.innerHTML = '';
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      emptyState.classList.add('hidden');
+      tbody.innerHTML = userTxs.map((tx) => {
+        return `
+          <tr class="hover:bg-slate-50/80 transition-colors">
+            <td class="p-3.5">
+              <span class="font-mono text-slate-400 block text-[10px]">${tx.id}</span>
+              <span class="font-mono text-slate-700 font-bold">${tx.date}</span>
+            </td>
+
+            <td class="p-3.5 font-bold text-slate-800">
+              ${tx.advisorName}
+            </td>
+
+            <td class="p-3.5">
+              <span class="inline-block px-2.5 py-1 rounded-lg font-bold text-[11px] ${
+                tx.isCredit
+                  ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                  : 'bg-rose-100 text-rose-800 border border-rose-200'
+              }">
+                ${tx.typeLabel}
+              </span>
+            </td>
+
+            <td class="p-3.5">
+              <div class="text-slate-900 font-semibold">${tx.description}</div>
+              ${tx.reason ? `<div class="text-[11px] text-amber-700 mt-0.5 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 inline-block"><strong>علت:</strong> ${tx.reason}</div>` : ''}
+            </td>
+
+            <td class="p-3.5 font-mono font-bold text-sm ${tx.isCredit ? 'text-emerald-700' : 'text-rose-700'}">
+              ${tx.isCredit ? '+' : '-'} ${window.OmidDashboard.formatToman(tx.amountToman)}
+            </td>
+
+            <td class="p-3.5 text-slate-600 text-[11px]">
+              ${tx.registeredBy}
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // رندر کارت‌های موجودی تمام مشاوران برای پنل مدیریت
+    function renderStaffAdvisorBalances() {
+      const advisors = window.OmidDashboard.USERS.filter((u) => u.role === 'advisor');
+      const container = document.getElementById('advisorsBalanceGrid');
+      if (!container) return;
+
+      container.innerHTML = advisors.map((adv) => {
+        const bal = window.OmidDashboard.getAdvisorBalance(adv.id);
+        return `
+          <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <img src="${adv.avatar}" alt="${adv.name}" class="w-10 h-10 rounded-full object-cover border border-slate-200" />
+              <div>
+                <div class="font-bold text-slate-900 text-xs">${adv.name}</div>
+                <div class="text-[10px] text-slate-400 font-mono" dir="ltr">${adv.phone}</div>
+              </div>
+            </div>
+            <div class="text-end">
+              <span class="text-[10px] text-slate-400 block">موجودی:</span>
+              <strong class="font-mono text-xs font-bold text-emerald-700">${window.OmidDashboard.formatToman(bal)}</strong>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // به‌روزرسانی موجودی انتخابی در فرم
+      updateSelectedAdvisorBalanceInForm();
+    }
+
+    function updateSelectedAdvisorBalanceInForm() {
+      const selAdvId = document.getElementById('adjAdvisorSelect')?.value;
+      if (selAdvId) {
+        const bal = window.OmidDashboard.getAdvisorBalance(selAdvId);
+        const display = document.getElementById('adjAdvisorCurrentBal');
+        if (display) display.innerText = window.OmidDashboard.formatToman(bal);
+      }
+    }
+
+    document.getElementById('adjAdvisorSelect')?.addEventListener('change', updateSelectedAdvisorBalanceInForm);
+
+    document.getElementById('adjAmountInput')?.addEventListener('input', (e) => {
+      const val = Number(e.target.value) || 0;
+      document.getElementById('adjAmountPreview').innerText = window.OmidDashboard.formatToman(val);
+    });
+
+    // ثبت فرم تعدیل دستی موجودی
+    document.getElementById('walletAdjustmentForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      try {
+        const advisorId = document.getElementById('adjAdvisorSelect').value;
+        const isCredit = document.querySelector('input[name="adjType"]:checked').value === 'credit';
+        const amountToman = Number(document.getElementById('adjAmountInput').value);
+        const reason = document.getElementById('adjReasonInput').value;
+
+        window.OmidDashboard.adjustAdvisorWallet({
+          advisorId,
+          amountToman,
+          isCredit,
+          reason,
+        });
+
+        window.OmidDashboard.showToast(
+          `تغییر موجودی کیف پول مشاور با موفقیت در دفتر کل ثبت و اعمال گردید.`,
+          'success'
+        );
+
+        document.getElementById('adjAmountInput').value = '';
+        document.getElementById('adjReasonInput').value = '';
+        document.getElementById('adjAmountPreview').innerText = '۰ تومان';
+        renderWallet();
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    document.getElementById('txTypeFilter')?.addEventListener('change', renderWallet);
+
+    // رندر اولیه
+    renderWallet();
+  });
+</script>

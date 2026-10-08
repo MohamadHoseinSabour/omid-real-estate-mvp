@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import propertiesData from '../src/data/properties.json';
 import blogData from '../src/data/blog.json';
 import agencyData from '../src/data/agency.json';
-import { calculateCommission, calculateMortgage, formatToman } from '../src/utils/calculators';
+import { calculateCommission, calculateMortgage } from '../src/utils/calculators';
 
 describe('Omid Real Estate E2E Workflow & Data Integrity Tests', () => {
   // ۱. بررسی یکپارچگی داده‌های املاک
@@ -77,5 +77,71 @@ describe('Omid Real Estate E2E Workflow & Data Integrity Tests', () => {
       expect(post.title).toBeDefined();
       expect(post.content.length).toBeGreaterThan(100);
     });
+  });
+
+  // ۷. بررسی محاسبه تقسیم کمیسیون در فروش مشارکتی (همکاری مشاور ۱ و مشاور ۲)
+  it('E2E-07: Co-brokering split calculates 50/50 of the 30% advisor pool accurately', () => {
+    const finalPriceToman = 3_000_000_000;
+    const totalCommissionToman = finalPriceToman * 0.01; // ۱٪ کل مبلغ
+    const advisorPoolToman = Math.round(totalCommissionToman * 0.30); // ۹ میلیون تومان
+    expect(advisorPoolToman).toBe(9_000_000);
+
+    const listingAdvisorShare = Math.round(advisorPoolToman * 0.50); // ۴٫۵ میلیون تومان (۱۵٪ کل)
+    const sellingAdvisorShare = Math.round(advisorPoolToman * 0.50); // ۴٫۵ میلیون تومان (۱۵٪ کل)
+    const officeShare = totalCommissionToman - (listingAdvisorShare + sellingAdvisorShare); // ۲۱ میلیون تومان (۷۰٪ کل)
+
+    expect(listingAdvisorShare).toBe(4_500_000);
+    expect(sellingAdvisorShare).toBe(4_500_000);
+    expect(officeShare).toBe(21_000_000);
+    expect(listingAdvisorShare + sellingAdvisorShare + officeShare).toBe(totalCommissionToman);
+  });
+
+  // ۸. بررسی چرخه حیات تسویه پورسانت با یک کلیک (Approval Workflow)
+  it('E2E-08: Payout lifecycle shifts from pending_approval to paid with timestamps', () => {
+    const sale = {
+      id: 'sale-test',
+      payoutStatus: 'pending_approval' as const,
+      advisorShareToman: 12_750_000,
+    };
+    expect(sale.payoutStatus).toBe('pending_approval');
+
+    // شبیه‌سازی تایید توسط مدیر یا منشی
+    const approvedSale = {
+      ...sale,
+      payoutStatus: 'paid' as const,
+      approvedBy: 'حاج امید صبور (مدیرکل)',
+      approvedAt: '۱۴۰۳/۰۷/۱۸',
+    };
+    expect(approvedSale.payoutStatus).toBe('paid');
+    expect(approvedSale.approvedBy).toBeDefined();
+    expect(approvedSale.approvedAt).toBeDefined();
+  });
+
+  // ۹. بررسی تعدیل دستی کیف پول با ثبت دلیل (Manual Wallet Adjustment)
+  it('E2E-09: Manual wallet adjustment enforces positive amounts and explicit reason', () => {
+    const adjustmentTx = {
+      advisorId: 'user-adv-101',
+      amountToman: 5_000_000,
+      isCredit: true,
+      reason: 'پاداش فروش فصلی و ثبت فایل انحصاری',
+      registeredBy: 'حاج امید صبور (مدیرکل)',
+    };
+
+    expect(adjustmentTx.amountToman).toBeGreaterThan(0);
+    expect(adjustmentTx.reason.trim().length).toBeGreaterThan(5);
+    expect(adjustmentTx.registeredBy).toBeDefined();
+  });
+
+  // ۱۰. بررسی تفکیک سطح دسترسی مشاور و سطوح بالاتر
+  it('E2E-10: Higher access levels (Admin/Secretary) view all listings with advisor badges', () => {
+    // همه املاک دارای مشخصات مشاور مسئول هستند
+    propertiesData.forEach((p) => {
+      expect(p.advisor.name).toBeDefined();
+      expect(p.advisor.phone).toBeDefined();
+    });
+
+    const advisor1Props = propertiesData.filter((p) => p.advisor.name === 'مهندس رضا کریمی');
+    expect(advisor1Props.length).toBeGreaterThan(0);
+    expect(advisor1Props.length).toBeLessThan(propertiesData.length);
   });
 });

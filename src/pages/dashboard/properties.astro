@@ -1,132 +1,550 @@
 ---
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
-import propertiesData from '../../data/properties.json';
-import { formatToman } from '../../utils/calculators';
-
-const properties = propertiesData;
 ---
 
 <DashboardLayout title="مدیریت املاک و فایل‌ها" activeNav="properties">
+  <!-- هدر صفحه و دکمه اقدام -->
   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
     <div>
-      <h1 class="text-2xl font-black text-slate-900">مدیریت املاک و فایل‌ها</h1>
-      <p class="text-xs text-slate-500 mt-1">مشاهده، ویرایش و ثبت املاک جدید در محله گلستان اهواز</p>
+      <div class="flex items-center gap-3">
+        <h1 class="text-2xl font-black text-slate-900" id="pageTitleHeading">مدیریت املاک و فایل‌ها</h1>
+        <span id="accessLevelBadge" class="text-xs px-2.5 py-0.5 rounded-full font-bold"></span>
+      </div>
+      <p class="text-xs text-slate-500 mt-1" id="pageDescription">
+        مشاهده، ویرایش، حذف و کنترل پرونده‌های ملکی در محله گلستان اهواز
+      </p>
     </div>
-    <button
-      id="openNewPropBtn"
-      class="bg-accent-500 hover:bg-accent-600 text-primary-900 font-bold text-xs py-2.5 px-4 rounded-xl shadow-sm transition-colors"
-    >
-      ➕ ثبت ملک جدید
-    </button>
+    <div class="flex items-center gap-3">
+      <a
+        href="../co-filing/"
+        class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs py-2.5 px-4 rounded-xl transition-colors flex items-center gap-2"
+      >
+        <span>🤝</span> فایلینگ اشتراکی همکاران
+      </a>
+      <button
+        id="openNewPropBtn"
+        class="bg-gradient-to-l from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-primary-950 font-black text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-2"
+      >
+        <span>➕</span> ثبت ملک جدید
+      </button>
+    </div>
   </div>
 
-  <!-- فرم مخفی/مودال ثبت ملک جدید -->
-  <div id="newPropModal" class="hidden bg-white p-6 rounded-2xl shadow-md border border-slate-200 mb-8">
-    <h2 class="text-base font-bold text-primary-900 mb-4 border-s-4 border-accent-500 ps-2">فرم ثبت فایل جدید</h2>
-    <form id="newPropertyForm" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+  <!-- بنر راهنمای دسترسی برای مشاوران -->
+  <div id="advisorAccessNotice" class="hidden mb-6 p-4 rounded-2xl bg-blue-50 border border-blue-200 text-xs text-blue-900 flex items-start justify-between">
+    <div class="flex items-center gap-3">
+      <span class="text-xl">ℹ️</span>
       <div>
-        <label class="block font-bold text-slate-700 mb-1">عنوان ملک *</label>
-        <input type="text" required placeholder="مثال: آپارتمان ۱۴۰ متری خیابان اردیبهشت" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs" />
+        <strong class="font-bold">حالت نمایش مشاور:</strong>
+        <span>شما در این صفحه فقط فایل‌های شخصی خودتان را مشاهده و مدیریت می‌کنید. برای فایل‌های سایر همکاران به بخش فایلینگ اشتراکی بروید.</span>
       </div>
-      <div>
-        <label class="block font-bold text-slate-700 mb-1">قیمت کل (تومان) *</label>
-        <input type="number" required placeholder="۳۵۰۰۰۰۰۰۰۰" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs font-mono text-end" dir="ltr" />
+    </div>
+    <a href="../co-filing/" class="text-primary-700 font-bold hover:underline shrink-0">ورود به فایلینگ اشتراکی ↗</a>
+  </div>
+
+  <!-- نوار جستجو و فیلترهای پیشرفته -->
+  <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-6 flex flex-wrap items-center justify-between gap-4 text-xs">
+    <div class="flex flex-wrap items-center gap-3 flex-grow max-w-2xl">
+      <div class="relative flex-grow min-w-[200px]">
+        <input
+          type="text"
+          id="propSearchInput"
+          placeholder="جستجو در عنوان، آدرس یا کد ملک..."
+          class="w-full ps-9 pe-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-1 focus:ring-accent-500 focus:outline-none"
+        />
+        <span class="absolute start-3 top-2.5 text-slate-400">🔍</span>
       </div>
-      <div>
-        <label class="block font-bold text-slate-700 mb-1">متراژ مفید (متر مربع) *</label>
-        <input type="number" required placeholder="۱۴۰" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs text-center" />
-      </div>
-      <div>
-        <label class="block font-bold text-slate-700 mb-1">تعداد خواب</label>
-        <select class="w-full p-2.5 rounded-lg border border-slate-300 text-xs bg-white">
-          <option value="1">۱ خواب</option>
-          <option value="2">۲ خواب</option>
-          <option value="3" selected>۳ خواب</option>
-          <option value="4">۴ خواب</option>
+
+      <div id="advisorFilterContainer" class="hidden">
+        <select id="advisorFilterSelect" class="p-2 rounded-xl border border-slate-300 text-xs bg-slate-50 focus:outline-none">
+          <option value="all">همه مشاوران (کل آژانس)</option>
+          <option value="user-adv-101">مهندس رضا کریمی</option>
+          <option value="user-adv-102">علیرضا احمدی</option>
+          <option value="user-adv-103">سارا محمدی</option>
+          <option value="user-adv-104">محمدرضا رضایی</option>
         </select>
       </div>
-      <div>
-        <label class="block font-bold text-slate-700 mb-1">آدرس در گلستان</label>
-        <input type="text" placeholder="اهواز، گلستان، خیابان..." class="w-full p-2.5 rounded-lg border border-slate-300 text-xs" />
-      </div>
-      <div>
-        <label class="block font-bold text-slate-700 mb-1">نوع ملک</label>
-        <select class="w-full p-2.5 rounded-lg border border-slate-300 text-xs bg-white">
-          <option value="apartment">آپارتمان</option>
-          <option value="villa">ویلایی</option>
-          <option value="commercial">تجاری / اداری</option>
-        </select>
-      </div>
-      <div class="sm:col-span-2 lg:col-span-3 flex justify-end gap-2 pt-2">
-        <button type="button" id="cancelNewPropBtn" class="px-4 py-2 border rounded-lg text-slate-600">انصراف</button>
-        <button type="submit" class="px-5 py-2 bg-primary-700 text-white rounded-lg font-bold">ذخیره ملک در سیستم</button>
-      </div>
-    </form>
+
+      <select id="statusFilterSelect" class="p-2 rounded-xl border border-slate-300 text-xs bg-slate-50 focus:outline-none">
+        <option value="all">همه وضعیت‌ها</option>
+        <option value="available">موجود</option>
+        <option value="negotiating">در حال مذاکره</option>
+        <option value="sold">فروخته شد</option>
+      </select>
+
+      <select id="typeFilterSelect" class="p-2 rounded-xl border border-slate-300 text-xs bg-slate-50 focus:outline-none">
+        <option value="all">همه انواع ملک</option>
+        <option value="apartment">آپارتمان</option>
+        <option value="villa">ویلایی</option>
+        <option value="commercial">تجاری / اداری</option>
+      </select>
+    </div>
+
+    <div class="text-slate-500 font-bold" id="propertiesStatsCounter">
+      در حال بارگذاری...
+    </div>
   </div>
 
   <!-- جدول لیست املاک -->
   <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
     <div class="overflow-x-auto">
-      <table class="w-full text-xs text-start">
-        <thead class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+      <table class="w-full text-xs text-start" id="propertiesTable">
+        <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
           <tr>
             <th class="p-3.5 text-start">کد / عنوان ملک</th>
             <th class="p-3.5 text-start">قیمت کل (تومان)</th>
-            <th class="p-3.5 text-start">متراژ</th>
-            <th class="p-3.5 text-start">مشاور مسئول</th>
-            <th class="p-3.5 text-start">وضعیت پرونده</th>
-            <th class="p-3.5 text-start">عملیات</th>
+            <th class="p-3.5 text-start">متراژ و نوع</th>
+            <th class="p-3.5 text-start">مشاور مسئول (مالک فایل)</th>
+            <th class="p-3.5 text-start">وضعیت</th>
+            <th class="p-3.5 text-center">عملیات مدیریتی</th>
           </tr>
         </thead>
-        <tbody class="divide-y divide-slate-100">
-          {properties.map((prop) => (
-            <tr class="hover:bg-slate-50/70 transition-colors">
-              <td class="p-3.5">
-                <div class="font-bold text-slate-900">{prop.title}</div>
-                <div class="text-[11px] text-slate-400 font-mono">{prop.id} • {prop.address}</div>
-              </td>
-              <td class="p-3.5 font-mono font-bold text-slate-800">
-                {formatToman(prop.priceToman)}
-              </td>
-              <td class="p-3.5">
-                {prop.areaSqm} م² ({prop.bedrooms} خ)
-              </td>
-              <td class="p-3.5 text-slate-600">
-                {prop.advisor.name}
-              </td>
-              <td class="p-3.5">
-                <span class={`px-2.5 py-1 rounded-md text-[11px] font-bold ${prop.status === 'available' ? 'bg-emerald-100 text-emerald-800' : prop.status === 'negotiating' ? 'bg-amber-100 text-amber-800' : 'bg-slate-200 text-slate-700'}`}>
-                  {prop.statusLabel}
-                </span>
-              </td>
-              <td class="p-3.5">
-                <a
-                  href={`../../properties/${prop.slug}/`}
-                  target="_blank"
-                  class="text-primary-700 hover:text-accent-600 font-bold hover:underline"
-                >
-                  مشاهده در سایت ↗
-                </a>
-              </td>
-            </tr>
-          ))}
+        <tbody class="divide-y divide-slate-100" id="propertiesTableBody">
+          <!-- با جاوااسکریپت داینامیک پر می‌شود -->
         </tbody>
       </table>
+    </div>
+
+    <div id="noPropsFound" class="hidden p-12 text-center text-slate-400 text-xs">
+      هیچ ملکی با مشخصات انتخابی یافت نشد.
+    </div>
+  </div>
+
+  <!-- مودال ثبت ملک جدید -->
+  <div id="newPropModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-2xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+        <h2 class="text-base font-black text-primary-950 border-s-4 border-accent-500 ps-2">فرم ثبت فایل و ملک جدید</h2>
+        <button type="button" id="closeNewModalX" class="text-slate-400 hover:text-slate-700 text-lg">✕</button>
+      </div>
+
+      <form id="newPropertyForm" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+        <div class="sm:col-span-2">
+          <label class="block font-bold text-slate-700 mb-1">عنوان ملک *</label>
+          <input type="text" id="newTitle" required placeholder="مثال: آپارتمان ۱۴۰ متری خیابان اردیبهشت" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">قیمت کل (تومان) *</label>
+          <input type="number" id="newPrice" required placeholder="۳۵۰۰۰۰۰۰۰۰" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-mono text-end" dir="ltr" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">متراژ مفید (متر مربع) *</label>
+          <input type="number" id="newArea" required placeholder="۱۴۰" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs text-center" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">نوع ملک</label>
+          <select id="newType" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs bg-white">
+            <option value="apartment">آپارتمان</option>
+            <option value="villa">ویلایی</option>
+            <option value="commercial">تجاری / اداری</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">تعداد خواب</label>
+          <select id="newBedrooms" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs bg-white">
+            <option value="1">۱ خواب</option>
+            <option value="2">۲ خواب</option>
+            <option value="3" selected>۳ خواب</option>
+            <option value="4">۴ خواب</option>
+          </select>
+        </div>
+
+        <div class="sm:col-span-2">
+          <label class="block font-bold text-slate-700 mb-1">آدرس در محله گلستان اهواز *</label>
+          <input type="text" id="newAddress" required placeholder="اهواز، محله گلستان، خیابان..." class="w-full p-2.5 rounded-xl border border-slate-300 text-xs" />
+        </div>
+
+        <!-- فیلد انتخاب مشاور فقط برای سطوح مدیر/منشی -->
+        <div id="newAdvisorRow" class="hidden sm:col-span-2">
+          <label class="block font-bold text-slate-700 mb-1">مشاور مسئول پرونده (تخصیص فایل)</label>
+          <select id="newAdvisorSelect" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs bg-white">
+            <option value="user-adv-101">مهندس رضا کریمی</option>
+            <option value="user-adv-102">علیرضا احمدی</option>
+            <option value="user-adv-103">سارا محمدی</option>
+            <option value="user-adv-104">محمدرضا رضایی</option>
+          </select>
+        </div>
+
+        <div class="sm:col-span-2 flex justify-end gap-3 pt-4 border-t border-slate-100">
+          <button type="button" id="cancelNewPropBtn" class="px-5 py-2.5 border rounded-xl text-slate-600 font-bold hover:bg-slate-50">انصراف</button>
+          <button type="submit" class="px-6 py-2.5 bg-primary-900 hover:bg-primary-800 text-white rounded-xl font-bold shadow-md">
+            ذخیره و انتشار فایل
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- مودال ویرایش ملک (مخصوص سطوح بالاتر و مشاور برای فایل خودش) -->
+  <div id="editPropModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-2xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+        <div>
+          <h2 class="text-base font-black text-primary-950 border-s-4 border-amber-500 ps-2">ویرایش مشخصات پرونده ملکی</h2>
+          <span id="editPropIdBadge" class="text-[11px] font-mono text-slate-400 ms-3"></span>
+        </div>
+        <button type="button" id="closeEditModalX" class="text-slate-400 hover:text-slate-700 text-lg">✕</button>
+      </div>
+
+      <form id="editPropertyForm" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+        <input type="hidden" id="editPropId" />
+
+        <div class="sm:col-span-2">
+          <label class="block font-bold text-slate-700 mb-1">عنوان ملک *</label>
+          <input type="text" id="editTitle" required class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-bold" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">قیمت کل (تومان) *</label>
+          <input type="number" id="editPrice" required class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-mono text-end font-bold" dir="ltr" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">متراژ مفید (متر مربع) *</label>
+          <input type="number" id="editArea" required class="w-full p-2.5 rounded-xl border border-slate-300 text-xs text-center font-bold" />
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">وضعیت پرونده</label>
+          <select id="editStatus" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs bg-white font-bold">
+            <option value="available">موجود (آماده فروش)</option>
+            <option value="negotiating">در حال مذاکره / قرارداد</option>
+            <option value="sold">فروخته شد (پایان معامله)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">تعداد اتاق خواب</label>
+          <select id="editBedrooms" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs bg-white">
+            <option value="1">۱ خواب</option>
+            <option value="2">۲ خواب</option>
+            <option value="3">۳ خواب</option>
+            <option value="4">۴ خواب</option>
+          </select>
+        </div>
+
+        <div class="sm:col-span-2">
+          <label class="block font-bold text-slate-700 mb-1">آدرس در محله گلستان اهواز *</label>
+          <input type="text" id="editAddress" required class="w-full p-2.5 rounded-xl border border-slate-300 text-xs" />
+        </div>
+
+        <div class="sm:col-span-2" id="editAdvisorContainer">
+          <label class="block font-bold text-slate-700 mb-1">مشاور مسئول (جابجایی مالکیت فایل)</label>
+          <select id="editAdvisorSelect" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs bg-white">
+            <option value="user-adv-101">مهندس رضا کریمی</option>
+            <option value="user-adv-102">علیرضا احمدی</option>
+            <option value="user-adv-103">سارا محمدی</option>
+            <option value="user-adv-104">محمدرضا رضایی</option>
+          </select>
+          <span class="text-[10px] text-slate-400 block mt-1">مدیر و منشی می‌توانند مشاور مسئول این فایل را تغییر دهند.</span>
+        </div>
+
+        <div class="sm:col-span-2 flex justify-end gap-3 pt-4 border-t border-slate-100">
+          <button type="button" id="cancelEditPropBtn" class="px-5 py-2.5 border rounded-xl text-slate-600 font-bold hover:bg-slate-50">انصراف</button>
+          <button type="submit" class="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold shadow-md">
+            ثبت تغییرات و ویرایش
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </DashboardLayout>
 
 <script is:inline>
-  const openBtn = document.getElementById('openNewPropBtn');
-  const cancelBtn = document.getElementById('cancelNewPropBtn');
-  const modal = document.getElementById('newPropModal');
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!window.OmidDashboard) return;
 
-  openBtn?.addEventListener('click', () => modal?.classList.remove('hidden'));
-  cancelBtn?.addEventListener('click', () => modal?.classList.add('hidden'));
+    const currentUser = window.OmidDashboard.getCurrentUser();
+    const isStaff = currentUser.role === 'admin' || currentUser.role === 'secretary';
 
-  document.getElementById('newPropertyForm')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    alert('ملک با موفقیت در سیستم ثبت گردید (مطابق با سیاست RLS مشاور).');
-    modal?.classList.add('hidden');
+    // تنظیم نشان سطح دسترسی
+    const accessBadge = document.getElementById('accessLevelBadge');
+    const advisorNotice = document.getElementById('advisorAccessNotice');
+    const advisorFilterContainer = document.getElementById('advisorFilterContainer');
+    const newAdvisorRow = document.getElementById('newAdvisorRow');
+    const pageDescription = document.getElementById('pageDescription');
+
+    if (isStaff) {
+      accessBadge.innerText = currentUser.role === 'admin' ? 'دسترسی کامل مدیرکل (مدیریت، ویرایش و حذف همه فایل‌ها)' : 'دسترسی منشی دفتر (مشاهده و ویرایش کلیه فایل‌ها)';
+      accessBadge.className = currentUser.role === 'admin' ? 'text-xs px-2.5 py-0.5 rounded-full font-bold bg-rose-100 text-rose-800 border border-rose-300' : 'text-xs px-2.5 py-0.5 rounded-full font-bold bg-blue-100 text-blue-800 border border-blue-300';
+      advisorFilterContainer.classList.remove('hidden');
+      newAdvisorRow.classList.remove('hidden');
+      pageDescription.innerText = 'شما به عنوان سطح مدیریتی، تمام آگهی‌های ثبت‌شده توسط کلیه مشاوران را مشاهده می‌کنید و امکان ویرایش یا حذف پرونده‌ها را دارید.';
+    } else {
+      accessBadge.innerText = 'دسترسی مشاور (فایل‌های اختصاصی)';
+      accessBadge.className = 'text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
+      advisorNotice.classList.remove('hidden');
+    }
+
+    // رندر جدول
+    function renderProperties() {
+      const allProps = window.OmidDashboard.getProperties();
+      const searchQuery = (document.getElementById('propSearchInput')?.value || '').toLowerCase().trim();
+      const advisorFilter = document.getElementById('advisorFilterSelect')?.value || 'all';
+      const statusFilter = document.getElementById('statusFilterSelect')?.value || 'all';
+      const typeFilter = document.getElementById('typeFilterSelect')?.value || 'all';
+
+      // فیلتر اولیه بر اساس سطح دسترسی مشاور vs مدیر/منشی
+      let filtered = allProps;
+      if (!isStaff) {
+        filtered = filtered.filter((p) => p.advisor.id === currentUser.id);
+      } else {
+        if (advisorFilter !== 'all') {
+          filtered = filtered.filter((p) => p.advisor.id === advisorFilter);
+        }
+      }
+
+      // فیلتر جستجو
+      if (searchQuery) {
+        filtered = filtered.filter((p) =>
+          p.title.toLowerCase().includes(searchQuery) ||
+          p.address.toLowerCase().includes(searchQuery) ||
+          p.id.toLowerCase().includes(searchQuery) ||
+          p.advisor.name.toLowerCase().includes(searchQuery)
+        );
+      }
+
+      // فیلتر وضعیت
+      if (statusFilter !== 'all') {
+        filtered = filtered.filter((p) => p.status === statusFilter);
+      }
+
+      // فیلتر نوع
+      if (typeFilter !== 'all') {
+        filtered = filtered.filter((p) => p.propertyType === typeFilter);
+      }
+
+      const tbody = document.getElementById('propertiesTableBody');
+      const counter = document.getElementById('propertiesStatsCounter');
+      const noProps = document.getElementById('noPropsFound');
+
+      if (counter) {
+        counter.innerText = `نمایش ${filtered.length} از مجموع ${allProps.length} فایل`;
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '';
+        noProps.classList.remove('hidden');
+        return;
+      }
+
+      noProps.classList.add('hidden');
+      tbody.innerHTML = filtered.map((prop) => {
+        const isMine = prop.advisor.id === currentUser.id;
+        const canDelete = currentUser.role === 'admin';
+        const canEdit = isStaff || isMine;
+
+        return `
+          <tr class="hover:bg-slate-50/80 transition-colors">
+            <td class="p-3.5">
+              <div class="font-bold text-slate-900">${prop.title}</div>
+              <div class="text-[11px] text-slate-400 font-mono flex items-center gap-2 mt-0.5">
+                <span class="bg-slate-100 px-1.5 py-0.2 rounded">${prop.id}</span>
+                <span>${prop.address}</span>
+              </div>
+            </td>
+
+            <td class="p-3.5 font-mono font-bold text-slate-800">
+              <div>${window.OmidDashboard.formatToman(prop.priceToman)}</div>
+              <div class="text-[10px] text-slate-400 font-normal">متری ${window.OmidDashboard.formatNumber(prop.pricePerMeterToman)} ت</div>
+            </td>
+
+            <td class="p-3.5">
+              <div class="font-medium text-slate-700">${prop.areaSqm} متر مربع</div>
+              <div class="text-[11px] text-slate-400">${prop.bedrooms} خواب • ${prop.propertyTypeLabel}</div>
+            </td>
+
+            <!-- ستون مشخصات مشاور مسئول -->
+            <td class="p-3.5">
+              <div class="flex items-center gap-2.5">
+                <img src="${prop.advisor.avatar}" alt="${prop.advisor.name}" class="w-8 h-8 rounded-full object-cover border border-slate-200" />
+                <div>
+                  <div class="font-bold text-slate-900 flex items-center gap-1.5">
+                    <span>${prop.advisor.name}</span>
+                    ${isMine ? '<span class="bg-accent-100 text-accent-800 text-[9px] px-1.5 py-0.2 rounded font-bold">خودم</span>' : ''}
+                  </div>
+                  <div class="text-[10px] text-slate-400 font-mono" dir="ltr">${prop.advisor.phone}</div>
+                </div>
+              </div>
+            </td>
+
+            <td class="p-3.5">
+              <span class="px-2.5 py-1 rounded-lg text-[11px] font-bold ${
+                prop.status === 'available'
+                  ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                  : prop.status === 'negotiating'
+                  ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                  : 'bg-slate-200 text-slate-700'
+              }">
+                ${prop.statusLabel}
+              </span>
+            </td>
+
+            <!-- ستون عملیات مدیریتی -->
+            <td class="p-3.5 text-center">
+              <div class="flex items-center justify-center gap-1.5">
+                ${
+                  canEdit
+                    ? `<button
+                        type="button"
+                        data-action="edit"
+                        data-id="${prop.id}"
+                        class="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 font-bold text-[11px] transition-colors"
+                        title="ویرایش مشخصات"
+                      >
+                        ✏️ ویرایش
+                      </button>`
+                    : ''
+                }
+
+                ${
+                  canDelete
+                    ? `<button
+                        type="button"
+                        data-action="delete"
+                        data-id="${prop.id}"
+                        data-title="${prop.title}"
+                        class="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-[11px] transition-colors"
+                        title="حذف ملک"
+                      >
+                        🗑️ حذف
+                      </button>`
+                    : ''
+                }
+
+                <a
+                  href="../../properties/${prop.slug}/"
+                  target="_blank"
+                  class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-[11px] transition-colors"
+                  title="مشاهده صفحه ملک در سایت"
+                >
+                  👁️ سایت
+                </a>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // اتصال رویدادهای دکمه‌های جدول
+      tbody.querySelectorAll('button[data-action="edit"]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          openEditModal(id);
+        });
+      });
+
+      tbody.querySelectorAll('button[data-action="delete"]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          const title = btn.getAttribute('data-title');
+          if (confirm(`آیا از حذف دائم فایل ملکی "${title}" اطمینان دارید؟\nاین عملیات غیرقابل بازگشت است.`)) {
+            window.OmidDashboard.deleteProperty(id);
+            window.OmidDashboard.showToast(`ملک "${title}" با موفقیت حذف گردید.`, 'success');
+            renderProperties();
+          }
+        });
+      });
+    }
+
+    // باز کردن مودال ویرایش
+    function openEditModal(propId) {
+      const prop = window.OmidDashboard.getPropertyById(propId);
+      if (!prop) return;
+
+      document.getElementById('editPropId').value = prop.id;
+      document.getElementById('editPropIdBadge').innerText = `کد: ${prop.id}`;
+      document.getElementById('editTitle').value = prop.title;
+      document.getElementById('editPrice').value = prop.priceToman;
+      document.getElementById('editArea').value = prop.areaSqm;
+      document.getElementById('editStatus').value = prop.status;
+      document.getElementById('editBedrooms').value = prop.bedrooms || 3;
+      document.getElementById('editAddress').value = prop.address;
+
+      const advSelect = document.getElementById('editAdvisorSelect');
+      if (advSelect) {
+        advSelect.value = prop.advisor.id;
+        // اگر مشاور عادی است، انتخاب مشاور غیرفعال شود
+        if (!isStaff) {
+          document.getElementById('editAdvisorContainer').style.display = 'none';
+        } else {
+          document.getElementById('editAdvisorContainer').style.display = 'block';
+        }
+      }
+
+      document.getElementById('editPropModal').classList.remove('hidden');
+    }
+
+    // ذخیره فرم ویرایش
+    document.getElementById('editPropertyForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const id = document.getElementById('editPropId').value;
+      const data = {
+        title: document.getElementById('editTitle').value,
+        priceToman: Number(document.getElementById('editPrice').value),
+        areaSqm: Number(document.getElementById('editArea').value),
+        status: document.getElementById('editStatus').value,
+        bedrooms: Number(document.getElementById('editBedrooms').value),
+        address: document.getElementById('editAddress').value,
+      };
+
+      if (isStaff) {
+        data.advisorId = document.getElementById('editAdvisorSelect').value;
+      }
+
+      window.OmidDashboard.updateProperty(id, data);
+      window.OmidDashboard.showToast('تغییرات ملک با موفقیت در سیستم اعمال گردید.', 'success');
+      document.getElementById('editPropModal').classList.add('hidden');
+      renderProperties();
+    });
+
+    // رویدادهای مودال ثبت جدید
+    const newModal = document.getElementById('newPropModal');
+    document.getElementById('openNewPropBtn')?.addEventListener('click', () => newModal.classList.remove('hidden'));
+    document.getElementById('cancelNewPropBtn')?.addEventListener('click', () => newModal.classList.add('hidden'));
+    document.getElementById('closeNewModalX')?.addEventListener('click', () => newModal.classList.add('hidden'));
+
+    // بستن مودال ویرایش
+    const editModal = document.getElementById('editPropModal');
+    document.getElementById('cancelEditPropBtn')?.addEventListener('click', () => editModal.classList.add('hidden'));
+    document.getElementById('closeEditModalX')?.addEventListener('click', () => editModal.classList.add('hidden'));
+
+    // ثبت ملک جدید
+    document.getElementById('newPropertyForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const newPropData = {
+        title: document.getElementById('newTitle').value,
+        priceToman: Number(document.getElementById('newPrice').value),
+        areaSqm: Number(document.getElementById('newArea').value),
+        propertyType: document.getElementById('newType').value,
+        bedrooms: Number(document.getElementById('newBedrooms').value),
+        address: document.getElementById('newAddress').value,
+      };
+
+      if (isStaff) {
+        newPropData.advisorId = document.getElementById('newAdvisorSelect').value;
+      } else {
+        newPropData.advisorId = currentUser.id;
+      }
+
+      window.OmidDashboard.createProperty(newPropData);
+      window.OmidDashboard.showToast('ملک جدید با موفقیت ثبت و به لیست افزوده شد.', 'success');
+      newModal.classList.add('hidden');
+      document.getElementById('newPropertyForm').reset();
+      renderProperties();
+    });
+
+    // فیلترها و جستجو
+    document.getElementById('propSearchInput')?.addEventListener('input', renderProperties);
+    document.getElementById('advisorFilterSelect')?.addEventListener('change', renderProperties);
+    document.getElementById('statusFilterSelect')?.addEventListener('change', renderProperties);
+    document.getElementById('typeFilterSelect')?.addEventListener('change', renderProperties);
+
+    // اجرای رندر اولیه
+    renderProperties();
   });
 </script>

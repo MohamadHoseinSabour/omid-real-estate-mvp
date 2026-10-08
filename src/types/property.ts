@@ -30,6 +30,7 @@ export interface Property {
     isPrimary?: boolean;
   }[];
   advisor: {
+    id?: string;
     name: string;
     phone: string;
     avatar: string;

@@ -1,7 +1,7 @@
 ---
 interface Props {
   title: string;
-  activeNav?: 'overview' | 'properties' | 'leads' | 'sales' | 'wallet' | 'settings';
+  activeNav?: 'overview' | 'properties' | 'co-filing' | 'leads' | 'sales' | 'wallet' | 'settings';
 }
 
 const { title, activeNav = 'overview' } = Astro.props;
@@ -20,37 +20,61 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
       rel="stylesheet"
       type="text/css"
     />
+    <script is:inline src={`${baseUrl}/js/dashboard-engine.js`}></script>
   </head>
-  <body class="bg-slate-100 text-slate-800 font-vazir min-h-screen flex flex-col">
+  <body class="bg-slate-100/90 text-slate-800 font-vazir min-h-screen flex flex-col antialiased selection:bg-accent-500 selection:text-primary-950">
     <!-- نوار بالای داشبورد -->
-    <header class="bg-primary-900 text-white border-b-2 border-accent-500 sticky top-0 z-40">
+    <header class="bg-gradient-to-r from-primary-950 via-primary-900 to-primary-950 text-white border-b border-accent-500/30 sticky top-0 z-40 shadow-md">
       <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <a href={`${baseUrl}/dashboard/`} class="flex items-center gap-2">
-            <span class="w-8 h-8 rounded-lg bg-accent-500 text-primary-900 font-black flex items-center justify-center text-sm">
+          <a href={`${baseUrl}/dashboard/`} class="flex items-center gap-2.5 group">
+            <span class="w-9 h-9 rounded-xl bg-gradient-to-br from-accent-400 to-accent-600 text-primary-950 font-black flex items-center justify-center text-sm shadow-md group-hover:scale-105 transition-transform">
               ام
             </span>
-            <span class="font-extrabold text-base sm:text-lg text-accent-400">داشبورد املاک امید</span>
+            <div class="flex flex-col">
+              <span class="font-black text-base sm:text-lg text-white group-hover:text-accent-400 transition-colors">
+                املاک امید اهواز
+              </span>
+              <span class="text-[10px] text-accent-300 -mt-1 hidden sm:inline">سامانه جامع مدیریت و فایلینگ ملکی</span>
+            </div>
           </a>
-          <span id="roleBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-accent-500/20 text-accent-300 border border-accent-400/30">
-            نقش: مشاور
-          </span>
+
+          <div class="flex items-center gap-2 ms-2">
+            <span id="roleBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-accent-500/20 text-accent-300 border border-accent-400/40">
+              نقش: مشاور
+            </span>
+            <span id="pendingApprovalBadge" class="hidden text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/50 animate-pulse">
+              ⚡ تسویه در انتظار تایید
+            </span>
+          </div>
         </div>
 
         <div class="flex items-center gap-3">
-          <div class="text-xs text-slate-300 hidden sm:block">
-            کاربر: <strong id="userNameDisplay" class="text-white">مهندس رضا کریمی</strong>
+          <div class="flex items-center gap-2 bg-primary-900/80 px-3 py-1.5 rounded-xl border border-slate-700/60">
+            <img
+              id="userAvatarDisplay"
+              src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=120&q=80"
+              alt="User Avatar"
+              class="w-7 h-7 rounded-full object-cover border border-accent-400/50"
+            />
+            <div class="text-xs text-slate-300 hidden sm:block">
+              <span class="text-[10px] text-slate-400 block">کاربر فعال:</span>
+              <strong id="userNameDisplay" class="text-white text-xs">مهندس رضا کریمی</strong>
+            </div>
           </div>
+
           <a
             href={`${baseUrl}/`}
             target="_blank"
-            class="text-xs text-slate-300 hover:text-accent-400 py-1.5 px-3 rounded-lg border border-slate-700 hover:border-accent-400 transition-colors"
+            class="text-xs text-slate-300 hover:text-accent-400 py-1.5 px-3 rounded-xl border border-slate-700 hover:border-accent-400 transition-colors hidden md:inline-flex items-center gap-1.5"
           >
-            مشاهده سایت اصلی ↗
+            <span>سایت اصلی</span>
+            <span class="text-[10px]">↗</span>
           </a>
+
           <button
             id="logoutBtn"
-            class="text-xs bg-red-950/60 hover:bg-red-900 text-red-200 py-1.5 px-3 rounded-lg border border-red-800 transition-colors"
+            class="text-xs bg-red-950/50 hover:bg-red-900 text-red-200 py-1.5 px-3 rounded-xl border border-red-800/80 transition-colors"
           >
             خروج
           </button>
@@ -60,56 +84,112 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     <div class="flex-grow flex flex-col md:flex-row">
       <!-- سایدبار ناوبری داشبورد -->
-      <aside class="w-full md:w-64 bg-primary-800 text-slate-200 p-4 border-e border-slate-700 shrink-0">
-        <!-- سوئیچ سریع نقش برای تست سناریوها -->
-        <div class="mb-6 p-3 rounded-xl bg-primary-900/80 border border-slate-700 text-xs">
-          <label class="block text-accent-400 font-bold mb-1">تست نقش کاربری (Demo):</label>
-          <select id="roleSwitcher" class="w-full p-1.5 rounded-lg bg-primary-800 border border-slate-600 text-white text-xs">
-            <option value="advisor">مشاور (مهندس کریمی)</option>
-            <option value="secretary">منشی (مریم سعیدی)</option>
-            <option value="admin">مدیرکل (حاج امید صبور)</option>
+      <aside class="w-full md:w-64 bg-primary-900 text-slate-200 p-4 border-e border-slate-800 shrink-0 shadow-lg">
+        <!-- سوئیچ پیشرفته کاربر برای شبیه‌سازی نقش‌ها -->
+        <div class="mb-6 p-3.5 rounded-2xl bg-primary-950/70 border border-accent-500/30 text-xs shadow-inner">
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="block text-accent-400 font-extrabold text-[11px]">👤 انتخاب کاربر فعال (شبیه‌ساز):</label>
+            <span class="text-[9px] bg-accent-500/20 text-accent-300 px-1.5 py-0.5 rounded font-mono">Demo</span>
+          </div>
+          <select
+            id="userSwitcherSelect"
+            class="w-full p-2 rounded-xl bg-primary-900 border border-slate-700 text-white text-xs focus:ring-1 focus:ring-accent-400 focus:outline-none"
+          >
+            <optgroup label="مشاوران املاک (Advisor)">
+              <option value="user-adv-101">مهندس رضا کریمی (مشاور ۱)</option>
+              <option value="user-adv-102">علیرضا احمدی (مشاور ۲)</option>
+              <option value="user-adv-103">سارا محمدی (مشاور ۳)</option>
+              <option value="user-adv-104">محمدرضا رضایی (مشاور ۴)</option>
+            </optgroup>
+            <optgroup label="سطوح دسترسی مدیریتی (Staff)">
+              <option value="user-sec-201">مریم سعیدی (منشی دفتر)</option>
+              <option value="user-adm-301">حاج امید صبور (مدیرکل آژانس)</option>
+            </optgroup>
           </select>
+          <div class="text-[10px] text-slate-400 mt-2 leading-relaxed">
+            💡 با تغییر کاربر، سطح دسترسی، اطلاعات فایلینگ و کیف پول به صورت آنی تغییر می‌کند.
+          </div>
         </div>
 
         <nav class="space-y-1.5 text-xs sm:text-sm">
           <a
             href={`${baseUrl}/dashboard/`}
-            class={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors ${activeNav === 'overview' ? 'bg-accent-500 text-primary-900 font-bold' : 'hover:bg-primary-700 text-slate-300'}`}
+            class={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all ${activeNav === 'overview' ? 'bg-gradient-to-l from-accent-500 to-accent-600 text-primary-950 font-black shadow-md' : 'hover:bg-primary-800/80 text-slate-300'}`}
           >
-            <span>📊</span> پیشخوان و آمار
+            <span class="text-base">📊</span>
+            <span>پیشخوان و آمار</span>
           </a>
 
           <a
+            id="navProperties"
             href={`${baseUrl}/dashboard/properties/`}
-            class={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors ${activeNav === 'properties' ? 'bg-accent-500 text-primary-900 font-bold' : 'hover:bg-primary-700 text-slate-300'}`}
+            class={`flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${activeNav === 'properties' ? 'bg-gradient-to-l from-accent-500 to-accent-600 text-primary-950 font-black shadow-md' : 'hover:bg-primary-800/80 text-slate-300'}`}
           >
-            <span>🏢</span> مدیریت املاک
+            <div class="flex items-center gap-3">
+              <span class="text-base">🏢</span>
+              <span id="propertiesNavText">مدیریت املاک و فایل‌ها</span>
+            </div>
+            <span id="propCountPill" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800/60 text-slate-300 border border-slate-700"></span>
           </a>
 
           <a
-            id="navLeads"
-            href={`${baseUrl}/dashboard/leads/`}
-            class={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors ${activeNav === 'leads' ? 'bg-accent-500 text-primary-900 font-bold' : 'hover:bg-primary-700 text-slate-300'}`}
+            id="navCoFiling"
+            href={`${baseUrl}/dashboard/co-filing/`}
+            class={`flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${activeNav === 'co-filing' ? 'bg-gradient-to-l from-accent-500 to-accent-600 text-primary-950 font-black shadow-md' : 'hover:bg-primary-800/80 text-slate-300'}`}
           >
-            <span>👥</span> باشگاه لیدها و تقاضا
+            <div class="flex items-center gap-3">
+              <span class="text-base">🤝</span>
+              <span>فایلینگ همکاران (فروش مشارکتی)</span>
+            </div>
+            <span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-bold">MLS</span>
           </a>
 
           <a
             id="navSales"
             href={`${baseUrl}/dashboard/sales/`}
-            class={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors ${activeNav === 'sales' ? 'bg-accent-500 text-primary-900 font-bold' : 'hover:bg-primary-700 text-slate-300'}`}
+            class={`flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${activeNav === 'sales' ? 'bg-gradient-to-l from-accent-500 to-accent-600 text-primary-950 font-black shadow-md' : 'hover:bg-primary-800/80 text-slate-300'}`}
           >
-            <span>🤝</span> ثبت فروش (اتمیک)
+            <div class="flex items-center gap-3">
+              <span class="text-base">✍️</span>
+              <span>قراردادها و تسویه فروش</span>
+            </div>
+            <span id="pendingSalesCountPill" class="hidden text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500 text-primary-950"></span>
           </a>
 
           <a
             id="navWallet"
             href={`${baseUrl}/dashboard/wallet/`}
-            class={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors ${activeNav === 'wallet' ? 'bg-accent-500 text-primary-900 font-bold' : 'hover:bg-primary-700 text-slate-300'}`}
+            class={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all ${activeNav === 'wallet' ? 'bg-gradient-to-l from-accent-500 to-accent-600 text-primary-950 font-black shadow-md' : 'hover:bg-primary-800/80 text-slate-300'}`}
           >
-            <span>💳</span> کیف پول و کارمزد
+            <span class="text-base">💳</span>
+            <span>کیف پول و حسابداری</span>
+          </a>
+
+          <a
+            id="navLeads"
+            href={`${baseUrl}/dashboard/leads/`}
+            class={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all ${activeNav === 'leads' ? 'bg-gradient-to-l from-accent-500 to-accent-600 text-primary-950 font-black shadow-md' : 'hover:bg-primary-800/80 text-slate-300'}`}
+          >
+            <span class="text-base">👥</span>
+            <span>باشگاه لیدها و تقاضا</span>
           </a>
         </nav>
+
+        <!-- باکس اطلاعات مشاور یا مدیر در پایین سایدبار -->
+        <div class="mt-8 pt-4 border-t border-slate-800 text-[11px] text-slate-400 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span>سیستم کنترل دسترسی:</span>
+            <span class="text-emerald-400 font-bold">فعال (RLS)</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span>محاسبه کمیسیون:</span>
+            <span class="text-accent-400 font-bold">اتمیک / ۳۰٪</span>
+          </div>
+          <div class="flex items-center justify-between">
+            <span>پشتیبانی دفاتر اهواز:</span>
+            <span class="text-slate-300">۰۶۱-۳۳۳۳۳۳۳۳</span>
+          </div>
+        </div>
       </aside>
 
       <!-- محتوای اصلی صفحات داشبورد -->
@@ -119,42 +199,81 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
 
     <script is:inline>
-      // مدیریت نقش کاربر در حافظه محلی جهت بررسی ماتریس دسترسی
-      const currentRole = localStorage.getItem('omid_current_role') || 'advisor';
-      const roleSwitcher = document.getElementById('roleSwitcher');
-      const roleBadge = document.getElementById('roleBadge');
-      const userNameDisplay = document.getElementById('userNameDisplay');
+      document.addEventListener('DOMContentLoaded', () => {
+        if (!window.OmidDashboard) return;
 
-      const roleLabels = {
-        advisor: { name: 'مهندس رضا کریمی', label: 'مشاور', badge: 'نقش: مشاور' },
-        secretary: { name: 'مریم سعیدی', label: 'منشی دفتر', badge: 'نقش: منشی' },
-        admin: { name: 'حاج امید صبور', label: 'مدیرکل آژانس', badge: 'نقش: مدیرکل' },
-      };
+        const currentUser = window.OmidDashboard.getCurrentUser();
+        const role = currentUser.role;
 
-      if (roleSwitcher) {
-        roleSwitcher.value = currentRole;
-        roleSwitcher.addEventListener('change', (e) => {
-          localStorage.setItem('omid_current_role', e.target.value);
-          window.location.reload();
+        // به‌روزرسانی نوار بالا
+        const roleBadge = document.getElementById('roleBadge');
+        const userNameDisplay = document.getElementById('userNameDisplay');
+        const userAvatarDisplay = document.getElementById('userAvatarDisplay');
+        const userSwitcher = document.getElementById('userSwitcherSelect');
+
+        if (roleBadge) {
+          roleBadge.innerText = `نقش: ${currentUser.roleLabel}`;
+          if (role === 'admin') {
+            roleBadge.className = 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-400/50';
+          } else if (role === 'secretary') {
+            roleBadge.className = 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/50';
+          } else {
+            roleBadge.className = 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-accent-500/20 text-accent-300 border border-accent-400/50';
+          }
+        }
+
+        if (userNameDisplay) userNameDisplay.innerText = currentUser.name;
+        if (userAvatarDisplay) userAvatarDisplay.src = currentUser.avatar;
+
+        if (userSwitcher) {
+          userSwitcher.value = currentUser.id;
+          userSwitcher.addEventListener('change', (e) => {
+            window.OmidDashboard.setCurrentUser(e.target.value);
+            window.location.reload();
+          });
+        }
+
+        // شمارنده پرونده‌ها و املاک
+        const props = window.OmidDashboard.getProperties();
+        const propCountPill = document.getElementById('propCountPill');
+        if (propCountPill) {
+          if (role === 'admin' || role === 'secretary') {
+            propCountPill.innerText = `${props.length} کل فایل‌ها`;
+          } else {
+            const myCount = props.filter((p) => p.advisor.id === currentUser.id).length;
+            propCountPill.innerText = `${myCount} فایل من`;
+          }
+        }
+
+        const propertiesNavText = document.getElementById('propertiesNavText');
+        if (propertiesNavText && (role === 'admin' || role === 'secretary')) {
+          propertiesNavText.innerText = 'مدیریت کل املاک (مدیر/منشی)';
+        }
+
+        // بررسی تسویه‌های در انتظار تایید
+        const sales = window.OmidDashboard.getSales();
+        const pendingSales = sales.filter((s) => s.payoutStatus === 'pending_approval');
+        const pendingBadge = document.getElementById('pendingApprovalBadge');
+        const pendingPill = document.getElementById('pendingSalesCountPill');
+
+        if (pendingSales.length > 0) {
+          if (pendingBadge && (role === 'admin' || role === 'secretary')) {
+            pendingBadge.classList.remove('hidden');
+            pendingBadge.innerText = `⚡ ${pendingSales.length} تسویه معوق`;
+          }
+          if (pendingPill) {
+            pendingPill.classList.remove('hidden');
+            pendingPill.innerText = `${pendingSales.length} در انتظار تایید`;
+          }
+        }
+
+        // خروج
+        document.getElementById('logoutBtn')?.addEventListener('click', () => {
+          localStorage.removeItem('omid_current_user_id');
+          localStorage.removeItem('omid_current_role');
+          const base = document.querySelector('header a')?.getAttribute('href')?.replace(/\/dashboard\/$/, '') || '';
+          window.location.href = `${base}/dashboard/login/`;
         });
-      }
-
-      if (roleBadge) roleBadge.innerText = roleLabels[currentRole].badge;
-      if (userNameDisplay) userNameDisplay.innerText = roleLabels[currentRole].name;
-
-      // ماتریس دسترسی UI (امنیت واقعی با RLS است، منو بر اساس نقش تنظیم می‌شود)
-      const navSales = document.getElementById('navSales');
-      const navWallet = document.getElementById('navWallet');
-      if (currentRole === 'secretary') {
-        if (navSales) navSales.style.display = 'none';
-        if (navWallet) navWallet.style.display = 'none';
-      }
-
-      // خروج
-      document.getElementById('logoutBtn')?.addEventListener('click', () => {
-        localStorage.removeItem('omid_current_role');
-        const base = document.querySelector('header a')?.getAttribute('href')?.replace(/\/dashboard\/$/, '') || '';
-        window.location.href = `${base}/dashboard/login/`;
       });
     </script>
   </body>

@@ -1,104 +1,244 @@
 ---
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
-import propertiesData from '../../data/properties.json';
-
-const properties = propertiesData;
-const availableCount = properties.filter((p) => p.status === 'available').length;
-const soldCount = properties.filter((p) => p.status === 'sold').length;
 ---
 
 <DashboardLayout title="پیشخوان مدیریت" activeNav="overview">
-  <div class="mb-8">
-    <h1 class="text-2xl font-black text-slate-900">پیشخوان آمار و عملکرد</h1>
-    <p class="text-xs text-slate-500 mt-1">خلاصه وضعیت پرونده‌های ملکی و تراکنش‌ها در محله گلستان اهواز</p>
+  <div class="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-2xl font-black text-slate-900 flex items-center gap-2">
+        <span>پیشخوان آمار و عملکرد املاک امید</span>
+      </h1>
+      <p class="text-xs text-slate-500 mt-1">خلاصه پرونده‌های ملکی، معاملات جاری، فایلینگ مشارکتی و امور مالی در گلستان اهواز</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span id="overviewDateBadge" class="text-xs bg-white border border-slate-200 px-3 py-1.5 rounded-xl font-mono text-slate-600 shadow-sm">
+        ۱۴۰۳/۰۷/۱۸
+      </span>
+    </div>
   </div>
 
-  <!-- کارت‌های آمار کلیدی ۴گانه -->
+  <!-- بنر هشدار تسویه‌های معوق برای مدیرکل و منشی -->
+  <div id="pendingPayoutBanner" class="hidden mb-8 p-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-primary-950 font-bold text-xs shadow-md flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <span class="text-2xl">⚡</span>
+      <div>
+        <strong class="text-sm block">توجه مدیریت: تسویه کارمزد معوق در انتظار اقدام</strong>
+        <span class="font-normal text-[11px] text-primary-950/90" id="pendingPayoutBannerText"></span>
+      </div>
+    </div>
+    <a
+      href="../sales/"
+      class="bg-primary-950 hover:bg-primary-900 text-white font-bold text-xs py-2 px-4 rounded-xl shadow transition-colors shrink-0"
+    >
+      بررسی و واریز آنی ↗
+    </a>
+  </div>
+
+  <!-- کارت‌های آمار کلیدی ۴گانه پویا -->
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
       <div class="flex items-center justify-between mb-2">
-        <span class="text-xs text-slate-500 font-bold">فایل‌های من / فعال</span>
+        <span class="text-xs text-slate-500 font-bold" id="card1Label">فایل‌های فعال</span>
         <span class="text-2xl">🏢</span>
       </div>
-      <div class="text-2xl font-black text-slate-900 font-mono">{availableCount} ملک</div>
+      <div class="text-2xl font-black text-slate-900 font-mono" id="card1Val">۰ ملک</div>
       <div class="text-[11px] text-emerald-600 font-semibold mt-1">آماده معامله در گلستان</div>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
       <div class="flex items-center justify-between mb-2">
-        <span class="text-xs text-slate-500 font-bold">فروش‌های ثبت‌شده</span>
+        <span class="text-xs text-slate-500 font-bold">قراردادهای ثبت‌شده</span>
         <span class="text-2xl">🤝</span>
       </div>
-      <div class="text-2xl font-black text-slate-900 font-mono">{soldCount} معامله</div>
-      <div class="text-[11px] text-blue-600 font-semibold mt-1">ثبت اتمیک در سامانه</div>
+      <div class="text-2xl font-black text-slate-900 font-mono" id="card2Val">۰ معامله</div>
+      <div class="text-[11px] text-blue-600 font-semibold mt-1">شامل مستقیم و مشارکتی</div>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
       <div class="flex items-center justify-between mb-2">
-        <span class="text-xs text-slate-500 font-bold">موجودی کیف پول مشاور</span>
+        <span class="text-xs text-slate-500 font-bold" id="card3Label">موجودی کیف پول</span>
         <span class="text-2xl">💳</span>
       </div>
-      <div class="text-xl font-black text-amber-600 font-mono">۶۲٬۰۰۰٬۰۰۰ تومان</div>
-      <div class="text-[11px] text-slate-400 mt-1">محاسبه خودکار بر مبنای ۳۰٪</div>
+      <div class="text-xl font-black text-amber-600 font-mono" id="card3Val">۰ تومان</div>
+      <div class="text-[11px] text-slate-400 mt-1">محاسبه بر مبنای نرخ ۳۰٪ پورسانت</div>
     </div>
 
-    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+    <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
       <div class="flex items-center justify-between mb-2">
-        <span class="text-xs text-slate-500 font-bold">لیدها و تقاضاهای جدید</span>
-        <span class="text-2xl">📩</span>
+        <span class="text-xs text-slate-500 font-bold">فایلینگ اشتراکی همکاران</span>
+        <span class="text-2xl">🌐</span>
       </div>
-      <div class="text-2xl font-black text-slate-900 font-mono">۷ درخواست</div>
-      <div class="text-[11px] text-amber-600 font-semibold mt-1">نیازمند پیگیری مشاور</div>
+      <div class="text-2xl font-black text-slate-900 font-mono" id="card4Val">۰ فایل</div>
+      <div class="text-[11px] text-emerald-600 font-semibold mt-1">فرصت‌های فروش مشارکتی</div>
     </div>
   </div>
 
-  <!-- بخش اقدام سریع و لیست پرونده‌ها -->
+  <!-- بخش اصلی: پرونده‌های اخیر و عملیات سریع -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+    <div class="lg:col-span-2 bg-white rounded-3xl p-6 shadow-sm border border-slate-200">
       <div class="flex items-center justify-between mb-4">
-        <h2 class="text-base font-bold text-slate-900">آخرین وضعیت فایل‌های مسکونی</h2>
-        <a href="../properties/" class="text-xs text-primary-700 font-bold hover:underline">مشاهده همه</a>
+        <div>
+          <h2 class="text-base font-black text-slate-900" id="recentPropsTitle">آخرین وضعیت پرونده‌های ملکی</h2>
+          <p class="text-[11px] text-slate-400">به‌روزرسانی همگام با سیستم RLS</p>
+        </div>
+        <a href="../properties/" class="text-xs text-primary-700 font-bold hover:underline">مشاهده همه ↗</a>
       </div>
 
-      <div class="divide-y divide-slate-100 text-xs">
-        {properties.map((prop) => (
-          <div class="py-3 flex items-center justify-between">
-            <div>
-              <strong class="block text-slate-900 text-sm mb-0.5">{prop.title}</strong>
-              <span class="text-slate-400">{prop.address}</span>
-            </div>
-            <div class="text-end">
-              <span class={`inline-block px-2.5 py-1 rounded-md text-[11px] font-bold ${prop.status === 'available' ? 'bg-emerald-100 text-emerald-800' : prop.status === 'negotiating' ? 'bg-amber-100 text-amber-800' : 'bg-slate-200 text-slate-700'}`}>
-                {prop.statusLabel}
-              </span>
-            </div>
-          </div>
-        ))}
+      <div class="divide-y divide-slate-100 text-xs" id="overviewPropsList">
+        <!-- داینامیک -->
       </div>
     </div>
 
-    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
-      <h2 class="text-base font-bold text-slate-900 mb-4">عملیات سریع</h2>
-      <div class="space-y-3">
-        <a
-          href="../properties/"
-          class="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
-        >
-          <span>➕</span> ثبت فایل و ملک جدید
-        </a>
-        <a
-          href="../sales/"
-          class="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
-        >
-          <span>✍️</span> ثبت فروش و شارژ کیف پول
-        </a>
-        <a
-          href="../leads/"
-          class="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
-        >
-          <span>👥</span> بررسی لیدهای فرم مشاوره
-        </a>
+    <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between">
+      <div>
+        <h2 class="text-base font-black text-slate-900 mb-1">عملیات سریع و میانبرها</h2>
+        <p class="text-[11px] text-slate-400 mb-5">دسترسی سریع به امکانات پرکاربرد پنل</p>
+
+        <div class="space-y-3">
+          <a
+            href="../properties/"
+            class="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
+          >
+            <div class="flex items-center gap-3">
+              <span class="text-lg">➕</span>
+              <span>ثبت یا مدیریت فایل ملکی</span>
+            </div>
+            <span class="text-slate-400">←</span>
+          </a>
+
+          <a
+            href="../co-filing/"
+            class="w-full flex items-center justify-between p-3.5 rounded-2xl bg-emerald-50/70 hover:bg-emerald-100/80 border border-emerald-200 text-xs font-bold text-emerald-900 transition-colors"
+          >
+            <div class="flex items-center gap-3">
+              <span class="text-lg">🤝</span>
+              <span>فایلینگ اشتراکی و فروش مشارکتی</span>
+            </div>
+            <span class="text-emerald-500">←</span>
+          </a>
+
+          <a
+            href="../sales/"
+            class="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
+          >
+            <div class="flex items-center gap-3">
+              <span class="text-lg">✍️</span>
+              <span>قراردادها و تسویه کارمزد</span>
+            </div>
+            <span class="text-slate-400">←</span>
+          </a>
+
+          <a
+            href="../wallet/"
+            class="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
+          >
+            <div class="flex items-center gap-3">
+              <span class="text-lg">💳</span>
+              <span>کیف پول و دفتر کل تراکنش‌ها</span>
+            </div>
+            <span class="text-slate-400">←</span>
+          </a>
+
+          <a
+            href="../leads/"
+            class="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
+          >
+            <div class="flex items-center gap-3">
+              <span class="text-lg">👥</span>
+              <span>باشگاه متقاضیان و لیدها</span>
+            </div>
+            <span class="text-slate-400">←</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- باکس یادآوری امنیتی -->
+      <div class="mt-6 p-4 rounded-2xl bg-primary-950 text-white text-[11px] leading-relaxed">
+        <div class="text-accent-400 font-bold mb-1">🔒 نظارت و انضباط مالی:</div>
+        <p class="text-slate-300">
+          تمامی تغییرات کیف پول و تسویه‌ها به صورت غیرقابل تغییر در دفتر کل ثبت شده و دارای ردیابی کاربر است.
+        </p>
       </div>
     </div>
   </div>
 </DashboardLayout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!window.OmidDashboard) return;
+
+    const currentUser = window.OmidDashboard.getCurrentUser();
+    const isStaff = currentUser.role === 'admin' || currentUser.role === 'secretary';
+
+    document.getElementById('overviewDateBadge').innerText = window.OmidDashboard.getJalaliDate();
+
+    const allProps = window.OmidDashboard.getProperties();
+    const allSales = window.OmidDashboard.getSales();
+    const pendingSales = allSales.filter((s) => s.payoutStatus === 'pending_approval');
+
+    // بنر تسویه معوق
+    if (isStaff && pendingSales.length > 0) {
+      const banner = document.getElementById('pendingPayoutBanner');
+      const text = document.getElementById('pendingPayoutBannerText');
+      banner.classList.remove('hidden');
+      text.innerText = `تعداد ${pendingSales.length} معامله جدید ثبت شده و در انتظار تایید واریز پورسانت به کیف پول مشاوران است.`;
+    }
+
+    // مقادیر کارت‌های آمار
+    if (isStaff) {
+      document.getElementById('card1Label').innerText = 'کل فایل‌های آژانس';
+      document.getElementById('card1Val').innerText = `${allProps.length} ملک`;
+
+      document.getElementById('card3Label').innerText = 'کل پورسانت‌های تسویه‌شده';
+      const totalPaid = allSales
+        .filter((s) => s.payoutStatus === 'paid')
+        .reduce((sum, s) => sum + (s.listingAdvisorShareToman || 0) + (s.sellingAdvisorShareToman || 0), 0);
+      document.getElementById('card3Val').innerText = window.OmidDashboard.formatToman(totalPaid);
+    } else {
+      const myProps = allProps.filter((p) => p.advisor.id === currentUser.id);
+      document.getElementById('card1Label').innerText = 'فایل‌های اختصاصی من';
+      document.getElementById('card1Val').innerText = `${myProps.length} ملک`;
+
+      document.getElementById('card3Label').innerText = 'موجودی کیف پول من';
+      const myBal = window.OmidDashboard.getAdvisorBalance(currentUser.id);
+      document.getElementById('card3Val').innerText = window.OmidDashboard.formatToman(myBal);
+    }
+
+    document.getElementById('card2Val').innerText = `${allSales.length} معامله`;
+    document.getElementById('card4Val').innerText = `${allProps.filter((p) => p.status === 'available').length} فرصت فعال`;
+
+    // لیست پرونده‌های اخیر
+    const propsList = document.getElementById('overviewPropsList');
+    const displayProps = isStaff ? allProps.slice(0, 5) : allProps.filter((p) => p.advisor.id === currentUser.id).slice(0, 5);
+
+    if (displayProps.length === 0) {
+      propsList.innerHTML = '<div class="py-6 text-center text-slate-400">فایلی جهت نمایش وجود ندارد.</div>';
+    } else {
+      propsList.innerHTML = displayProps.map((p) => `
+        <div class="py-3.5 flex items-center justify-between gap-4">
+          <div>
+            <strong class="block text-slate-900 text-sm mb-0.5">${p.title}</strong>
+            <div class="text-slate-400 text-[11px] flex items-center gap-2">
+              <span>📍 ${p.address}</span>
+              ${isStaff ? `<span class="bg-primary-50 text-primary-800 px-2 py-0.5 rounded font-bold">مشاور: ${p.advisor.name}</span>` : ''}
+            </div>
+          </div>
+          <div class="text-end shrink-0">
+            <span class="inline-block px-2.5 py-1 rounded-lg text-[11px] font-bold ${
+              p.status === 'available'
+                ? 'bg-emerald-100 text-emerald-800'
+                : p.status === 'negotiating'
+                ? 'bg-amber-100 text-amber-800'
+                : 'bg-slate-200 text-slate-700'
+            }">
+              ${p.statusLabel}
+            </span>
+            <div class="font-mono text-slate-700 font-bold text-xs mt-1">
+              ${window.OmidDashboard.formatToman(p.priceToman)}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+  });
+</script>

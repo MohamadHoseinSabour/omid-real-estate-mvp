@@ -1,161 +1,496 @@
 ---
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
-import propertiesData from '../../data/properties.json';
-import { formatToman } from '../../utils/calculators';
-
-const availableProperties = propertiesData.filter((p) => p.status === 'available');
-
-const sampleSales = [
-  {
-    id: 'sale-101',
-    propertyTitle: 'پنت‌هاوس ۲۱۰ متری خیابان آبان',
-    buyerName: 'دکتر محمدرضا کیانی',
-    buyerPhone: '۰۹۱۲۴۴۴۵۵۶۶',
-    finalPrice: 6200000000,
-    totalCommission: 62000000,
-    snapshotRate: 0.30,
-    advisorShare: 18600000,
-    saleDate: '۱۴۰۳/۰۶/۲۸'
-  }
-];
 ---
 
-<DashboardLayout title="ثبت فروش و قراردادها" activeNav="sales">
-  <div class="mb-8">
-    <h1 class="text-2xl font-black text-slate-900">ثبت رسمی فروش (تابع اتمیک Postgres)</h1>
-    <p class="text-xs text-slate-500 mt-1">
-      ثبت قرارداد نهایی، تغییر وضعیت خودکار ملک به «فروخته شد»، و شارژ همزمان سهم مشاور در کیف پول در قالب یک تراکنش اتمیک
-    </p>
+<DashboardLayout title="قراردادها و تسویه کارمزد فروش" activeNav="sales">
+  <!-- هدر صفحه -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+    <div>
+      <div class="flex items-center gap-3">
+        <h1 class="text-2xl font-black text-slate-900">قراردادها، فروش و تسویه کمیسیون</h1>
+        <span id="salesAccessBadge" class="text-xs px-2.5 py-0.5 rounded-full font-bold"></span>
+      </div>
+      <p class="text-xs text-slate-500 mt-1">
+        بررسی وضعیت معاملات قطعی، فروش‌های انفرادی و مشارکتی، و تایید با یک کلیک جهت واریز پورسانت به کیف پول مشاوران
+      </p>
+    </div>
+    <div class="flex items-center gap-3">
+      <a
+        href="../co-filing/"
+        class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-xs py-2.5 px-4 rounded-xl transition-colors flex items-center gap-2"
+      >
+        <span>🤝</span> فایلینگ اشتراکی (فروش مشارکتی)
+      </a>
+      <button
+        id="openDirectSaleBtn"
+        class="bg-gradient-to-l from-primary-900 to-primary-800 hover:from-primary-800 hover:to-primary-700 text-white font-bold text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-2"
+      >
+        <span>✍️</span> ثبت معامله مستقیم جدید
+      </button>
+    </div>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-    <!-- فرم ثبت فروش اتمیک -->
-    <div class="lg:col-span-2 bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
-      <h2 class="text-base font-bold text-primary-900 mb-6 border-s-4 border-accent-500 ps-2">
-        فرم صدور مبایعه‌نامه و ثبت فروش
-      </h2>
+  <!-- کارت‌های آماری شاخص کلیدی (KPIs) -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+      <div class="flex items-center justify-between text-xs text-slate-500 font-bold mb-2">
+        <span>مجموع حجم معاملات</span>
+        <span class="text-xl">💰</span>
+      </div>
+      <div id="statTotalVolume" class="text-xl font-black text-slate-900 font-mono">۰ تومان</div>
+      <div class="text-[11px] text-slate-400 mt-1 font-mono" id="statSalesCount">۰ قرارداد قطعی</div>
+    </div>
 
-      <form id="recordSaleForm" class="space-y-4 text-xs">
+    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+      <div class="flex items-center justify-between text-xs text-slate-500 font-bold mb-2">
+        <span>کل کمیسیون ناخالص آژانس</span>
+        <span class="text-xl">🏢</span>
+      </div>
+      <div id="statTotalCommission" class="text-xl font-black text-primary-900 font-mono">۰ تومان</div>
+      <div class="text-[11px] text-emerald-600 font-bold mt-1">درآمد کل آژانس امید</div>
+    </div>
+
+    <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+      <div class="flex items-center justify-between text-xs text-slate-500 font-bold mb-2">
+        <span>پورسانت‌های واریزشده مشاوران</span>
+        <span class="text-xl">💳</span>
+      </div>
+      <div id="statPaidShares" class="text-xl font-black text-emerald-700 font-mono">۰ تومان</div>
+      <div class="text-[11px] text-slate-400 mt-1">تسویه‌شده در کیف پول</div>
+    </div>
+
+    <div class="bg-white p-5 rounded-2xl shadow-sm border border-amber-300/80 bg-amber-50/40">
+      <div class="flex items-center justify-between text-xs text-amber-900 font-bold mb-2">
+        <span>تسویه‌های در انتظار تایید</span>
+        <span class="text-xl">⚡</span>
+      </div>
+      <div id="statPendingCount" class="text-xl font-black text-amber-700 font-mono">۰ معامله</div>
+      <div class="text-[11px] text-amber-800 font-semibold mt-1">نیازمند تایید مدیر/منشی</div>
+    </div>
+  </div>
+
+  <!-- نوار جستجو و فیلتر فروش‌ها -->
+  <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-6 flex flex-wrap items-center justify-between gap-4 text-xs">
+    <div class="flex flex-wrap items-center gap-3 flex-grow max-w-xl">
+      <div class="relative flex-grow min-w-[200px]">
+        <input
+          type="text"
+          id="salesSearchInput"
+          placeholder="جستجو در قراردادها، نام خریدار یا ملک..."
+          class="w-full ps-9 pe-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-1 focus:ring-accent-500 focus:outline-none"
+        />
+        <span class="absolute start-3 top-2.5 text-slate-400">🔍</span>
+      </div>
+
+      <select id="payoutFilterSelect" class="p-2 rounded-xl border border-slate-300 text-xs bg-slate-50 focus:outline-none">
+        <option value="all">همه وضعیت‌های تسویه</option>
+        <option value="pending_approval">در انتظار تأیید و واریز (معوق)</option>
+        <option value="paid">تسویه و واریز شده</option>
+      </select>
+
+      <select id="saleTypeFilterSelect" class="p-2 rounded-xl border border-slate-300 text-xs bg-slate-50 focus:outline-none">
+        <option value="all">همه انواع معامله</option>
+        <option value="direct">فقط معاملات مستقیم</option>
+        <option value="co_brokered">فقط فروش مشارکتی (همکاری ۲ مشاور)</option>
+      </select>
+    </div>
+
+    <div class="text-slate-500 font-bold" id="salesStatsCounter">
+      در حال بارگذاری...
+    </div>
+  </div>
+
+  <!-- جدول معاملات و قراردادها -->
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-12">
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs text-start" id="salesTable">
+        <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+          <tr>
+            <th class="p-3.5 text-start">کد / مشخصات ملک</th>
+            <th class="p-3.5 text-start">نوع معامله</th>
+            <th class="p-3.5 text-start">مشاوران درگیر در معامله</th>
+            <th class="p-3.5 text-start">خریدار / قیمت نهایی</th>
+            <th class="p-3.5 text-start">کمیسیون کل و سهم پورسانت</th>
+            <th class="p-3.5 text-start">وضعیت تسویه</th>
+            <th class="p-3.5 text-center">اقدام مدیر / منشی</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100" id="salesTableBody">
+          <!-- با جاوااسکریپت داینامیک رندر می‌شود -->
+        </tbody>
+      </table>
+    </div>
+
+    <div id="noSalesFound" class="hidden p-12 text-center text-slate-400 text-xs">
+      هیچ معامله‌ای با این مشخصات یافت نشد.
+    </div>
+  </div>
+
+  <!-- مودال ثبت معامله مستقیم جدید -->
+  <div id="directSaleModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-xl rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-6">
+        <div>
+          <h2 class="text-base font-black text-primary-950 border-s-4 border-accent-500 ps-2">ثبت قرارداد فروش مستقیم</h2>
+          <p class="text-[11px] text-slate-500 mt-0.5">فروش فایل اختصاصی مشاور به خریدار مستقیم</p>
+        </div>
+        <button type="button" id="closeDirectModalX" class="text-slate-400 hover:text-slate-700 text-lg">✕</button>
+      </div>
+
+      <form id="directSaleForm" class="space-y-4 text-xs">
         <div>
           <label class="block font-bold text-slate-700 mb-1">انتخاب ملک مورد معامله *</label>
-          <select id="salePropertySelect" required class="w-full p-2.5 rounded-lg border border-slate-300 text-xs bg-white">
+          <select id="directPropertySelect" required class="w-full p-2.5 rounded-xl border border-slate-300 text-xs bg-white font-bold">
             <option value="">-- ملکی را انتخاب کنید --</option>
-            {availableProperties.map((p) => (
-              <option value={p.id} data-price={p.priceToman}>
-                {p.title} ({formatToman(p.priceToman)})
-              </option>
-            ))}
           </select>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block font-bold text-slate-700 mb-1">نام و نام خانوادگی خریدار *</label>
-            <input type="text" id="buyerName" required placeholder="مثال: دکتر کیانی" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs" />
+            <input type="text" id="directBuyerName" required placeholder="مثال: مهندس حسینی" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs" />
           </div>
           <div>
             <label class="block font-bold text-slate-700 mb-1">شماره همراه خریدار *</label>
-            <input type="tel" id="buyerPhone" required placeholder="۰۹۱۲۳۴۵۶۷۸۹" dir="ltr" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs text-end font-mono" />
+            <input type="tel" id="directBuyerPhone" required placeholder="۰۹۱۲۳۴۵۶۷۸۹" dir="ltr" class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-mono text-end" />
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block font-bold text-slate-700 mb-1">مبلغ نهایی معامله (تومان) *</label>
-            <input type="number" id="finalPriceInput" required placeholder="۴۲۵۰۰۰۰۰۰۰" dir="ltr" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs text-end font-mono" />
+            <input type="number" id="directFinalPrice" required class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-mono text-end font-bold" dir="ltr" />
           </div>
           <div>
-            <label class="block font-bold text-slate-700 mb-1">کل کمیسیون دریافتی آژانس (تومان) *</label>
-            <input type="number" id="totalCommissionInput" required placeholder="۴۲۵۰۰۰۰۰" dir="ltr" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs text-end font-mono" />
+            <label class="block font-bold text-slate-700 mb-1">کل کمیسیون آژانس (تومان) *</label>
+            <input type="number" id="directTotalComm" required class="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-mono text-end font-bold" dir="ltr" />
           </div>
         </div>
 
-        <!-- پیش‌نمایش محاسبات سهم مشاور -->
-        <div class="p-4 rounded-xl bg-accent-100/50 border border-accent-400/40 text-xs space-y-2">
+        <!-- پیش‌نمایش سهم کارمزد ۳۰٪ مشاور -->
+        <div class="p-3.5 rounded-2xl bg-accent-50/70 border border-accent-300/80 text-xs space-y-1.5">
           <div class="flex justify-between text-slate-700">
-            <span>نرخ اسنپ‌شات کمیسیون مشاور:</span>
+            <span>نرخ پورسانت مشاور:</span>
             <span class="font-bold font-mono">۳۰ درصد (۰٫۳۰)</span>
           </div>
-          <div class="flex justify-between font-bold text-primary-900 text-sm pt-2 border-t border-accent-300/40">
+          <div class="flex justify-between font-bold text-primary-950 text-sm pt-1 border-t border-accent-200">
             <span>سهم واریزی به کیف پول مشاور:</span>
-            <span id="calculatedShare" class="text-emerald-700 font-mono">۰ تومان</span>
+            <span id="directCalculatedShare" class="text-emerald-700 font-mono">۰ تومان</span>
           </div>
         </div>
 
-        <button
-          type="submit"
-          class="w-full py-3 px-6 rounded-xl bg-primary-700 hover:bg-primary-800 text-white font-bold text-sm transition-colors shadow-md"
-        >
-          اجرای تراکنش اتمیک ثبت فروش (record_sale)
-        </button>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">توضیحات و شماره مبایعه‌نامه</label>
+          <input type="text" id="directNotes" placeholder="مثال: قرارداد رسمی شماره ۴۵۰۳ در دفترخانه تنظیم شد." class="w-full p-2.5 rounded-xl border border-slate-300 text-xs" />
+        </div>
+
+        <div class="flex justify-end gap-3 pt-4 border-t border-slate-100">
+          <button type="button" id="cancelDirectModalBtn" class="px-5 py-2.5 border rounded-xl text-slate-600 font-bold hover:bg-slate-50">انصراف</button>
+          <button type="submit" class="px-6 py-2.5 bg-primary-900 hover:bg-primary-800 text-white rounded-xl font-bold shadow-md">
+            ثبت معامله
+          </button>
+        </div>
       </form>
-    </div>
-
-    <!-- راهنمای معماری اتمیک -->
-    <div class="bg-primary-900 text-white rounded-2xl p-6 shadow-sm border border-slate-700 text-xs leading-relaxed space-y-3">
-      <div class="text-accent-400 font-bold text-sm mb-2">⚡ نحوه عملکرد تابع اتمیک:</div>
-      <p>
-        ۱. بررسی مالکیت مشاور یا نقش مدیرکل جهت جلوگیری از تداخل پرونده‌ها.
-      </p>
-      <p>
-        ۲. قفل شدن سطر جدول ملک (`FOR UPDATE`) تا همزمان توسط کاربر دیگری فروخته نشود.
-      </p>
-      <p>
-        ۳. ذخیره اسنپ‌شات نرخ روز کمیسیون روی رکورد فروش تا تغییرات آتی روی سابقه اثر نگذارد.
-      </p>
-      <p>
-        ۴. درج همزمان در جدول تراکنش‌های کیف پول و تغییر وضعیت به `sold` در یک مرحله بدون امکان خطا.
-      </p>
-    </div>
-  </div>
-
-  <!-- تاریخچه فروش‌های ثبت‌شده -->
-  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-    <div class="p-4 bg-slate-50 border-b border-slate-200">
-      <h3 class="text-sm font-bold text-slate-800">قراردادهای قطعی و فروش‌های ثبت‌شده</h3>
-    </div>
-    <div class="overflow-x-auto">
-      <table class="w-full text-xs text-start">
-        <thead class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
-          <tr>
-            <th class="p-3.5 text-start">ملک</th>
-            <th class="p-3.5 text-start">خریدار</th>
-            <th class="p-3.5 text-start">قیمت نهایی معامله</th>
-            <th class="p-3.5 text-start">کمیسیون کل</th>
-            <th class="p-3.5 text-start">سهم مشاور (۳۰٪)</th>
-            <th class="p-3.5 text-start">تاریخ ثبت</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-slate-100">
-          {sampleSales.map((s) => (
-            <tr class="hover:bg-slate-50/70">
-              <td class="p-3.5 font-bold text-slate-900">{s.propertyTitle}</td>
-              <td class="p-3.5 text-slate-700">{s.buyerName} ({s.buyerPhone})</td>
-              <td class="p-3.5 font-mono font-bold text-slate-800">{formatToman(s.finalPrice)}</td>
-              <td class="p-3.5 font-mono text-slate-600">{formatToman(s.totalCommission)}</td>
-              <td class="p-3.5 font-mono font-bold text-emerald-700">{formatToman(s.advisorShare)}</td>
-              <td class="p-3.5 text-slate-400 font-mono">{s.saleDate}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   </div>
 </DashboardLayout>
 
 <script is:inline>
-  const totalCommInput = document.getElementById('totalCommissionInput');
-  const shareDisplay = document.getElementById('calculatedShare');
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!window.OmidDashboard) return;
 
-  totalCommInput?.addEventListener('input', () => {
-    const val = parseFloat(totalCommInput.value) || 0;
-    const share = Math.round(val * 0.30);
-    const fmt = new Intl.NumberFormat('fa-IR').format(share) + ' تومان';
-    if (shareDisplay) shareDisplay.innerText = fmt;
-  });
+    const currentUser = window.OmidDashboard.getCurrentUser();
+    const isStaff = currentUser.role === 'admin' || currentUser.role === 'secretary';
 
-  document.getElementById('recordSaleForm')?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    alert('تراکنش اتمیک با موفقیت اجرا شد!\n- وضعیت ملک به "فروخته شد" تغییر یافت.\n- سهم کمیسیون در کیف پول مشاور شارژ گردید.');
+    const accessBadge = document.getElementById('salesAccessBadge');
+    if (accessBadge) {
+      if (currentUser.role === 'admin') {
+        accessBadge.innerText = 'دسترسی مدیرکل (تایید تسویه و واریز آنی)';
+        accessBadge.className = 'text-xs px-2.5 py-0.5 rounded-full font-bold bg-rose-100 text-rose-800 border border-rose-300';
+      } else if (currentUser.role === 'secretary') {
+        accessBadge.innerText = 'دسترسی منشی دفتر (تایید تسویه و واریز آنی)';
+        accessBadge.className = 'text-xs px-2.5 py-0.5 rounded-full font-bold bg-blue-100 text-blue-800 border border-blue-300';
+      } else {
+        accessBadge.innerText = 'دسترسی مشاور (مشاهده وضعیت واریز کارمزد)';
+        accessBadge.className = 'text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
+      }
+    }
+
+    function renderSales() {
+      const allSales = window.OmidDashboard.getSales();
+      const searchQuery = (document.getElementById('salesSearchInput')?.value || '').toLowerCase().trim();
+      const payoutFilter = document.getElementById('payoutFilterSelect')?.value || 'all';
+      const typeFilter = document.getElementById('saleTypeFilterSelect')?.value || 'all';
+
+      // فیلتر جستجو و تب‌ها
+      let filtered = allSales;
+
+      // مشاوران عادی همه معاملات یا معاملات خود را مشاهده می‌کنند
+      if (!isStaff) {
+        filtered = filtered.filter(
+          (s) => s.listingAdvisorId === currentUser.id || s.sellingAdvisorId === currentUser.id
+        );
+      }
+
+      if (payoutFilter !== 'all') {
+        filtered = filtered.filter((s) => s.payoutStatus === payoutFilter);
+      }
+
+      if (typeFilter !== 'all') {
+        filtered = filtered.filter((s) => s.saleType === typeFilter);
+      }
+
+      if (searchQuery) {
+        filtered = filtered.filter((s) =>
+          s.propertyTitle.toLowerCase().includes(searchQuery) ||
+          s.buyerName.toLowerCase().includes(searchQuery) ||
+          s.listingAdvisorName.toLowerCase().includes(searchQuery) ||
+          (s.sellingAdvisorName && s.sellingAdvisorName.toLowerCase().includes(searchQuery))
+        );
+      }
+
+      // به‌روزرسانی کارت‌های آماری
+      const totalVolume = allSales.reduce((acc, curr) => acc + (curr.finalPriceToman || 0), 0);
+      const totalCommission = allSales.reduce((acc, curr) => acc + (curr.totalCommissionToman || 0), 0);
+      const paidShares = allSales
+        .filter((s) => s.payoutStatus === 'paid')
+        .reduce((acc, curr) => acc + (curr.listingAdvisorShareToman || 0) + (curr.sellingAdvisorShareToman || 0), 0);
+      const pendingSales = allSales.filter((s) => s.payoutStatus === 'pending_approval');
+
+      document.getElementById('statTotalVolume').innerText = window.OmidDashboard.formatToman(totalVolume);
+      document.getElementById('statSalesCount').innerText = `${allSales.length} قرارداد ثبت‌شده`;
+      document.getElementById('statTotalCommission').innerText = window.OmidDashboard.formatToman(totalCommission);
+      document.getElementById('statPaidShares').innerText = window.OmidDashboard.formatToman(paidShares);
+      document.getElementById('statPendingCount').innerText = `${pendingSales.length} معامله`;
+
+      const tbody = document.getElementById('salesTableBody');
+      const counter = document.getElementById('salesStatsCounter');
+      const noSales = document.getElementById('noSalesFound');
+
+      if (counter) {
+        counter.innerText = `نمایش ${filtered.length} معامله از مجموع ${allSales.length}`;
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '';
+        noSales.classList.remove('hidden');
+        return;
+      }
+
+      noSales.classList.add('hidden');
+      tbody.innerHTML = filtered.map((sale) => {
+        const isCoSale = sale.saleType === 'co_brokered';
+        const isPaid = sale.payoutStatus === 'paid';
+
+        return `
+          <tr class="hover:bg-slate-50/80 transition-colors">
+            <!-- ستون کد و عنوان ملک -->
+            <td class="p-3.5">
+              <div class="font-bold text-slate-900">${sale.propertyTitle}</div>
+              <div class="text-[11px] text-slate-400 font-mono flex items-center gap-2 mt-0.5">
+                <span class="bg-slate-100 px-1.5 py-0.2 rounded">${sale.id}</span>
+                <span>تاریخ: ${sale.saleDate}</span>
+              </div>
+            </td>
+
+            <!-- ستون نوع معامله -->
+            <td class="p-3.5">
+              ${
+                isCoSale
+                  ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-[11px]">
+                      <span>🤝</span> همکاری دوطرفه (مشارکتی)
+                    </span>`
+                  : `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-blue-100 text-blue-800 border border-blue-200 font-bold text-[11px]">
+                      <span>👤</span> معامله مستقیم
+                    </span>`
+              }
+            </td>
+
+            <!-- مشاوران درگیر در معامله -->
+            <td class="p-3.5">
+              ${
+                isCoSale
+                  ? `<div class="space-y-1">
+                      <div class="flex items-center gap-1.5 text-slate-800">
+                        <span class="text-[10px] bg-slate-200 px-1 rounded text-slate-600 font-semibold">مالک فایل:</span>
+                        <strong>${sale.listingAdvisorName}</strong>
+                      </div>
+                      <div class="flex items-center gap-1.5 text-emerald-800">
+                        <span class="text-[10px] bg-emerald-200 px-1 rounded text-emerald-700 font-semibold">فروشنده:</span>
+                        <strong>${sale.sellingAdvisorName}</strong>
+                      </div>
+                    </div>`
+                  : `<div class="font-bold text-slate-800">${sale.listingAdvisorName}</div>
+                     <span class="text-[10px] text-slate-400">مشاور ثبت و فروش</span>`
+              }
+            </td>
+
+            <!-- خریدار و مبلغ معامله -->
+            <td class="p-3.5">
+              <div class="font-bold text-slate-900">${sale.buyerName}</div>
+              <div class="text-[11px] text-slate-500 font-mono" dir="ltr">${sale.buyerPhone}</div>
+              <div class="text-[11px] font-mono font-bold text-slate-700 mt-0.5">
+                ${window.OmidDashboard.formatToman(sale.finalPriceToman)}
+              </div>
+            </td>
+
+            <!-- کمیسیون و سهم پورسانت مشاوران -->
+            <td class="p-3.5">
+              <div class="text-slate-500 text-[11px]">
+                کل کمیسیون: <strong class="font-mono text-slate-800">${window.OmidDashboard.formatToman(sale.totalCommissionToman)}</strong>
+              </div>
+              ${
+                isCoSale
+                  ? `<div class="mt-1 space-y-0.5 font-mono text-[11px]">
+                      <div class="text-slate-700">
+                        سهم ${sale.listingAdvisorName.split(' ')[0]}: <strong class="text-emerald-700">${window.OmidDashboard.formatToman(sale.listingAdvisorShareToman)}</strong>
+                      </div>
+                      <div class="text-slate-700">
+                        سهم ${sale.sellingAdvisorName.split(' ')[0]}: <strong class="text-emerald-700">${window.OmidDashboard.formatToman(sale.sellingAdvisorShareToman)}</strong>
+                      </div>
+                    </div>`
+                  : `<div class="mt-0.5 text-emerald-700 font-mono font-bold">
+                      سهم مشاور (۳۰٪): ${window.OmidDashboard.formatToman(sale.listingAdvisorShareToman)}
+                    </div>`
+              }
+            </td>
+
+            <!-- وضعیت تسویه -->
+            <td class="p-3.5">
+              ${
+                isPaid
+                  ? `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[11px] border border-emerald-200">
+                      <span>✓</span> تسویه و واریز شد
+                    </span>
+                    <div class="text-[10px] text-slate-400 mt-1">تایید: ${sale.approvedBy || 'مدیریت'}</div>`
+                  : `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 font-bold text-[11px] border border-amber-300 animate-pulse">
+                      <span>⚡</span> در انتظار تأیید تسویه
+                    </span>`
+              }
+            </td>
+
+            <!-- اقدام ویژه مدیر و منشی -->
+            <td class="p-3.5 text-center">
+              ${
+                !isPaid
+                  ? isStaff
+                    ? `<button
+                        type="button"
+                        data-action="approve"
+                        data-id="${sale.id}"
+                        data-title="${sale.propertyTitle}"
+                        class="px-3 py-1.5 rounded-xl bg-gradient-to-l from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold text-[11px] shadow-sm transition-all flex items-center justify-center gap-1 mx-auto"
+                        title="تایید و واریز به کیف پول مشاور"
+                      >
+                        <span>⚡</span>
+                        <span>تأیید و واریز به کیف پول</span>
+                      </button>`
+                    : `<span class="text-[11px] text-slate-400">در انتظار تایید مدیر/منشی</span>`
+                  : `<span class="text-emerald-600 font-bold text-[11px]">واریزشده 💳</span>`
+              }
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // اتصال دکمه‌های تایید تسویه با یک کلیک
+      tbody.querySelectorAll('button[data-action="approve"]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const saleId = btn.getAttribute('data-id');
+          const title = btn.getAttribute('data-title');
+
+          if (confirm(`آیا تایید می‌فرمایید که کمیسیون محاسبه‌شده برای معامله "${title}" هم‌اکنون به کیف پول مشاور(ها) واریز گردد؟`)) {
+            try {
+              window.OmidDashboard.approveSalePayout(saleId);
+              window.OmidDashboard.showToast(
+                `کمیسیون معامله با موفقیت تایید و مستقیماً به کیف پول مشاور(ها) واریز گردید!`,
+                'success'
+              );
+              renderSales();
+            } catch (err) {
+              alert(err.message);
+            }
+          }
+        });
+      });
+    }
+
+    // باز کردن مودال ثبت فروش مستقیم
+    const directModal = document.getElementById('directSaleModal');
+    const openDirectBtn = document.getElementById('openDirectSaleBtn');
+    const closeDirectBtn = document.getElementById('closeDirectModalX');
+    const cancelDirectBtn = document.getElementById('cancelDirectModalBtn');
+
+    openDirectBtn?.addEventListener('click', () => {
+      // پر کردن لیست املاک موجود
+      const props = window.OmidDashboard.getProperties().filter((p) => p.status !== 'sold');
+      const select = document.getElementById('directPropertySelect');
+      if (select) {
+        select.innerHTML = '<option value="">-- ملکی را انتخاب کنید --</option>' +
+          props.map((p) => `<option value="${p.id}" data-price="${p.priceToman}">${p.title} (${window.OmidDashboard.formatToman(p.priceToman)})</option>`).join('');
+      }
+      directModal.classList.remove('hidden');
+    });
+
+    closeDirectBtn?.addEventListener('click', () => directModal.classList.add('hidden'));
+    cancelDirectBtn?.addEventListener('click', () => directModal.classList.add('hidden'));
+
+    // بروزرسانی قیمت و کمیسیون پیش‌فرض هنگام تغییر ملک
+    document.getElementById('directPropertySelect')?.addEventListener('change', (e) => {
+      const selected = e.target.options[e.target.selectedIndex];
+      const price = Number(selected.getAttribute('data-price')) || 0;
+      if (price > 0) {
+        document.getElementById('directFinalPrice').value = price;
+        const comm = Math.round(price * 0.01);
+        document.getElementById('directTotalComm').value = comm;
+        updateDirectShareCalc(comm);
+      }
+    });
+
+    function updateDirectShareCalc(totalComm) {
+      const share = Math.round(totalComm * 0.30);
+      document.getElementById('directCalculatedShare').innerText = window.OmidDashboard.formatToman(share);
+    }
+
+    document.getElementById('directTotalComm')?.addEventListener('input', (e) => {
+      updateDirectShareCalc(Number(e.target.value) || 0);
+    });
+
+    // ثبت فرم فروش مستقیم
+    document.getElementById('directSaleForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      try {
+        const propId = document.getElementById('directPropertySelect').value;
+        const buyerName = document.getElementById('directBuyerName').value;
+        const buyerPhone = document.getElementById('directBuyerPhone').value;
+        const finalPriceToman = Number(document.getElementById('directFinalPrice').value);
+        const totalCommissionToman = Number(document.getElementById('directTotalComm').value);
+        const notes = document.getElementById('directNotes').value;
+
+        window.OmidDashboard.recordDirectSale({
+          propertyId: propId,
+          buyerName,
+          buyerPhone,
+          finalPriceToman,
+          totalCommissionToman,
+          notes,
+        });
+
+        window.OmidDashboard.showToast('معامله با موفقیت ثبت شد و در صف تسویه کمیسیون قرار گرفت.', 'success');
+        directModal.classList.add('hidden');
+        document.getElementById('directSaleForm').reset();
+        renderSales();
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    // رویدادهای فیلتر و جستجو
+    document.getElementById('salesSearchInput')?.addEventListener('input', renderSales);
+    document.getElementById('payoutFilterSelect')?.addEventListener('change', renderSales);
+    document.getElementById('saleTypeFilterSelect')?.addEventListener('change', renderSales);
+
+    // رندر اولیه
+    renderSales();
   });
 </script>
