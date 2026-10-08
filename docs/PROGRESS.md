@@ -16,27 +16,39 @@
 - Completed: 2026-10-08
 - Commit: `3975064`
 
-## Phase 5: SEO, Performance & Accessibility 🔄
+## Phase 5: SEO, Performance & Accessibility ✅
+- Completed: 2026-10-08
+- Commit: `bfc1f10`
+
+## Phase 6: Dashboard & Backend (Supabase) 🔄
 
 ### Completed
-- [x] Step 5.1: Structured Data (Schema.org JSON-LD) component created (`src/components/SchemaMarkup.astro`):
-  - `RealEstateAgent` & `LocalBusiness` for Ahvaz agency
-  - `RealEstateListing` & `Accommodation` with Toman pricing and InStock/SoldOut availability
-  - `Article` schema for blog posts
-  - `BreadcrumbList` for SERP breadcrumbs
-- [x] Step 5.2: Production XML Sitemap created (`public/sitemap.xml`) with all 17 canonical URLs
-- [x] Step 5.3: Layout enhanced with automated canonical URLs, Open Graph, and Twitter Cards
-- [x] Step 5.4: WCAG 2.1 AA accessibility audit: color contrast, keyboard focus, semantic HTML, and RTL logical properties
-- [x] Step 5.5: Comprehensive audit document created (`docs/SEO_AUDIT.md`)
-- [x] Step 5.6: Build verified (`npm run build:fast` in 1.32s) & unit tests verified (7/7 passed)
+- [x] Step 6.1: Database migrations created in `supabase/migrations/`:
+  - `001_initial_schema.sql` (6 tables, enums, bigint Toman currencies, performance indexes)
+  - `002_rls_policies_and_functions.sql` (Row Level Security on all tables, helper functions, and atomic RPC)
+- [x] Step 6.2: RLS access matrix strictly enforced for 3 roles: Advisor, Secretary, Admin
+- [x] Step 6.3: Atomic Postgres function `record_sale()` implemented:
+  - Row locking (`FOR UPDATE`)
+  - Snapshot commission rate saved on sales record
+  - Advisor share calculated
+  - Status marked as `sold`
+  - Inserted into append-only `wallet_transactions` ledger
+- [x] Step 6.4: RLS security test suite written (`supabase/tests/rls_security_test.sql`)
+- [x] Step 6.5: SPA Dashboard pages built under `/dashboard/`:
+  - Client helper (`src/lib/supabase.ts`)
+  - Dashboard layout (`src/layouts/DashboardLayout.astro`) with live role switcher
+  - Login page (`/dashboard/login/`)
+  - Overview / KPI stats (`/dashboard/`)
+  - Properties management (`/dashboard/properties/`)
+  - Customer club & leads (`/dashboard/leads/`)
+  - Sales atomic recording (`/dashboard/sales/`)
+  - Append-only wallet ledger (`/dashboard/wallet/`)
+- [x] Step 6.6: Security checklist verified; build verified (23 pages in 1.24s)
 
 ### Current Status
-✅ Phase 5 complete — awaiting approval
+✅ Phase 6 complete — awaiting approval
 
 ---
-
-## Phase 6: Dashboard & Backend (Supabase)
-_Not yet started_
 
 ## Phase 7: QA, Launch & Handoff
 _Not yet started_

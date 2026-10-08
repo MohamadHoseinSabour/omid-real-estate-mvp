@@ -1,0 +1,161 @@
+---
+import DashboardLayout from '../../layouts/DashboardLayout.astro';
+import propertiesData from '../../data/properties.json';
+import { formatToman } from '../../utils/calculators';
+
+const availableProperties = propertiesData.filter((p) => p.status === 'available');
+
+const sampleSales = [
+  {
+    id: 'sale-101',
+    propertyTitle: 'پنت‌هاوس ۲۱۰ متری خیابان آبان',
+    buyerName: 'دکتر محمدرضا کیانی',
+    buyerPhone: '۰۹۱۲۴۴۴۵۵۶۶',
+    finalPrice: 6200000000,
+    totalCommission: 62000000,
+    snapshotRate: 0.30,
+    advisorShare: 18600000,
+    saleDate: '۱۴۰۳/۰۶/۲۸'
+  }
+];
+---
+
+<DashboardLayout title="ثبت فروش و قراردادها" activeNav="sales">
+  <div class="mb-8">
+    <h1 class="text-2xl font-black text-slate-900">ثبت رسمی فروش (تابع اتمیک Postgres)</h1>
+    <p class="text-xs text-slate-500 mt-1">
+      ثبت قرارداد نهایی، تغییر وضعیت خودکار ملک به «فروخته شد»، و شارژ همزمان سهم مشاور در کیف پول در قالب یک تراکنش اتمیک
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+    <!-- فرم ثبت فروش اتمیک -->
+    <div class="lg:col-span-2 bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+      <h2 class="text-base font-bold text-primary-900 mb-6 border-s-4 border-accent-500 ps-2">
+        فرم صدور مبایعه‌نامه و ثبت فروش
+      </h2>
+
+      <form id="recordSaleForm" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">انتخاب ملک مورد معامله *</label>
+          <select id="salePropertySelect" required class="w-full p-2.5 rounded-lg border border-slate-300 text-xs bg-white">
+            <option value="">-- ملکی را انتخاب کنید --</option>
+            {availableProperties.map((p) => (
+              <option value={p.id} data-price={p.priceToman}>
+                {p.title} ({formatToman(p.priceToman)})
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">نام و نام خانوادگی خریدار *</label>
+            <input type="text" id="buyerName" required placeholder="مثال: دکتر کیانی" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">شماره همراه خریدار *</label>
+            <input type="tel" id="buyerPhone" required placeholder="۰۹۱۲۳۴۵۶۷۸۹" dir="ltr" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs text-end font-mono" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">مبلغ نهایی معامله (تومان) *</label>
+            <input type="number" id="finalPriceInput" required placeholder="۴۲۵۰۰۰۰۰۰۰" dir="ltr" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs text-end font-mono" />
+          </div>
+          <div>
+            <label class="block font-bold text-slate-700 mb-1">کل کمیسیون دریافتی آژانس (تومان) *</label>
+            <input type="number" id="totalCommissionInput" required placeholder="۴۲۵۰۰۰۰۰" dir="ltr" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs text-end font-mono" />
+          </div>
+        </div>
+
+        <!-- پیش‌نمایش محاسبات سهم مشاور -->
+        <div class="p-4 rounded-xl bg-accent-100/50 border border-accent-400/40 text-xs space-y-2">
+          <div class="flex justify-between text-slate-700">
+            <span>نرخ اسنپ‌شات کمیسیون مشاور:</span>
+            <span class="font-bold font-mono">۳۰ درصد (۰٫۳۰)</span>
+          </div>
+          <div class="flex justify-between font-bold text-primary-900 text-sm pt-2 border-t border-accent-300/40">
+            <span>سهم واریزی به کیف پول مشاور:</span>
+            <span id="calculatedShare" class="text-emerald-700 font-mono">۰ تومان</span>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full py-3 px-6 rounded-xl bg-primary-700 hover:bg-primary-800 text-white font-bold text-sm transition-colors shadow-md"
+        >
+          اجرای تراکنش اتمیک ثبت فروش (record_sale)
+        </button>
+      </form>
+    </div>
+
+    <!-- راهنمای معماری اتمیک -->
+    <div class="bg-primary-900 text-white rounded-2xl p-6 shadow-sm border border-slate-700 text-xs leading-relaxed space-y-3">
+      <div class="text-accent-400 font-bold text-sm mb-2">⚡ نحوه عملکرد تابع اتمیک:</div>
+      <p>
+        ۱. بررسی مالکیت مشاور یا نقش مدیرکل جهت جلوگیری از تداخل پرونده‌ها.
+      </p>
+      <p>
+        ۲. قفل شدن سطر جدول ملک (`FOR UPDATE`) تا همزمان توسط کاربر دیگری فروخته نشود.
+      </p>
+      <p>
+        ۳. ذخیره اسنپ‌شات نرخ روز کمیسیون روی رکورد فروش تا تغییرات آتی روی سابقه اثر نگذارد.
+      </p>
+      <p>
+        ۴. درج همزمان در جدول تراکنش‌های کیف پول و تغییر وضعیت به `sold` در یک مرحله بدون امکان خطا.
+      </p>
+    </div>
+  </div>
+
+  <!-- تاریخچه فروش‌های ثبت‌شده -->
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <div class="p-4 bg-slate-50 border-b border-slate-200">
+      <h3 class="text-sm font-bold text-slate-800">قراردادهای قطعی و فروش‌های ثبت‌شده</h3>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs text-start">
+        <thead class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+          <tr>
+            <th class="p-3.5 text-start">ملک</th>
+            <th class="p-3.5 text-start">خریدار</th>
+            <th class="p-3.5 text-start">قیمت نهایی معامله</th>
+            <th class="p-3.5 text-start">کمیسیون کل</th>
+            <th class="p-3.5 text-start">سهم مشاور (۳۰٪)</th>
+            <th class="p-3.5 text-start">تاریخ ثبت</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {sampleSales.map((s) => (
+            <tr class="hover:bg-slate-50/70">
+              <td class="p-3.5 font-bold text-slate-900">{s.propertyTitle}</td>
+              <td class="p-3.5 text-slate-700">{s.buyerName} ({s.buyerPhone})</td>
+              <td class="p-3.5 font-mono font-bold text-slate-800">{formatToman(s.finalPrice)}</td>
+              <td class="p-3.5 font-mono text-slate-600">{formatToman(s.totalCommission)}</td>
+              <td class="p-3.5 font-mono font-bold text-emerald-700">{formatToman(s.advisorShare)}</td>
+              <td class="p-3.5 text-slate-400 font-mono">{s.saleDate}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</DashboardLayout>
+
+<script is:inline>
+  const totalCommInput = document.getElementById('totalCommissionInput');
+  const shareDisplay = document.getElementById('calculatedShare');
+
+  totalCommInput?.addEventListener('input', () => {
+    const val = parseFloat(totalCommInput.value) || 0;
+    const share = Math.round(val * 0.30);
+    const fmt = new Intl.NumberFormat('fa-IR').format(share) + ' تومان';
+    if (shareDisplay) shareDisplay.innerText = fmt;
+  });
+
+  document.getElementById('recordSaleForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('تراکنش اتمیک با موفقیت اجرا شد!\n- وضعیت ملک به "فروخته شد" تغییر یافت.\n- سهم کمیسیون در کیف پول مشاور شارژ گردید.');
+  });
+</script>

@@ -1,0 +1,161 @@
+---
+interface Props {
+  title: string;
+  activeNav?: 'overview' | 'properties' | 'leads' | 'sales' | 'wallet' | 'settings';
+}
+
+const { title, activeNav = 'overview' } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | پنل مدیریت املاک امید</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link
+      href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+  <body class="bg-slate-100 text-slate-800 font-vazir min-h-screen flex flex-col">
+    <!-- نوار بالای داشبورد -->
+    <header class="bg-primary-900 text-white border-b-2 border-accent-500 sticky top-0 z-40">
+      <div class="px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <a href={`${baseUrl}/dashboard/`} class="flex items-center gap-2">
+            <span class="w-8 h-8 rounded-lg bg-accent-500 text-primary-900 font-black flex items-center justify-center text-sm">
+              ام
+            </span>
+            <span class="font-extrabold text-base sm:text-lg text-accent-400">داشبورد املاک امید</span>
+          </a>
+          <span id="roleBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-accent-500/20 text-accent-300 border border-accent-400/30">
+            نقش: مشاور
+          </span>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="text-xs text-slate-300 hidden sm:block">
+            کاربر: <strong id="userNameDisplay" class="text-white">مهندس رضا کریمی</strong>
+          </div>
+          <a
+            href={`${baseUrl}/`}
+            target="_blank"
+            class="text-xs text-slate-300 hover:text-accent-400 py-1.5 px-3 rounded-lg border border-slate-700 hover:border-accent-400 transition-colors"
+          >
+            مشاهده سایت اصلی ↗
+          </a>
+          <button
+            id="logoutBtn"
+            class="text-xs bg-red-950/60 hover:bg-red-900 text-red-200 py-1.5 px-3 rounded-lg border border-red-800 transition-colors"
+          >
+            خروج
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="flex-grow flex flex-col md:flex-row">
+      <!-- سایدبار ناوبری داشبورد -->
+      <aside class="w-full md:w-64 bg-primary-800 text-slate-200 p-4 border-e border-slate-700 shrink-0">
+        <!-- سوئیچ سریع نقش برای تست سناریوها -->
+        <div class="mb-6 p-3 rounded-xl bg-primary-900/80 border border-slate-700 text-xs">
+          <label class="block text-accent-400 font-bold mb-1">تست نقش کاربری (Demo):</label>
+          <select id="roleSwitcher" class="w-full p-1.5 rounded-lg bg-primary-800 border border-slate-600 text-white text-xs">
+            <option value="advisor">مشاور (مهندس کریمی)</option>
+            <option value="secretary">منشی (مریم سعیدی)</option>
+            <option value="admin">مدیرکل (حاج امید صبور)</option>
+          </select>
+        </div>
+
+        <nav class="space-y-1.5 text-xs sm:text-sm">
+          <a
+            href={`${baseUrl}/dashboard/`}
+            class={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors ${activeNav === 'overview' ? 'bg-accent-500 text-primary-900 font-bold' : 'hover:bg-primary-700 text-slate-300'}`}
+          >
+            <span>📊</span> پیشخوان و آمار
+          </a>
+
+          <a
+            href={`${baseUrl}/dashboard/properties/`}
+            class={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors ${activeNav === 'properties' ? 'bg-accent-500 text-primary-900 font-bold' : 'hover:bg-primary-700 text-slate-300'}`}
+          >
+            <span>🏢</span> مدیریت املاک
+          </a>
+
+          <a
+            id="navLeads"
+            href={`${baseUrl}/dashboard/leads/`}
+            class={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors ${activeNav === 'leads' ? 'bg-accent-500 text-primary-900 font-bold' : 'hover:bg-primary-700 text-slate-300'}`}
+          >
+            <span>👥</span> باشگاه لیدها و تقاضا
+          </a>
+
+          <a
+            id="navSales"
+            href={`${baseUrl}/dashboard/sales/`}
+            class={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors ${activeNav === 'sales' ? 'bg-accent-500 text-primary-900 font-bold' : 'hover:bg-primary-700 text-slate-300'}`}
+          >
+            <span>🤝</span> ثبت فروش (اتمیک)
+          </a>
+
+          <a
+            id="navWallet"
+            href={`${baseUrl}/dashboard/wallet/`}
+            class={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-colors ${activeNav === 'wallet' ? 'bg-accent-500 text-primary-900 font-bold' : 'hover:bg-primary-700 text-slate-300'}`}
+          >
+            <span>💳</span> کیف پول و کارمزد
+          </a>
+        </nav>
+      </aside>
+
+      <!-- محتوای اصلی صفحات داشبورد -->
+      <main class="flex-grow p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        <slot />
+      </main>
+    </div>
+
+    <script is:inline>
+      // مدیریت نقش کاربر در حافظه محلی جهت بررسی ماتریس دسترسی
+      const currentRole = localStorage.getItem('omid_current_role') || 'advisor';
+      const roleSwitcher = document.getElementById('roleSwitcher');
+      const roleBadge = document.getElementById('roleBadge');
+      const userNameDisplay = document.getElementById('userNameDisplay');
+
+      const roleLabels = {
+        advisor: { name: 'مهندس رضا کریمی', label: 'مشاور', badge: 'نقش: مشاور' },
+        secretary: { name: 'مریم سعیدی', label: 'منشی دفتر', badge: 'نقش: منشی' },
+        admin: { name: 'حاج امید صبور', label: 'مدیرکل آژانس', badge: 'نقش: مدیرکل' },
+      };
+
+      if (roleSwitcher) {
+        roleSwitcher.value = currentRole;
+        roleSwitcher.addEventListener('change', (e) => {
+          localStorage.setItem('omid_current_role', e.target.value);
+          window.location.reload();
+        });
+      }
+
+      if (roleBadge) roleBadge.innerText = roleLabels[currentRole].badge;
+      if (userNameDisplay) userNameDisplay.innerText = roleLabels[currentRole].name;
+
+      // ماتریس دسترسی UI (امنیت واقعی با RLS است، منو بر اساس نقش تنظیم می‌شود)
+      const navSales = document.getElementById('navSales');
+      const navWallet = document.getElementById('navWallet');
+      if (currentRole === 'secretary') {
+        if (navSales) navSales.style.display = 'none';
+        if (navWallet) navWallet.style.display = 'none';
+      }
+
+      // خروج
+      document.getElementById('logoutBtn')?.addEventListener('click', () => {
+        localStorage.removeItem('omid_current_role');
+        const base = document.querySelector('header a')?.getAttribute('href')?.replace(/\/dashboard\/$/, '') || '';
+        window.location.href = `${base}/dashboard/login/`;
+      });
+    </script>
+  </body>
+</html>

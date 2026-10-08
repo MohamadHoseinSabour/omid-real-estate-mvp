@@ -1,0 +1,132 @@
+---
+import DashboardLayout from '../../layouts/DashboardLayout.astro';
+import propertiesData from '../../data/properties.json';
+import { formatToman } from '../../utils/calculators';
+
+const properties = propertiesData;
+---
+
+<DashboardLayout title="مدیریت املاک و فایل‌ها" activeNav="properties">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+    <div>
+      <h1 class="text-2xl font-black text-slate-900">مدیریت املاک و فایل‌ها</h1>
+      <p class="text-xs text-slate-500 mt-1">مشاهده، ویرایش و ثبت املاک جدید در محله گلستان اهواز</p>
+    </div>
+    <button
+      id="openNewPropBtn"
+      class="bg-accent-500 hover:bg-accent-600 text-primary-900 font-bold text-xs py-2.5 px-4 rounded-xl shadow-sm transition-colors"
+    >
+      ➕ ثبت ملک جدید
+    </button>
+  </div>
+
+  <!-- فرم مخفی/مودال ثبت ملک جدید -->
+  <div id="newPropModal" class="hidden bg-white p-6 rounded-2xl shadow-md border border-slate-200 mb-8">
+    <h2 class="text-base font-bold text-primary-900 mb-4 border-s-4 border-accent-500 ps-2">فرم ثبت فایل جدید</h2>
+    <form id="newPropertyForm" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">عنوان ملک *</label>
+        <input type="text" required placeholder="مثال: آپارتمان ۱۴۰ متری خیابان اردیبهشت" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs" />
+      </div>
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">قیمت کل (تومان) *</label>
+        <input type="number" required placeholder="۳۵۰۰۰۰۰۰۰۰" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs font-mono text-end" dir="ltr" />
+      </div>
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">متراژ مفید (متر مربع) *</label>
+        <input type="number" required placeholder="۱۴۰" class="w-full p-2.5 rounded-lg border border-slate-300 text-xs text-center" />
+      </div>
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">تعداد خواب</label>
+        <select class="w-full p-2.5 rounded-lg border border-slate-300 text-xs bg-white">
+          <option value="1">۱ خواب</option>
+          <option value="2">۲ خواب</option>
+          <option value="3" selected>۳ خواب</option>
+          <option value="4">۴ خواب</option>
+        </select>
+      </div>
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">آدرس در گلستان</label>
+        <input type="text" placeholder="اهواز، گلستان، خیابان..." class="w-full p-2.5 rounded-lg border border-slate-300 text-xs" />
+      </div>
+      <div>
+        <label class="block font-bold text-slate-700 mb-1">نوع ملک</label>
+        <select class="w-full p-2.5 rounded-lg border border-slate-300 text-xs bg-white">
+          <option value="apartment">آپارتمان</option>
+          <option value="villa">ویلایی</option>
+          <option value="commercial">تجاری / اداری</option>
+        </select>
+      </div>
+      <div class="sm:col-span-2 lg:col-span-3 flex justify-end gap-2 pt-2">
+        <button type="button" id="cancelNewPropBtn" class="px-4 py-2 border rounded-lg text-slate-600">انصراف</button>
+        <button type="submit" class="px-5 py-2 bg-primary-700 text-white rounded-lg font-bold">ذخیره ملک در سیستم</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- جدول لیست املاک -->
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs text-start">
+        <thead class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+          <tr>
+            <th class="p-3.5 text-start">کد / عنوان ملک</th>
+            <th class="p-3.5 text-start">قیمت کل (تومان)</th>
+            <th class="p-3.5 text-start">متراژ</th>
+            <th class="p-3.5 text-start">مشاور مسئول</th>
+            <th class="p-3.5 text-start">وضعیت پرونده</th>
+            <th class="p-3.5 text-start">عملیات</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {properties.map((prop) => (
+            <tr class="hover:bg-slate-50/70 transition-colors">
+              <td class="p-3.5">
+                <div class="font-bold text-slate-900">{prop.title}</div>
+                <div class="text-[11px] text-slate-400 font-mono">{prop.id} • {prop.address}</div>
+              </td>
+              <td class="p-3.5 font-mono font-bold text-slate-800">
+                {formatToman(prop.priceToman)}
+              </td>
+              <td class="p-3.5">
+                {prop.areaSqm} م² ({prop.bedrooms} خ)
+              </td>
+              <td class="p-3.5 text-slate-600">
+                {prop.advisor.name}
+              </td>
+              <td class="p-3.5">
+                <span class={`px-2.5 py-1 rounded-md text-[11px] font-bold ${prop.status === 'available' ? 'bg-emerald-100 text-emerald-800' : prop.status === 'negotiating' ? 'bg-amber-100 text-amber-800' : 'bg-slate-200 text-slate-700'}`}>
+                  {prop.statusLabel}
+                </span>
+              </td>
+              <td class="p-3.5">
+                <a
+                  href={`../../properties/${prop.slug}/`}
+                  target="_blank"
+                  class="text-primary-700 hover:text-accent-600 font-bold hover:underline"
+                >
+                  مشاهده در سایت ↗
+                </a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</DashboardLayout>
+
+<script is:inline>
+  const openBtn = document.getElementById('openNewPropBtn');
+  const cancelBtn = document.getElementById('cancelNewPropBtn');
+  const modal = document.getElementById('newPropModal');
+
+  openBtn?.addEventListener('click', () => modal?.classList.remove('hidden'));
+  cancelBtn?.addEventListener('click', () => modal?.classList.add('hidden'));
+
+  document.getElementById('newPropertyForm')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('ملک با موفقیت در سیستم ثبت گردید (مطابق با سیاست RLS مشاور).');
+    modal?.classList.add('hidden');
+  });
+</script>

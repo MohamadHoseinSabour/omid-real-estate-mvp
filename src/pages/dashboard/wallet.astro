@@ -1,0 +1,98 @@
+---
+import DashboardLayout from '../../layouts/DashboardLayout.astro';
+import { formatToman } from '../../utils/calculators';
+
+const sampleTransactions = [
+  {
+    id: 'tx-01',
+    date: '۱۴۰۳/۰۶/۲۸',
+    amount: 18600000,
+    type: 'کارمزد فروش',
+    description: 'سهم کارمزد فروش ملک: پنت‌هاوس ۲۱۰ متری خیابان آبان (نرخ ۳۰٪)',
+    status: 'شارژ شد'
+  },
+  {
+    id: 'tx-02',
+    date: '۱۴۰۳/۰۵/۱۴',
+    amount: 14200000,
+    type: 'کارمزد فروش',
+    description: 'سهم کارمزد فروش ملک: آپارتمان ۱۱۰ متری فروردین (نرخ ۳۰٪)',
+    status: 'شارژ شد'
+  },
+  {
+    id: 'tx-03',
+    date: '۱۴۰۳/۰۴/۰۲',
+    amount: 29200000,
+    type: 'کارمزد فروش',
+    description: 'سهم کارمزد فروش ملک: ویلایی خیابان بوستان (نرخ ۳۰٪)',
+    status: 'شارژ شد'
+  }
+];
+
+const totalBalance = sampleTransactions.reduce((acc, curr) => acc + curr.amount, 0);
+---
+
+<DashboardLayout title="کیف پول و حسابداری کارمزد" activeNav="wallet">
+  <div class="mb-8">
+    <h1 class="text-2xl font-black text-slate-900">کیف پول و سهم کارمزد مشاور</h1>
+    <p class="text-xs text-slate-500 mt-1">دفتر کل تراکنش‌های حسابداری (فقط افزودنی / Append-Only) بر مبنای ریال و تومان</p>
+  </div>
+
+  <!-- کارت موجودی انباشته -->
+  <div class="bg-gradient-to-r from-primary-900 via-primary-800 to-primary-900 text-white p-8 rounded-3xl shadow-lg border-2 border-accent-500/40 mb-8 max-w-xl">
+    <div class="flex items-center justify-between mb-4">
+      <span class="text-xs text-slate-300 font-bold">مجموع موجودی کارمزد تأییدشده:</span>
+      <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 px-2.5 py-0.5 rounded-full font-bold">
+        حساب فعال
+      </span>
+    </div>
+    <div class="text-3xl sm:text-4xl font-black text-accent-400 font-mono mb-2">
+      {formatToman(totalBalance)}
+    </div>
+    <p class="text-xs text-slate-400">
+      * ثبت حسابداری داخلی دفتر املاک امید — بدون درگاه پرداخت یا تسویه آنلاین خارج از سیستم
+    </p>
+  </div>
+
+  <!-- جدول تراکنش‌های دفتر کل (Ledger) -->
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <div class="p-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+      <h3 class="text-sm font-bold text-slate-800">ریز تراکنش‌های واریزی کیف پول</h3>
+      <span class="text-[11px] text-slate-400 font-mono">Append-Only Ledger</span>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-xs text-start">
+        <thead class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
+          <tr>
+            <th class="p-3.5 text-start">شناسه تراکنش</th>
+            <th class="p-3.5 text-start">نوع</th>
+            <th class="p-3.5 text-start">شرح تراکنش و ملک مربوطه</th>
+            <th class="p-3.5 text-start">مبلغ واریزی</th>
+            <th class="p-3.5 text-start">تاریخ</th>
+            <th class="p-3.5 text-start">وضعیت</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          {sampleTransactions.map((tx) => (
+            <tr class="hover:bg-slate-50/70">
+              <td class="p-3.5 font-mono text-slate-400">{tx.id}</td>
+              <td class="p-3.5">
+                <span class="px-2 py-0.5 rounded bg-primary-100 text-primary-800 font-bold text-[11px]">
+                  {tx.type}
+                </span>
+              </td>
+              <td class="p-3.5 text-slate-800">{tx.description}</td>
+              <td class="p-3.5 font-mono font-bold text-emerald-700">{formatToman(tx.amount)}</td>
+              <td class="p-3.5 text-slate-400 font-mono">{tx.date}</td>
+              <td class="p-3.5">
+                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[11px]">
+                  {tx.status}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</DashboardLayout>

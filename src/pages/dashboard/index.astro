@@ -1,0 +1,104 @@
+---
+import DashboardLayout from '../../layouts/DashboardLayout.astro';
+import propertiesData from '../../data/properties.json';
+
+const properties = propertiesData;
+const availableCount = properties.filter((p) => p.status === 'available').length;
+const soldCount = properties.filter((p) => p.status === 'sold').length;
+---
+
+<DashboardLayout title="پیشخوان مدیریت" activeNav="overview">
+  <div class="mb-8">
+    <h1 class="text-2xl font-black text-slate-900">پیشخوان آمار و عملکرد</h1>
+    <p class="text-xs text-slate-500 mt-1">خلاصه وضعیت پرونده‌های ملکی و تراکنش‌ها در محله گلستان اهواز</p>
+  </div>
+
+  <!-- کارت‌های آمار کلیدی ۴گانه -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs text-slate-500 font-bold">فایل‌های من / فعال</span>
+        <span class="text-2xl">🏢</span>
+      </div>
+      <div class="text-2xl font-black text-slate-900 font-mono">{availableCount} ملک</div>
+      <div class="text-[11px] text-emerald-600 font-semibold mt-1">آماده معامله در گلستان</div>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs text-slate-500 font-bold">فروش‌های ثبت‌شده</span>
+        <span class="text-2xl">🤝</span>
+      </div>
+      <div class="text-2xl font-black text-slate-900 font-mono">{soldCount} معامله</div>
+      <div class="text-[11px] text-blue-600 font-semibold mt-1">ثبت اتمیک در سامانه</div>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs text-slate-500 font-bold">موجودی کیف پول مشاور</span>
+        <span class="text-2xl">💳</span>
+      </div>
+      <div class="text-xl font-black text-amber-600 font-mono">۶۲٬۰۰۰٬۰۰۰ تومان</div>
+      <div class="text-[11px] text-slate-400 mt-1">محاسبه خودکار بر مبنای ۳۰٪</div>
+    </div>
+
+    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs text-slate-500 font-bold">لیدها و تقاضاهای جدید</span>
+        <span class="text-2xl">📩</span>
+      </div>
+      <div class="text-2xl font-black text-slate-900 font-mono">۷ درخواست</div>
+      <div class="text-[11px] text-amber-600 font-semibold mt-1">نیازمند پیگیری مشاور</div>
+    </div>
+  </div>
+
+  <!-- بخش اقدام سریع و لیست پرونده‌ها -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-base font-bold text-slate-900">آخرین وضعیت فایل‌های مسکونی</h2>
+        <a href="../properties/" class="text-xs text-primary-700 font-bold hover:underline">مشاهده همه</a>
+      </div>
+
+      <div class="divide-y divide-slate-100 text-xs">
+        {properties.map((prop) => (
+          <div class="py-3 flex items-center justify-between">
+            <div>
+              <strong class="block text-slate-900 text-sm mb-0.5">{prop.title}</strong>
+              <span class="text-slate-400">{prop.address}</span>
+            </div>
+            <div class="text-end">
+              <span class={`inline-block px-2.5 py-1 rounded-md text-[11px] font-bold ${prop.status === 'available' ? 'bg-emerald-100 text-emerald-800' : prop.status === 'negotiating' ? 'bg-amber-100 text-amber-800' : 'bg-slate-200 text-slate-700'}`}>
+                {prop.statusLabel}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+      <h2 class="text-base font-bold text-slate-900 mb-4">عملیات سریع</h2>
+      <div class="space-y-3">
+        <a
+          href="../properties/"
+          class="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
+        >
+          <span>➕</span> ثبت فایل و ملک جدید
+        </a>
+        <a
+          href="../sales/"
+          class="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
+        >
+          <span>✍️</span> ثبت فروش و شارژ کیف پول
+        </a>
+        <a
+          href="../leads/"
+          class="w-full flex items-center gap-3 p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
+        >
+          <span>👥</span> بررسی لیدهای فرم مشاوره
+        </a>
+      </div>
+    </div>
+  </div>
+</DashboardLayout>
