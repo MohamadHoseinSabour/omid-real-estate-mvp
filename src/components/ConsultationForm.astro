@@ -1,0 +1,147 @@
+---
+interface Props {
+  baseUrl: string;
+  defaultIntent?: 'buy' | 'sell';
+  propertyId?: string;
+  propertyTitle?: string;
+  source?: string;
+}
+
+const {
+  baseUrl,
+  defaultIntent = 'buy',
+  propertyId,
+  propertyTitle,
+  source = 'consult_form',
+} = Astro.props;
+---
+
+<section id="consultation" class="scroll-mt-24">
+  <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-lg border border-slate-200">
+    <div class="max-w-2xl mx-auto text-center mb-8">
+      <span class="inline-block bg-accent-100 text-accent-600 text-xs font-bold px-3 py-1 rounded-full mb-3">
+        مشاوره تخصصی و رایگان
+      </span>
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-primary-900 mb-2">
+        {propertyTitle ? `درخواست مشاوره و بازدید برای: ${propertyTitle}` : 'درخواست مشاوره ملکی با کارشناس ارشد'}
+      </h2>
+      <p class="text-sm text-slate-500">
+        مشخصات خود را ثبت کنید؛ کارشناس مربوطه در کمتر از ۱ ساعت کاری جهت هماهنگی با شما تماس خواهد گرفت.
+      </p>
+    </div>
+
+    <form
+      id="consultationForm"
+      action={`${baseUrl}/thanks/`}
+      method="GET"
+      class="max-w-xl mx-auto space-y-5"
+    >
+      <!-- Hidden fields for Lead tracking -->
+      <input type="hidden" name="source" value={source} />
+      {propertyId && <input type="hidden" name="property_id" value={propertyId} />}
+
+      <!-- Honeypot anti-spam field (hidden from real users) -->
+      <div style="display: none;" aria-hidden="true">
+        <label for="honeypot_field">لطفاً این فیلد را خالی بگذارید:</label>
+        <input type="text" id="honeypot_field" name="website_trap" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <!-- نوع درخواست (فروش یا خرید) -->
+      <div>
+        <label class="block text-sm font-bold text-slate-700 mb-2">نوع درخواست شما:</label>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="flex items-center justify-center gap-2 p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:border-accent-500 has-[:checked]:bg-accent-100/50">
+            <input
+              type="radio"
+              name="intent"
+              value="sell"
+              checked={defaultIntent === 'sell'}
+              class="text-accent-500 focus:ring-accent-400"
+            />
+            <span class="text-sm font-bold text-slate-800">می‌خواهم بفروشم</span>
+          </label>
+          <label class="flex items-center justify-center gap-2 p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:border-accent-500 has-[:checked]:bg-accent-100/50">
+            <input
+              type="radio"
+              name="intent"
+              value="buy"
+              checked={defaultIntent === 'buy'}
+              class="text-accent-500 focus:ring-accent-400"
+            />
+            <span class="text-sm font-bold text-slate-800">می‌خواهم بخرم</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- نام و نام خانوادگی -->
+      <div>
+        <label for="fullName" class="block text-sm font-bold text-slate-700 mb-1">نام و نام خانوادگی *</label>
+        <input
+          type="text"
+          id="fullName"
+          name="fullName"
+          required
+          placeholder="مثال: علی احمدی"
+          class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-accent-500 focus:ring-2 focus:ring-accent-400/20 text-slate-900 text-sm transition-all"
+        />
+      </div>
+
+      <!-- شماره تماس -->
+      <div>
+        <label for="phoneNumber" class="block text-sm font-bold text-slate-700 mb-1">شماره تلفن همراه *</label>
+        <input
+          type="tel"
+          id="phoneNumber"
+          name="phone"
+          required
+          pattern="^09[0-9]{9}$"
+          placeholder="۰۹۱۲۳۴۵۶۷۸۹"
+          dir="ltr"
+          class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-accent-500 focus:ring-2 focus:ring-accent-400/20 text-slate-900 text-sm text-end font-mono tracking-wider transition-all"
+        />
+        <p class="text-[11px] text-slate-400 mt-1">شماره ۱۱ رقمی همراه با پیش‌شماره ۰۹</p>
+      </div>
+
+      <!-- توضیحات یا بودجه -->
+      <div>
+        <label for="details" class="block text-sm font-bold text-slate-700 mb-1">
+          {defaultIntent === 'sell' ? 'مشخصات تقریبی ملک (متراژ، خیابان، طبقه):' : 'بودجه تقریبی و ویژگی‌های مدنظر:'}
+        </label>
+        <textarea
+          id="details"
+          name="message"
+          rows="3"
+          placeholder="مثال: آپارتمان ۳ خوابه در خیابان‌های اردیبهشت یا فروردین با بودجه حداکثر ۴ میلیارد..."
+          class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-accent-500 focus:ring-2 focus:ring-accent-400/20 text-slate-900 text-sm transition-all"
+        ></textarea>
+      </div>
+
+      <!-- دکمه ثبت فرم -->
+      <button
+        type="submit"
+        class="w-full bg-gradient-to-r from-accent-400 to-accent-600 hover:from-accent-500 hover:to-accent-700 text-primary-900 font-extrabold text-base py-3.5 px-6 rounded-xl shadow-md shadow-accent-500/25 hover:shadow-lg transition-all transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-accent-400"
+      >
+        ثبت درخواست و تماس کارشناس
+      </button>
+
+      <p class="text-[11px] text-center text-slate-400 mt-2">
+        🔒 اطلاعات شما کاملاً محرمانه نزد آژانس املاک امید محفوظ خواهد ماند.
+      </p>
+    </form>
+  </div>
+</section>
+
+<script>
+  // Honeypot spam protection check on submit
+  const form = document.getElementById('consultationForm') as HTMLFormElement | null;
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      const trap = (document.getElementById('honeypot_field') as HTMLInputElement)?.value;
+      if (trap) {
+        e.preventDefault();
+        console.warn('Spam detected and blocked via honeypot.');
+        return false;
+      }
+    });
+  }
+</script>

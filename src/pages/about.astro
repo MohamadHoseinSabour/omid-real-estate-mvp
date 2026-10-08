@@ -1,0 +1,83 @@
+---
+import Layout from '../layouts/Layout.astro';
+import agencyData from '../data/agency.json';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout
+  title="درباره ما | تاریخچه و تیم کارشناسان املاک امید"
+  description="آشنایی با آژانس املاک امید در محله گلستان اهواز، تاریخچه تأسیس از سال ۱۳۹۲، معرفی مدیران، ۸ مشاور تخصصی و مأموریت ما در ارائه خدمات شفاف مسکن."
+>
+  <!-- هدر درباره ما -->
+  <section class="bg-primary-900 text-white py-16 border-b-2 border-accent-500/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="inline-block text-xs font-bold text-accent-400 bg-accent-500/10 px-3 py-1 rounded-full mb-3">
+        از سال {agencyData.foundedYear} در کنار شما هستیم
+      </span>
+      <h1 class="text-3xl sm:text-5xl font-black mb-4">
+        درباره <span class="text-accent-400">املاک امید</span> اهواز
+      </h1>
+      <p class="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
+        تعهدی پایدار به امنیت قراردادها، صداقت در قیمت‌گذاری و همراهی دلسوزانه با خریداران و فروشندگان محترم در منطقه گلستان.
+      </p>
+    </div>
+  </section>
+
+  <!-- تاریخچه و رسالت ما -->
+  <section class="py-16 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-2xl font-extrabold text-primary-900 mb-4 border-s-4 border-accent-500 ps-3">
+            داستان شکل‌گیری و تاریخچه
+          </h2>
+          <p class="text-sm leading-loose text-slate-600 mb-4">
+            آژانس املاک امید در سال {agencyData.foundedYear} با مدیریت حاج امید صبور و جمعی از کارشناسان باتجربه حوزه املاک و حقوق در خیابان فروردین محله گلستان اهواز پایه‌گذاری شد.
+          </p>
+          <p class="text-sm leading-loose text-slate-600 mb-4">
+            هدف بنیادین ما از روز نخست، برچیدن واسطه‌گری‌های کاذب و ایجاد بستری کاملاً حقوقی، شفاف و مطمئن برای طرفین معامله بوده است؛ به گونه‌ای که سرمایه و حاصل یک عمر تلاش مشتریان با خاطری آسوده تبدیل به سرپناه و سرمایه‌گذاری ماندگار شود.
+          </p>
+          <div class="p-4 rounded-2xl bg-accent-100/60 border border-accent-400/30 text-xs text-primary-900 font-semibold">
+            ✨ ثبت بیش از {agencyData.stats.successfulDeals} فقره معامله بدون کوچک‌ترین پرونده حقوقی یا اختلاف طرفین طی ۱۱ سال گذشته.
+          </div>
+        </div>
+
+        <div class="relative rounded-3xl overflow-hidden shadow-xl aspect-4/3 border-4 border-white">
+          <img
+            src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1000&q=80"
+            alt="فضای دفتر و اتاق جلسات آژانس املاک امید گلستان اهواز"
+            class="w-full h-full object-cover"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- معرفی اعضای تیم و مشاوران -->
+  <section class="py-16 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold text-accent-600 bg-accent-100 px-3 py-1 rounded-full">سرمایه انسانی ما</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-primary-900 mt-2">تیم مدیران و مشاوران املاک امید</h2>
+        <p class="text-sm text-slate-500 mt-1">متخصصانی که در هر مرحله از تصمیم‌گیری همراه مطمئن شما خواهند بود</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {agencyData.team.map((member) => (
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow flex flex-col items-center text-center">
+            <div class="w-24 h-24 rounded-full overflow-hidden mb-4 border-4 border-accent-400/50 shadow-md">
+              <img src={member.avatar} alt={member.name} class="w-full h-full object-cover" />
+            </div>
+            <h3 class="text-base font-extrabold text-primary-900 mb-1">{member.name}</h3>
+            <div class="text-xs font-bold text-accent-600 mb-2">{member.role}</div>
+            <p class="text-xs text-slate-500 leading-relaxed mb-4">{member.specialty}</p>
+            <div class="mt-auto pt-3 border-t border-slate-100 w-full text-xs text-slate-400 font-mono" dir="ltr">
+              📞 {member.phone}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

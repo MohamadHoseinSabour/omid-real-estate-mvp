@@ -1,0 +1,256 @@
+[
+  {
+    "id": "prop-101",
+    "slug": "apartment-165m-ordibehesht-golestan",
+    "title": "آپارتمان ۱۶۵ متری ۳ خواب فول‌امکانات خیابان اردیبهشت",
+    "propertyType": "apartment",
+    "propertyTypeLabel": "آپارتمان",
+    "status": "available",
+    "statusLabel": "موجود",
+    "priceToman": 4250000000,
+    "pricePerMeterToman": 25757575,
+    "areaSqm": 165,
+    "bedrooms": 3,
+    "yearBuilt": 1402,
+    "floor": 4,
+    "totalFloors": 6,
+    "neighborhood": "گلستان، اهواز",
+    "address": "اهواز، محله گلستان، خیابان اردیبهشت، نبش فرعی ۲",
+    "coordinates": {
+      "lat": 31.3045,
+      "lng": 48.6652
+    },
+    "features": [
+      "پارکینگ سندی اختصاصی",
+      "آسانسور اتوماتیک ۸ نفره",
+      "انباری سندی ۴ متری",
+      "کابینت های‌گلاس ترک",
+      "سیستم سرمایش اسپلیت",
+      "کف سرامیک پرسلان ۸۰×۸۰",
+      "سند تک‌برگ عرصه و اعیان"
+    ],
+    "description": "واحد بسیار تمیز و خوش‌نقشه در یکی از بهترین خیابان‌های گلستان اهواز. نورگیری عالی از جنوب، سالن مربع و قابل چیدمان، ۳ خواب استاندارد با کمد دیواری‌های جادار، تراس بزرگ رو به نما و دسترسی سریع به بلوار اصلی و مراکز خدماتی.",
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        "alt": "نمای سالن پذیرایی و نورگیر آپارتمان ۱۶۵ متری خیابان اردیبهشت گلستان اهواز",
+        "isPrimary": true
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80",
+        "alt": "آشپزخانه مدرن با کابینت‌های های‌گلاس آپارتمان اردیبهشت",
+        "isPrimary": false
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&q=80",
+        "alt": "اتاق خواب مستر با کمد دیواری بزرگ",
+        "isPrimary": false
+      }
+    ],
+    "advisor": {
+      "name": "مهندس رضا کریمی",
+      "phone": "۰۹۱۶۱۱۱۱۲۳۴",
+      "avatar": "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=250&q=80",
+      "role": "کارشناس ارشد منطقه گلستان"
+    },
+    "isPublic": true,
+    "sample": true,
+    "createdAt": "2026-10-01T10:00:00Z"
+  },
+  {
+    "id": "prop-102",
+    "slug": "apartment-110m-farvardin-golestan",
+    "title": "آپارتمان ۱۱۰ متری ۲ خواب رو به نما خیابان فروردین",
+    "propertyType": "apartment",
+    "propertyTypeLabel": "آپارتمان",
+    "status": "negotiating",
+    "statusLabel": "در حال مذاکره",
+    "priceToman": 2850000000,
+    "pricePerMeterToman": 25909090,
+    "areaSqm": 110,
+    "bedrooms": 2,
+    "yearBuilt": 1399,
+    "floor": 2,
+    "totalFloors": 5,
+    "neighborhood": "گلستان، اهواز",
+    "address": "اهواز، گلستان، خیابان فروردین، بین اقبال و اصفهان",
+    "coordinates": {
+      "lat": 31.3060,
+      "lng": 48.6635
+    },
+    "features": [
+      "پارکینگ بدون مزاحمت",
+      "آسانسور",
+      "انباری",
+      "پکیج و رادیاتور",
+      "بالکن کاربردی",
+      "درب ضدسرقت ترک"
+    ],
+    "description": "واحد جمع‌وجور و فوق‌العاده شیک با پلان مهندسی بدون یک سانتیمتر پرتی. مشاعات بسیار تمیز با مدیریت منظم ساختمان. محیطی آرام و مناسب سکونت خانواده.",
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
+        "alt": "نمای داخلی آپارتمان ۱۱۰ متری خیابان فروردین گلستان",
+        "isPrimary": true
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=800&q=80",
+        "alt": "آشپزخانه آپارتمان خیابان فروردین",
+        "isPrimary": false
+      }
+    ],
+    "advisor": {
+      "name": "سارا محمدی",
+      "phone": "۰۹۱۶۲۲۲۳۴۵۶",
+      "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=250&q=80",
+      "role": "مشاور فروش واحدهای ۲ خوابه"
+    },
+    "isPublic": true,
+    "sample": true,
+    "createdAt": "2026-10-03T11:30:00Z"
+  },
+  {
+    "id": "prop-103",
+    "slug": "villa-250m-boostan-golestan",
+    "title": "منزل ویلایی ۲۵۰ متری بازسازی کامل محدوده بوستان",
+    "propertyType": "villa",
+    "propertyTypeLabel": "ویلایی",
+    "status": "available",
+    "statusLabel": "موجود",
+    "priceToman": 6700000000,
+    "pricePerMeterToman": 26800000,
+    "areaSqm": 250,
+    "bedrooms": 4,
+    "yearBuilt": 1394,
+    "floor": 1,
+    "totalFloors": 1,
+    "neighborhood": "گلستان، اهواز",
+    "address": "اهواز، گلستان، کوی بوستان، خیابان مریم",
+    "coordinates": {
+      "lat": 31.3015,
+      "lng": 48.6678
+    },
+    "features": [
+      "حیاط مشجر با ظرفیت ۳ خودرو",
+      "سند ملکی تک‌برگ آماده انتقال",
+      "بازسازی صفر تا صد در سال ۱۴۰۲",
+      "کابینت ممبران لوکس",
+      "استخر روباز تابستانه",
+      "سیستم اعلام و اطفاء حریق"
+    ],
+    "description": "ویلای مستقل و اصیل در یکی از آرام‌ترین فرعی‌های کوی بوستان گلستان. دارای حیاط سرسبز با درختان نخل و مرکبات، فضای نشیمن مجزا و اتاق‌های دلباز با نور طبیعی از ۳ جهت.",
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
+        "alt": "نمای بیرونی ویلایی ۲۵۰ متری کوی بوستان گلستان اهواز",
+        "isPrimary": true
+      },
+      {
+        "url": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
+        "alt": "حیاط و فضای سبز ویلایی بوستان",
+        "isPrimary": false
+      }
+    ],
+    "advisor": {
+      "name": "علیرضا احمدی",
+      "phone": "۰۹۱۶۳۳۳۴۵۶۷",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=250&q=80",
+      "role": "کارشناس ارشد املاک ویلایی و کلنگی"
+    },
+    "isPublic": true,
+    "sample": true,
+    "createdAt": "2026-09-25T08:00:00Z"
+  },
+  {
+    "id": "prop-104",
+    "slug": "commercial-45m-main-boulevard-golestan",
+    "title": "واحد تجاری اداری ۴۵ متری سند اداری بلوار اصلی گلستان",
+    "propertyType": "commercial",
+    "propertyTypeLabel": "تجاری / اداری",
+    "status": "available",
+    "statusLabel": "موجود",
+    "priceToman": 1900000000,
+    "pricePerMeterToman": 42222222,
+    "areaSqm": 45,
+    "bedrooms": 1,
+    "yearBuilt": 1401,
+    "floor": 3,
+    "totalFloors": 5,
+    "neighborhood": "گلستان، اهواز",
+    "address": "اهواز، گلستان، بلوار اصلی فروردین، مجتمع اداری نگین",
+    "coordinates": {
+      "lat": 31.3072,
+      "lng": 48.6621
+    },
+    "features": [
+      "سند تک‌برگ با کاربری اداری رسمی",
+      "۲ خط تلفن رند",
+      "آسانسور اداری با ژنراتور اضطراری",
+      "نگهبانی و لابی‌من ۲۴ ساعته",
+      "مناسب مطب، دفتر وکالت و شرکت‌های بازرگانی"
+    ],
+    "description": "موقعیت استثنایی تابلوخور بر اصلی بلوار پرتردد گلستان اهواز با دسترسی بی‌نظیر به خطوط تاکسی و اتوبوس و پارکینگ عمومی در مجاورت ساختمان.",
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80",
+        "alt": "فضای اداری تجاری ۴۵ متری بلوار اصلی گلستان اهواز",
+        "isPrimary": true
+      }
+    ],
+    "advisor": {
+      "name": "مهندس رضا کریمی",
+      "phone": "۰۹۱۶۱۱۱۱۲۳۴",
+      "avatar": "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=250&q=80",
+      "role": "کارشناس ارشد املاک تجاری و اداری"
+    },
+    "isPublic": true,
+    "sample": true,
+    "createdAt": "2026-10-04T14:15:00Z"
+  },
+  {
+    "id": "prop-105",
+    "slug": "penthouse-210m-aban-golestan",
+    "title": "پنت‌هاوس ۲۱۰ متری لوکس با روف‌گاردن اختصاصی خیابان آبان",
+    "propertyType": "apartment",
+    "propertyTypeLabel": "پنت‌هاوس",
+    "status": "sold",
+    "statusLabel": "فروخته شد",
+    "priceToman": 6200000000,
+    "pricePerMeterToman": 29523809,
+    "areaSqm": 210,
+    "bedrooms": 3,
+    "yearBuilt": 1403,
+    "floor": 7,
+    "totalFloors": 7,
+    "neighborhood": "گلستان، اهواز",
+    "address": "اهواز، گلستان، خیابان آبان، نبش آذر",
+    "coordinates": {
+      "lat": 31.3031,
+      "lng": 48.6664
+    },
+    "features": [
+      "روف‌گاردن اختصاصی با دید ابدی ۳۶۰ درجه",
+      "۲ پارکینگ سندی باکس",
+      "مستر روم کینگ سایز با جکوزی اختصاصی",
+      "سیستم هوشمند روشنایی و تهویه BMS",
+      "آسانسور کدینگ با ورود مستقیم به واحد"
+    ],
+    "description": "اثری فاخر از سازنده بنام منطقه گلستان با برترین متریال‌های وارداتی. معامله با نظارت حقوقی کارشناسان املاک امید در ماه جاری نهایی گردید.",
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1512915922686-57c11dde9b6b?auto=format&fit=crop&w=1200&q=80",
+        "alt": "نمای پنت‌هاوس ۲۱۰ متری خیابان آبان گلستان اهواز با روف‌گاردن",
+        "isPrimary": true
+      }
+    ],
+    "advisor": {
+      "name": "علیرضا احمدی",
+      "phone": "۰۹۱۶۳۳۳۴۵۶۷",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=250&q=80",
+      "role": "کارشناس املاک لوکس و پنت‌هاوس"
+    },
+    "isPublic": true,
+    "sample": true,
+    "createdAt": "2026-09-18T16:00:00Z"
+  }
+]

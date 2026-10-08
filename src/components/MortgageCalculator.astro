@@ -1,0 +1,134 @@
+---
+---
+
+<div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200" id="calc-mortgage-box">
+  <div class="flex items-center gap-3 mb-6">
+    <div class="w-10 h-10 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center font-bold text-lg">
+      🏦
+    </div>
+    <div>
+      <h3 class="text-xl font-bold text-primary-900">محاسبه آنلاین اقساط وام مسکن</h3>
+      <p class="text-xs text-slate-500">محاسبه دقیق اقساط ماهانه و سود بازپرداخت تسهیلات بانکی مسکن</p>
+    </div>
+  </div>
+
+  <div class="space-y-4">
+    <!-- مبلغ وام -->
+    <div>
+      <label for="loanInput" class="block text-xs font-bold text-slate-700 mb-1">
+        مبلغ تسهیلات وام (تومان):
+      </label>
+      <input
+        type="number"
+        id="loanInput"
+        value="800000000"
+        step="50000000"
+        min="0"
+        dir="ltr"
+        class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-accent-500 focus:ring-2 focus:ring-accent-400/20 text-slate-900 text-sm font-mono text-end"
+      />
+      <div id="loanFormattedHint" class="text-[11px] text-accent-600 font-bold mt-1 text-end">
+        ۸۰۰٬۰۰۰٬۰۰۰ تومان
+      </div>
+    </div>
+
+    <!-- نرخ سود و مدت بازپرداخت در دو ستون -->
+    <div class="grid grid-cols-2 gap-3">
+      <div>
+        <label for="interestInput" class="block text-xs font-bold text-slate-700 mb-1">
+          نرخ سود سالانه (درصد):
+        </label>
+        <input
+          type="number"
+          id="interestInput"
+          value="23"
+          step="0.5"
+          min="1"
+          dir="ltr"
+          class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:border-accent-500 focus:ring-2 focus:ring-accent-400/20 text-slate-900 text-sm font-mono text-center"
+        />
+      </div>
+      <div>
+        <label for="yearsInput" class="block text-xs font-bold text-slate-700 mb-1">
+          مدت بازپرداخت (سال):
+        </label>
+        <select
+          id="yearsInput"
+          class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:border-accent-500 focus:ring-2 focus:ring-accent-400/20 text-slate-900 text-sm bg-white"
+        >
+          <option value="5">۵ سال (۶۰ قسط)</option>
+          <option value="8">۸ سال (۹۶ قسط)</option>
+          <option value="10">۱۰ سال (۱۲۰ قسط)</option>
+          <option value="12" selected>۱۲ سال (۱۴۴ قسط)</option>
+          <option value="15">۱۵ سال (۱۸۰ قسط)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- نتیجه محاسبه وام -->
+    <div class="bg-primary-50 rounded-2xl p-4 border border-primary-100 space-y-2.5 text-xs sm:text-sm">
+      <div class="flex justify-between items-center text-primary-900 font-extrabold text-sm sm:text-base">
+        <span>مبلغ هر قسط ماهانه:</span>
+        <span id="resMonthlyPayment" class="text-primary-700 font-mono font-black">-- تومان</span>
+      </div>
+      <div class="flex justify-between items-center text-slate-600">
+        <span>کل سود تسهیلات پرداختی:</span>
+        <span id="resTotalInterest" class="font-bold font-mono text-slate-800">-- تومان</span>
+      </div>
+      <div class="pt-2 border-t border-primary-200/60 flex justify-between items-center text-slate-600">
+        <span>مجموع کل بازپرداخت:</span>
+        <span id="resTotalRepayment" class="font-bold font-mono text-slate-800">-- تومان</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function formatFa(num: number): string {
+    return new Intl.NumberFormat('fa-IR').format(Math.round(num)) + ' تومان';
+  }
+
+  function updateMortgage() {
+    const loanInput = document.getElementById('loanInput') as HTMLInputElement | null;
+    const interestInput = document.getElementById('interestInput') as HTMLInputElement | null;
+    const yearsInput = document.getElementById('yearsInput') as HTMLSelectElement | null;
+
+    const resMonthly = document.getElementById('resMonthlyPayment');
+    const resInterest = document.getElementById('resTotalInterest');
+    const resTotal = document.getElementById('resTotalRepayment');
+    const hint = document.getElementById('loanFormattedHint');
+
+    if (!loanInput || !interestInput || !yearsInput || !resMonthly || !resInterest || !resTotal) return;
+
+    const P = parseFloat(loanInput.value) || 0;
+    const annualRate = parseFloat(interestInput.value) || 0;
+    const years = parseFloat(yearsInput.value) || 1;
+
+    if (hint) {
+      hint.innerText = formatFa(P);
+    }
+
+    if (P <= 0 || annualRate <= 0 || years <= 0) {
+      resMonthly.innerText = '۰ تومان';
+      resInterest.innerText = '۰ تومان';
+      resTotal.innerText = '۰ تومان';
+      return;
+    }
+
+    const n = years * 12;
+    const r = annualRate / 100 / 12;
+    const factor = Math.pow(1 + r, n);
+    const monthlyPayment = Math.round((P * (r * factor)) / (factor - 1));
+    const totalPayment = monthlyPayment * n;
+    const totalInterest = totalPayment - P;
+
+    resMonthly.innerText = formatFa(monthlyPayment);
+    resInterest.innerText = formatFa(totalInterest);
+    resTotal.innerText = formatFa(totalPayment);
+  }
+
+  document.getElementById('loanInput')?.addEventListener('input', updateMortgage);
+  document.getElementById('interestInput')?.addEventListener('input', updateMortgage);
+  document.getElementById('yearsInput')?.addEventListener('change', updateMortgage);
+  updateMortgage();
+</script>

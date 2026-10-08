@@ -1,0 +1,288 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import StatusBadge from '../../components/StatusBadge.astro';
+import ConsultationForm from '../../components/ConsultationForm.astro';
+import PropertyCard from '../../components/PropertyCard.astro';
+import propertiesData from '../../data/properties.json';
+import { formatToman } from '../../utils/calculators';
+import type { Property } from '../../types/property';
+
+export async function getStaticPaths() {
+  const properties = propertiesData as Property[];
+  return properties.map((prop) => ({
+    params: { slug: prop.slug },
+    props: { property: prop },
+  }));
+}
+
+interface Props {
+  property: Property;
+}
+
+const { property } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const properties = propertiesData as Property[];
+const similarProperties = properties
+  .filter((p) => p.id !== property.id && p.status === 'available')
+  .slice(0, 3);
+
+const isSold = property.status === 'sold';
+---
+
+<Layout
+  title={`${property.title} | املاک امید`}
+  description={property.description.slice(0, 160)}
+  ogImage={property.images[0]?.url}
+>
+  <!-- بردکرامب و عنوان بالای صفحه -->
+  <div class="bg-primary-900 text-white py-8 border-b-2 border-accent-500/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="text-xs text-slate-300 mb-3 flex items-center gap-2">
+        <a href={`${baseUrl}/`} class="hover:text-accent-400">خانه</a>
+        <span>/</span>
+        <a href={`${baseUrl}/properties/`} class="hover:text-accent-400">املاک گلستان</a>
+        <span>/</span>
+        <span class="text-accent-400 font-bold line-clamp-1">{property.title}</span>
+      </nav>
+
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-3 mb-2">
+            <StatusBadge status={property.status} label={property.statusLabel} />
+            <span class="text-xs text-accent-400 font-semibold bg-accent-400/10 px-2.5 py-0.5 rounded">
+              کد ملک: {property.id.toUpperCase()}
+            </span>
+            <span class="text-xs text-slate-400 font-mono">
+              ثبت: {new Date(property.createdAt).toLocaleDateString('fa-IR')}
+            </span>
+          </div>
+          <h1 class="text-xl sm:text-3xl font-black text-white leading-tight">
+            {property.title}
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-300 mt-1 flex items-center gap-1.5">
+            📍 {property.address}
+          </p>
+        </div>
+
+        <div class="text-start sm:text-end bg-primary-800/80 p-4 rounded-2xl border border-primary-700/60 shrink-0">
+          <div class="text-xs text-slate-300">قیمت کارشناسی کل:</div>
+          <div class={`text-xl sm:text-2xl font-black ${isSold ? 'line-through text-slate-400' : 'text-accent-400'}`}>
+            {formatToman(property.priceToman)}
+          </div>
+          <div class="text-[11px] text-slate-400 mt-0.5">
+            متری {formatToman(property.pricePerMeterToman)}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- محتوای اصلی دو ستونه -->
+  <section class="py-12 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <!-- ستون راست: گالری، مشخصات فنی، نقشه (عرض ۲/۳) -->
+        <div class="lg:col-span-2 space-y-8">
+          <!-- ۱. گالری تصاویر -->
+          <div class="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-slate-200">
+            <div class="relative aspect-video rounded-2xl overflow-hidden bg-slate-900 mb-4">
+              <img
+                id="mainGalleryImg"
+                src={property.images[0]?.url}
+                alt={property.images[0]?.alt}
+                class="w-full h-full object-cover transition-opacity duration-300"
+              />
+            </div>
+
+            <!-- تامبنیل‌های کوچک گالری -->
+            {property.images.length > 1 && (
+              <div class="flex gap-3 overflow-x-auto pb-2">
+                {property.images.map((img, idx) => (
+                  <button
+                    type="button"
+                    class="gallery-thumb w-24 h-16 rounded-xl overflow-hidden shrink-0 border-2 border-transparent hover:border-accent-500 focus:outline-none focus:border-accent-500 transition-all"
+                    data-src={img.url}
+                    data-alt={img.alt}
+                  >
+                    <img src={img.url} alt={img.alt} class="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <!-- ۲. مشخصات کلیدی سازه -->
+          <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+            <h2 class="text-lg font-bold text-primary-900 mb-6 border-s-4 border-accent-500 ps-3">
+              مشخصات و متراژ ملک
+            </h2>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                <span class="block text-xs text-slate-400 mb-1">📐 متراژ مفید</span>
+                <strong class="text-base text-slate-900">{property.areaSqm} متر مربع</strong>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                <span class="block text-xs text-slate-400 mb-1">🛏️ تعداد اتاق خواب</span>
+                <strong class="text-base text-slate-900">{property.bedrooms} خواب</strong>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                <span class="block text-xs text-slate-400 mb-1">🏢 سال ساخت</span>
+                <strong class="text-base text-slate-900">{property.yearBuilt}</strong>
+              </div>
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
+                <span class="block text-xs text-slate-400 mb-1">🪜 طبقه / کل طبقات</span>
+                <strong class="text-base text-slate-900">{property.floor || 1} از {property.totalFloors || 1}</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- ۳. امکانات و ویژگی‌ها -->
+          <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+            <h2 class="text-lg font-bold text-primary-900 mb-6 border-s-4 border-accent-500 ps-3">
+              ویژگی‌ها و امکانات رفاهی
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {property.features.map((feature) => (
+                <div class="flex items-center gap-2 p-3 rounded-xl bg-slate-50 text-xs sm:text-sm text-slate-700">
+                  <span class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs shrink-0 font-bold">
+                    ✓
+                  </span>
+                  {feature}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- ۴. توضیحات کامل کارشناس -->
+          <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+            <h2 class="text-lg font-bold text-primary-900 mb-4 border-s-4 border-accent-500 ps-3">
+              توضیحات و گزارش کارشناسی ملک
+            </h2>
+            <p class="text-sm leading-loose text-slate-600 whitespace-pre-line">
+              {property.description}
+            </p>
+          </div>
+
+          <!-- ۵. نقشه موقعیت ملک (Leaflet & Neshan Tile) -->
+          <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+            <h2 class="text-lg font-bold text-primary-900 mb-2 border-s-4 border-accent-500 ps-3">
+              موقعیت مکانی روی نقشه گلستان
+            </h2>
+            <p class="text-xs text-slate-400 mb-4">
+              موقعیت حدودی ملک به جهت حفظ امنیت مالکین محترم نمایش داده شده است.
+            </p>
+            <div
+              id="propertyMap"
+              class="h-72 w-full rounded-2xl overflow-hidden border border-slate-200"
+              data-lat={property.coordinates.lat}
+              data-lng={property.coordinates.lng}
+              data-title={property.title}
+            ></div>
+          </div>
+        </div>
+
+        <!-- ستون چپ: کارت مشاور + فرم درخواست استعلام (عرض ۱/۳) -->
+        <div class="space-y-8">
+          <!-- کارت مشاور مسئول پرونده -->
+          <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 text-center sticky top-28">
+            <div class="relative w-20 h-20 mx-auto mb-4">
+              <img
+                src={property.advisor.avatar}
+                alt={property.advisor.name}
+                class="w-full h-full rounded-full object-cover border-4 border-accent-400 shadow-md"
+              />
+              <span class="absolute bottom-0 end-0 w-5 h-5 bg-emerald-500 border-2 border-white rounded-full"></span>
+            </div>
+
+            <div class="text-xs text-accent-600 font-bold mb-1">مشاور مسئول این فایل</div>
+            <h3 class="text-lg font-extrabold text-primary-900 mb-1">{property.advisor.name}</h3>
+            <p class="text-xs text-slate-500 mb-6">{property.advisor.role}</p>
+
+            <div class="space-y-3">
+              <a
+                href={`tel:${property.advisor.phone}`}
+                class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary-700 hover:bg-primary-800 text-white text-sm font-bold shadow-md transition-colors"
+              >
+                <span>📞 تماس مستقیم با مشاور</span>
+                <span dir="ltr" class="font-mono text-xs text-accent-300">({property.advisor.phone})</span>
+              </a>
+
+              <a
+                href="#consultation"
+                class="w-full inline-flex items-center justify-center py-3 px-4 rounded-xl bg-accent-500 hover:bg-accent-600 text-primary-900 text-sm font-bold shadow-sm transition-colors"
+              >
+                درخواست بازدید حضوری
+              </a>
+            </div>
+
+            <!-- فرم سریع استعلام ویژه این ملک -->
+            <div class="mt-8 pt-8 border-t border-slate-100 text-start">
+              <ConsultationForm
+                baseUrl={baseUrl}
+                defaultIntent="buy"
+                propertyId={property.id}
+                propertyTitle={property.title}
+                source="property_detail_page"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- فایل‌های مشابه در گلستان -->
+      {similarProperties.length > 0 && (
+        <div class="mt-16 pt-12 border-t border-slate-200">
+          <h2 class="text-xl sm:text-2xl font-extrabold text-primary-900 mb-8">
+            فایل‌های مسکونی مشابه در محله گلستان اهواز
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {similarProperties.map((similar) => (
+              <PropertyCard property={similar} baseUrl={baseUrl} />
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>
+
+<script>
+  // هندل کردن تعویض عکس گالری
+  const mainImg = document.getElementById('mainGalleryImg') as HTMLImageElement | null;
+  const thumbs = document.querySelectorAll('.gallery-thumb');
+
+  thumbs.forEach((thumb) => {
+    thumb.addEventListener('click', () => {
+      const src = thumb.getAttribute('data-src');
+      const alt = thumb.getAttribute('data-alt');
+      if (mainImg && src) {
+        mainImg.style.opacity = '0.5';
+        setTimeout(() => {
+          mainImg.src = src;
+          if (alt) mainImg.alt = alt;
+          mainImg.style.opacity = '1';
+        }, 150);
+      }
+    });
+  });
+
+  // راه‌اندازی نقشه با Leaflet در موقعیت ملک
+  window.addEventListener('DOMContentLoaded', () => {
+    const mapContainer = document.getElementById('propertyMap');
+    if (mapContainer && (window as any).L) {
+      const lat = parseFloat(mapContainer.getAttribute('data-lat') || '31.3055');
+      const lng = parseFloat(mapContainer.getAttribute('data-lng') || '48.6645');
+      const title = mapContainer.getAttribute('data-title') || 'موقعیت ملک';
+
+      const map = (window as any).L.map('propertyMap').setView([lat, lng], 15);
+
+      (window as any).L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© نقشه محله گلستان اهواز',
+        maxZoom: 18,
+      }).addTo(map);
+
+      const marker = (window as any).L.marker([lat, lng]).addTo(map);
+      marker.bindPopup(`<b>املاک امید</b><br>${title}`).openPopup();
+    }
+  });
+</script>

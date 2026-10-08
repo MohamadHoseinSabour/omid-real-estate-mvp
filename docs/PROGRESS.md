@@ -8,23 +8,33 @@
 - Completed: 2026-10-08
 - Commit: `fa6169b`
 
-## Phase 3: Design System & Wireframe 🔄
+## Phase 3: Design System & Wireframe ✅
+- Completed: 2026-10-08
+- Commit: `64ea988`
+
+## Phase 4: Public Site Implementation 🔄
 
 ### Completed
-- [x] Step 3.1: Design Tokens defined (Luxury Navy & Gold palette, Vazirmatn typography, spacing, elevations)
-- [x] Step 3.2: Component Library specs (Hero intent buttons, property cards, status badges, RTL/LTR dual inputs, commission & mortgage calculators)
-- [x] Step 3.3: Wireframes documented for Home, Properties Archive, Property Details, and Dashboard
-- [x] Step 3.4: WCAG 2.1 AA accessibility audit & Persian/RTL guidelines alignment
-- [x] Step 3.5: Comprehensive `docs/DESIGN.md` created
-- [x] Step 3.6: Interactive live HTML preview created at `docs/wireframe-preview.html`
+- [x] Step 4.1: Astro + Tailwind CSS environment initialized and configured with `base: '/omid-real-estate-mvp'`
+- [x] Step 4.2: TDD unit tests written for mortgage & commission calculators (`src/utils/calculators.test.ts`) — 7/7 tests passed ✅
+- [x] Step 4.3: Pure calculation functions implemented (`src/utils/calculators.ts`)
+- [x] Step 4.4: Sample data created: 5 realistic properties in Golestan Ahvaz (`sample: true`), 3 blog articles, agency and 8+ advisors
+- [x] Step 4.5: Shared components built: Header, Footer, PropertyCard, StatusBadge, ConsultationForm, CommissionCalculator, MortgageCalculator
+- [x] Step 4.6: Pages built:
+  - Homepage (`/`) with hero interactive scroll & intent auto-select
+  - Properties archive (`/properties/`) with instant client-side filtering (type, status, sorting)
+  - Dynamic property detail pages (`/properties/[slug]/`) with gallery, specs, Leaflet map, advisor card, and inquiry form
+  - About Us (`/about/`) with history and 8 advisors
+  - Contact Us (`/contact/`) with office map and message form
+  - Blog index (`/blog/`) and dynamic articles (`/blog/[slug]/`)
+  - Legal pages (`/privacy/`, `/terms/`), Thank You page (`/thanks/`), and custom `404.html`
+- [x] Step 4.7: Build verification (`npm run build:fast`) — 16 pages built successfully with zero errors
+- [x] Step 4.8: GitHub Actions workflow created (`.github/workflows/deploy.yml`) for automated Pages deployment
 
 ### Current Status
-✅ Phase 3 complete — awaiting approval
+✅ Phase 4 complete — awaiting approval
 
 ---
-
-## Phase 4: Public Site Implementation
-_Not yet started_
 
 ## Phase 5: SEO, Performance & Accessibility
 _Not yet started_

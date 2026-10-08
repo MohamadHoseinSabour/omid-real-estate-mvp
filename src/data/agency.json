@@ -1,0 +1,87 @@
+{
+  "name": "آژانس املاک امید",
+  "slogan": "تخصصی‌ترین مرکز معاملات ملکی در محله گلستان اهواز",
+  "foundedYear": 1392,
+  "city": "اهواز",
+  "neighborhood": "محله گلستان",
+  "address": "خوزستان، اهواز، محله گلستان، خیابان اصلی فروردین، بین اقبال و اصفهان، پلاک ۱۱۸",
+  "phone": "۰۶۱-۳۳۳۳۳۳۳۳",
+  "mobile": "۰۹۱۶۱۱۱۱۲۳۴",
+  "email": "info@omidrealestate.ir",
+  "workingHours": "شنبه تا پنج‌شنبه: ۹ الی ۱۳:۳۰ و ۱۷ الی ۲۲",
+  "coordinates": {
+    "lat": 31.3055,
+    "lng": 48.6645
+  },
+  "stats": {
+    "successfulDeals": 1450,
+    "activeAdvisors": 8,
+    "yearsExperience": 11,
+    "customerSatisfactionPercent": 98
+  },
+  "team": [
+    {
+      "name": "حاج امید صبور",
+      "role": "مدیرکل و مؤسس آژانس",
+      "specialty": "کارشناس ارشد حقوقی معاملات و قراردادها",
+      "phone": "۰۹۱۶۱۱۱۰۰۰۰",
+      "avatar": "https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=300&q=80"
+    },
+    {
+      "name": "مهندس رضا کریمی",
+      "role": "سرپرست مشاوران و کارشناس فروش",
+      "specialty": "آپارتمان‌های ۳ خوابه خیابان اردیبهشت و فروردین",
+      "phone": "۰۹۱۶۱۱۱۱۲۳۴",
+      "avatar": "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=300&q=80"
+    },
+    {
+      "name": "علیرضا احمدی",
+      "role": "کارشناس ارشد املاک لوکس و ویلایی",
+      "specialty": "خانه‌های ویلایی و پنت‌هاوس‌های کوی بوستان و آبان",
+      "phone": "۰۹۱۶۳۳۳۴۵۶۷",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80"
+    },
+    {
+      "name": "سارا محمدی",
+      "role": "مشاور تخصصی خرید واحدهای سرمایه‌گذاری",
+      "specialty": "واحدهای خوش‌قیمت و خوش‌فروش ۱ و ۲ خوابه",
+      "phone": "۰۹۱۶۲۲۲۳۴۵۶",
+      "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80"
+    },
+    {
+      "name": "محمدرضا رضایی",
+      "role": "مشاور املاک تجاری و اداری",
+      "specialty": "مغازه، دفاتر کار و مجتمع‌های تجاری بلوار گلستان",
+      "phone": "۰۹۱۶۴۴۴۵۶۷۸",
+      "avatar": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=300&q=80"
+    },
+    {
+      "name": "الهام قاسمی",
+      "role": "مشاور رهن و اجاره مسکونی",
+      "specialty": "اجاره سریع و مطمئن واحدهای مسکونی",
+      "phone": "۰۹۱۶۵۵۵۶۷۸۹",
+      "avatar": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&q=80"
+    },
+    {
+      "name": "حسین مرادی",
+      "role": "مشاور پیش‌فروش و مشارکت در ساخت",
+      "specialty": "پروژه‌های معتبر سازندگان شناسنامه‌دار گلستان",
+      "phone": "۰۹۱۶۶۶۶۷۸۹۰",
+      "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80"
+    },
+    {
+      "name": "مهدی کاظمی",
+      "role": "کارشناس بازدید و ارزیابی فنی ملک",
+      "specialty": "کارشناسی قیمت، متریال ساخت و مدارک شهرداری",
+      "phone": "۰۹۱۶۷۷۷۸۹۰۱",
+      "avatar": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=300&q=80"
+    },
+    {
+      "name": "مریم سعیدی",
+      "role": "مسئول دبیرخانه و ارتباط با مشتریان (لیدها)",
+      "specialty": "هماهنگی جلسات مشاوره و پیگیری فرم‌های سایت",
+      "phone": "۰۶۱-۳۳۳۳۳۳۳۴",
+      "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80"
+    }
+  ]
+}

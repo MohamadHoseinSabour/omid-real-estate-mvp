@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout
+  title="قوانین و شرایط استفاده از خدمات | املاک امید"
+  description="شرایط و قوانین حقوقی معاملات، تعرفه قانونی کمیسیون، و ضوابط بازدید از املاک در آژانس املاک امید گلستان اهواز."
+>
+  <section class="bg-primary-900 text-white py-12 border-b-2 border-accent-500/20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-2xl sm:text-4xl font-black mb-2">شرایط و قوانین استفاده</h1>
+      <p class="text-xs sm:text-sm text-slate-300">چهارچوب حقوقی ارائه خدمات و معاملات ملکی</p>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 prose text-slate-700 leading-loose text-sm space-y-6">
+      <h2 class="text-lg font-bold text-primary-900">۱. اصالت فایل‌ها و اطلاعات</h2>
+      <p>
+        تمام فایل‌های درج‌شده در وبسایت املاک امید توسط کارشناسان مربوطه بررسی شده و صحت اطلاعات ثبتی، متراژ، قیمت و شرایط واگذاری پیش از انتشار مورد تأیید نسبی قرار می‌گیرد. با این حال، تصمیم‌گیری نهایی منوط به رؤیت اصل اسناد مالکیت در حضور طرفین در دفتر املاک خواهد بود.
+      </p>
+
+      <h2 class="text-lg font-bold text-primary-900">۲. تعرفه کمیسیون و خدمات</h2>
+      <p>
+        محاسبه کارمزد کلیه معاملات (خرید، فروش، رهن، اجاره، مشارکت در ساخت) دقیقاً منطبق بر نرخنامه رسمی اتحادیه صنف مشاورین املاک شهرستان اهواز و قوانین مالیاتی حاکم (ارزش افزوده) صورت می‌پذیرد.
+      </p>
+
+      <h2 class="text-lg font-bold text-primary-900">۳. هماهنگی بازدید حضوری</h2>
+      <p>
+        بازدید از واحدهای مسکونی صرفاً با هماهنگی قبلی مشاور مسئول و با حضور کارشناس دفتر املاک امید انجام خواهد شد تا حقوق ساکنین و مالکین محترم محفوظ بماند.
+      </p>
+    </div>
+  </section>
+</Layout>

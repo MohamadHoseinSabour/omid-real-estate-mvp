@@ -1,0 +1,43 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout title="درخواست شما با موفقیت ثبت شد">
+  <section class="py-24 bg-slate-50 min-h-[600px] flex items-center justify-center">
+    <div class="max-w-xl mx-auto px-4 text-center">
+      <div class="w-20 h-20 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto mb-6 shadow-sm border border-emerald-200">
+        ✓
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-black text-primary-900 mb-3">
+        درخواست شما با موفقیت ثبت گردید!
+      </h1>
+      <p class="text-sm text-slate-600 mb-8 leading-relaxed">
+        اطلاعات شما در دبیرخانه آژانس املاک امید اهواز ثبت شد. کارشناس ارشد منطقه در کمتر از ۱ ساعت کاری جهت بررسی نیازها و هماهنگی جلسه مشاوره با شما تماس خواهد گرفت.
+      </p>
+
+      <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm text-xs text-slate-500 mb-8 text-start space-y-2">
+        <div class="font-bold text-slate-800 text-sm mb-2">اطلاعات هماهنگی دفتر:</div>
+        <div>📞 تلفن پاسخگویی: <span class="font-mono" dir="ltr">۰۶۱-۳۳۳۳۳۳۳۳</span></div>
+        <div>📱 تماس ضروری: <span class="font-mono" dir="ltr">۰۹۱۶۱۱۱۱۲۳۴</span></div>
+        <div>📍 آدرس: اهواز، محله گلستان، خیابان اصلی فروردین، پلاک ۱۱۸</div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a
+          href={`${baseUrl}/`}
+          class="w-full sm:w-auto px-6 py-3 rounded-xl bg-primary-700 hover:bg-primary-800 text-white font-bold text-sm transition-colors"
+        >
+          بازگشت به صفحه اصلی
+        </a>
+        <a
+          href={`${baseUrl}/properties/`}
+          class="w-full sm:w-auto px-6 py-3 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold text-sm transition-colors"
+        >
+          مشاهده سایر املاک گلستان
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

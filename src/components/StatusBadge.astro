@@ -1,0 +1,26 @@
+---
+import type { PropertyStatus } from '../types/property';
+
+interface Props {
+  status: PropertyStatus;
+  label: string;
+}
+
+const { status, label } = Astro.props;
+
+let colorClass = '';
+if (status === 'available') {
+  colorClass = 'bg-emerald-100 text-emerald-800 border-emerald-300';
+} else if (status === 'negotiating') {
+  colorClass = 'bg-amber-100 text-amber-800 border-amber-300';
+} else {
+  colorClass = 'bg-slate-200 text-slate-700 border-slate-300';
+}
+---
+
+<span class={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-bold border shadow-sm ${colorClass}`}>
+  {status === 'available' && <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>}
+  {status === 'negotiating' && <span class="w-2 h-2 rounded-full bg-amber-600"></span>}
+  {status === 'sold' && <span class="w-2 h-2 rounded-full bg-slate-500"></span>}
+  {label}
+</span>

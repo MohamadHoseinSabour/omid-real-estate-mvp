@@ -1,0 +1,68 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import blogData from '../../data/blog.json';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout
+  title="وبلاگ و مقالات بازار مسکن اهواز"
+  description="مجموعه مقالات آموزشی، راهنمای خرید و فروش آپارتمان در گلستان اهواز، قوانین کمیسیون املاک و تحلیل قیمت‌های مسکن خوزستان."
+>
+  <section class="bg-primary-900 text-white py-12 border-b-2 border-accent-500/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <nav class="text-xs text-slate-300 mb-3 flex items-center justify-center gap-2">
+        <a href={`${baseUrl}/`} class="hover:text-accent-400">خانه</a>
+        <span>/</span>
+        <span class="text-accent-400 font-bold">وبلاگ</span>
+      </nav>
+      <h1 class="text-2xl sm:text-4xl font-black mb-2">
+        مقالات و تحلیل‌های <span class="text-accent-400">بازار مسکن اهواز</span>
+      </h1>
+      <p class="text-sm text-slate-300 max-w-xl mx-auto">
+        راهنماهای کاربردی برای خرید ایمن، فروش پربازده و آگاهی از قوانین حقوقی املاک
+      </p>
+    </div>
+  </section>
+
+  <section class="py-16 bg-slate-50 min-h-[500px]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {blogData.map((post) => (
+          <article class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col group">
+            <div class="aspect-video overflow-hidden bg-slate-100">
+              <img
+                src={post.image}
+                alt={post.title}
+                loading="lazy"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+            <div class="p-6 flex flex-col flex-grow">
+              <div class="flex items-center justify-between text-xs text-slate-400 mb-3">
+                <span class="bg-primary-50 text-primary-700 px-2.5 py-1 rounded-md font-bold">
+                  {post.category}
+                </span>
+                <span>{post.date} • {post.readingTime}</span>
+              </div>
+              <h2 class="text-base font-extrabold text-slate-900 group-hover:text-primary-700 transition-colors mb-3 line-clamp-2">
+                <a href={`${baseUrl}/blog/${post.slug}/`}>
+                  {post.title}
+                </a>
+              </h2>
+              <p class="text-xs text-slate-600 leading-relaxed line-clamp-3 mb-6">
+                {post.excerpt}
+              </p>
+              <div class="mt-auto pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+                <span class="text-slate-500 font-medium">نویسنده: {post.author}</span>
+                <a href={`${baseUrl}/blog/${post.slug}/`} class="text-primary-700 font-bold hover:text-accent-600 transition-colors">
+                  مطالعه کامل ←
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

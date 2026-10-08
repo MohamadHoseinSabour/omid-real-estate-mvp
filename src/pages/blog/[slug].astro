@@ -1,0 +1,84 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import blogData from '../../data/blog.json';
+
+export async function getStaticPaths() {
+  return blogData.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: (typeof blogData)[0];
+}
+
+const { post } = Astro.props;
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Layout
+  title={`${post.title} | وبلاگ املاک امید`}
+  description={post.excerpt}
+  ogImage={post.image}
+>
+  <article class="bg-white py-12 sm:py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="text-xs text-slate-400 mb-6 flex items-center gap-2">
+        <a href={`${baseUrl}/`} class="hover:text-primary-700">خانه</a>
+        <span>/</span>
+        <a href={`${baseUrl}/blog/`} class="hover:text-primary-700">وبلاگ</a>
+        <span>/</span>
+        <span class="text-slate-600 font-bold line-clamp-1">{post.title}</span>
+      </nav>
+
+      <header class="mb-8">
+        <span class="inline-block bg-accent-100 text-accent-700 text-xs font-bold px-3 py-1 rounded-full mb-3">
+          {post.category}
+        </span>
+        <h1 class="text-2xl sm:text-4xl font-black text-primary-900 leading-tight mb-4">
+          {post.title}
+        </h1>
+        <div class="flex items-center gap-4 text-xs text-slate-500 pb-6 border-b border-slate-200">
+          <span>✍️ نویسنده: {post.author}</span>
+          <span>📅 تاریخ انتشار: {post.date}</span>
+          <span>⏱️ مدت مطالعه: {post.readingTime}</span>
+        </div>
+      </header>
+
+      <div class="aspect-video rounded-3xl overflow-hidden mb-10 shadow-md">
+        <img src={post.image} alt={post.title} class="w-full h-full object-cover" />
+      </div>
+
+      <div class="prose prose-lg max-w-none text-slate-700 leading-loose text-base space-y-6">
+        <p class="font-bold text-lg text-slate-900 leading-relaxed bg-slate-50 p-6 rounded-2xl border-s-4 border-accent-500">
+          {post.excerpt}
+        </p>
+
+        <p>
+          {post.content}
+        </p>
+
+        <h2 class="text-xl font-bold text-primary-900 mt-8 mb-4">
+          نکات حقوقی و مهم در معاملات منطقه گلستان
+        </h2>
+        <p>
+          قبل از اقدام به امضای هرگونه توافق‌نامه، تطبیق مشخصات ملک با سند رسمی، بررسی پایان‌کار شهرداری و اطمینان از هویت و صلاحیت طرفین از اصول اساسی است. کارشناسان حقوقی املاک امید اهواز در کلیه مراحل تنظیم و انعقاد قرارداد همراه شما هستند تا از هرگونه ریسک احتمالی جلوگیری شود.
+        </p>
+
+        <div class="mt-12 p-8 rounded-3xl bg-primary-900 text-white text-center">
+          <h3 class="text-xl font-bold text-accent-400 mb-2">نیاز به راهنمایی بیشتر دارید؟</h3>
+          <p class="text-xs sm:text-sm text-slate-300 mb-6">
+            همین حالا می‌توانید جهت مشاوره تخصصی در خصوص خرید یا فروش ملک در گلستان با ما تماس بگیرید.
+          </p>
+          <a
+            href={`${baseUrl}/#consultation`}
+            class="inline-flex bg-accent-500 hover:bg-accent-600 text-primary-900 font-bold px-6 py-3 rounded-xl text-sm transition-colors"
+          >
+            درخواست مشاوره رایگان
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+</Layout>

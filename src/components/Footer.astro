@@ -1,0 +1,96 @@
+---
+import agencyData from '../data/agency.json';
+
+interface Props {
+  baseUrl: string;
+}
+
+const { baseUrl } = Astro.props;
+---
+
+<footer class="bg-primary-900 text-slate-300 pt-16 pb-8 border-t-4 border-accent-500">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+      <!-- درباره آژانس -->
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <span class="w-8 h-8 rounded-lg bg-accent-500 text-primary-900 font-bold flex items-center justify-center text-sm">
+            ام
+          </span>
+          <span class="text-xl font-extrabold text-accent-400">املاک امید</span>
+        </div>
+        <p class="text-sm leading-relaxed text-slate-300 mb-4">
+          {agencyData.slogan}. بیش از یک دهه سابقه درخشان در انجام معاملات امن، ارزیابی کارشناسی و ارائه مشاوره حقوقی مسکن.
+        </p>
+        <div class="text-xs text-accent-400 font-semibold">
+          تأسیس: سال {agencyData.foundedYear} | بیش از {agencyData.stats.activeAdvisors} مشاور فعال
+        </div>
+      </div>
+
+      <!-- لینک‌های سریع -->
+      <div>
+        <h4 class="text-base font-bold text-white mb-4 border-s-2 border-accent-500 ps-2">دسترسی سریع</h4>
+        <ul class="space-y-2.5 text-sm">
+          <li>
+            <a href={`${baseUrl}/properties/`} class="hover:text-accent-400 transition-colors">املاک فروشی گلستان</a>
+          </li>
+          <li>
+            <a href={`${baseUrl}/#calculators`} class="hover:text-accent-400 transition-colors">ماشین‌حساب کمیسیون مسکن</a>
+          </li>
+          <li>
+            <a href={`${baseUrl}/#consultation`} class="hover:text-accent-400 transition-colors">درخواست مشاوره خرید یا فروش</a>
+          </li>
+          <li>
+            <a href={`${baseUrl}/blog/`} class="hover:text-accent-400 transition-colors">مقالات و راهنمای خرید ملک</a>
+          </li>
+          <li>
+            <a href={`${baseUrl}/about/`} class="hover:text-accent-400 transition-colors">معرفی مشاوران و تیم املاک امید</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- اطلاعات تماس -->
+      <div>
+        <h4 class="text-base font-bold text-white mb-4 border-s-2 border-accent-500 ps-2">ارتباط با دفتر</h4>
+        <p class="text-sm leading-relaxed mb-3">
+          📍 {agencyData.address}
+        </p>
+        <p class="text-sm mb-2">
+          📞 تلفن دفتر: <span class="text-white font-mono" dir="ltr">{agencyData.phone}</span>
+        </p>
+        <p class="text-sm mb-2">
+          📱 تلفن همراه: <span class="text-white font-mono" dir="ltr">{agencyData.mobile}</span>
+        </p>
+        <p class="text-xs text-slate-400 mt-2">
+          ⏰ ساعات کاری: {agencyData.workingHours}
+        </p>
+      </div>
+
+      <!-- صفحات حقوقی و مجوز -->
+      <div>
+        <h4 class="text-base font-bold text-white mb-4 border-s-2 border-accent-500 ps-2">قوانین و امنیت</h4>
+        <p class="text-sm text-slate-300 mb-4">
+          کلیه قراردادها تحت نظارت کارشناس رسمی و منطبق بر تعرفه اتحادیه صنف مشاورین املاک تنظیم می‌گردد.
+        </p>
+        <div class="flex flex-col gap-2 text-xs">
+          <a href={`${baseUrl}/privacy/`} class="text-slate-300 hover:text-accent-400 transition-colors">
+            • حریم خصوصی و امنیت اطلاعات
+          </a>
+          <a href={`${baseUrl}/terms/`} class="text-slate-300 hover:text-accent-400 transition-colors">
+            • شرایط و قوانین استفاده از خدمات
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- کپی‌رایت -->
+    <div class="pt-8 border-t border-slate-800 text-center text-xs text-slate-400 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>
+        تمامی حقوق مادی و معنوی متعلق به آژانس املاک امید (گلستان اهواز) می‌باشد © ۱۴۰۳
+      </div>
+      <div class="text-slate-400">
+        طراحی و پیاده‌سازی مدرن برای گیت‌هاب پیجز
+      </div>
+    </div>
+  </div>
+</footer>
