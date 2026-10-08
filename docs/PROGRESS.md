@@ -1,37 +1,41 @@
 # Progress Tracker
 
-## Phase 1: Environment Setup & Skill Installation
+## Phase 1: Environment Setup & Skill Installation ✅
+- Completed: 2026-10-08
+- Commit: `09baeb7`
+
+## Phase 2: Requirements Discovery & Spec 🔄
 
 ### Completed
-- [x] Step 1.1: Environment check
-  - OS: Windows
-  - Node.js: v24.13.1 (LTS) ✅
-  - npm: 11.8.0 ✅
-  - Git: 2.53.0 ✅
-  - GitHub CLI (gh): Not installed (optional, not blocking)
-  - Agent: Antigravity IDE (Google DeepMind) — Claude Opus 4.6 (Thinking)
-- [x] Step 1.2: Repository skeleton created
-  - `.gitignore` — Node, build, env, IDE, OS artifacts
-  - `README.md` — Project overview with doc links
-  - `.env.example` — Template for Supabase, Formspree, Analytics
-  - `docs/PROGRESS.md` — This file
-  - `docs/DECISIONS.md` — ADR-000 (phased approach)
-  - `docs/BACKLOG.md` — MVP exclusions listed
-- [x] Step 1.3: Skill discovery and installation
-  - `npx skills` CLI is Claude Code-specific, not available in Antigravity IDE
-  - 9 relevant skills identified from pre-installed global config
-  - 11 Claude Code skills documented as unavailable with alternatives
-  - See `docs/SKILLS.md` for full details
-- [x] Step 1.4: Documentation and verification
-  - `docs/SKILLS.md` created with safety audit
-  - Initial commit made
+- [x] User Q&A: Currency (تومان), area (م²), brand (املاک امید), city (محله گلستان اهواز)
+- [x] User Q&A: Wallet (accounting only), backend (Supabase), map (Neshan), logo (text-based)
+- [x] User Q&A: Domain (GitHub Pages), analytics (none), legal pages (yes), content (user writes)
+- [x] `docs/PRD.md` — Product Requirements Document
+- [x] `docs/SITEMAP.md` — URL structure and navigation
+- [x] `docs/DATA_MODEL.md` — 6 tables with types, relationships, indexes
+- [x] `docs/ROLES_AND_PERMISSIONS.md` — CRUD matrix for 3 roles × 6 tables
+- [x] `docs/ADR-001-stack.md` — Astro chosen over Jekyll
+- [x] `docs/ROADMAP.md` — Phase estimates and risks
+- [x] `docs/DECISIONS.md` — Updated with ADR-001 and ADR-002
 
 ### Current Status
-✅ Phase 1 complete — awaiting approval
+✅ Phase 2 complete — awaiting approval
 
 ---
 
-## Phase 2: Requirements Discovery & Spec
+## Phase 3: Design System & Wireframe
+_Not yet started_
+
+## Phase 4: Public Site Implementation
+_Not yet started_
+
+## Phase 5: SEO, Performance & Accessibility
+_Not yet started_
+
+## Phase 6: Dashboard & Backend (Supabase)
+_Not yet started_
+
+## Phase 7: QA, Launch & Handoff
 _Not yet started_
 
 ---
