@@ -58,13 +58,13 @@ const sampleLeads = [
       <table class="w-full text-xs text-start">
         <thead class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
           <tr>
-            <th class="p-3.5 text-start">متقاضی / شماره همراه</th>
-            <th class="p-3.5 text-start">نوع تقاضا</th>
-            <th class="p-3.5 text-start">مبدأ ثبت (Source)</th>
-            <th class="p-3.5 text-start">ملک یا بودجه مدنظر</th>
-            <th class="p-3.5 text-start">وضعیت پیگیری</th>
-            <th class="p-3.5 text-start">تاریخ ثبت</th>
-            <th class="p-3.5 text-start">اقدام</th>
+            <th class="p-3.5 text-start whitespace-nowrap">متقاضی / شماره همراه</th>
+            <th class="p-3.5 text-start whitespace-nowrap">نوع تقاضا</th>
+            <th class="p-3.5 text-start whitespace-nowrap">مبدأ ثبت (Source)</th>
+            <th class="p-3.5 text-start whitespace-nowrap">ملک یا بودجه مدنظر</th>
+            <th class="p-3.5 text-start whitespace-nowrap">وضعیت پیگیری</th>
+            <th class="p-3.5 text-start whitespace-nowrap">تاریخ ثبت</th>
+            <th class="p-3.5 text-start whitespace-nowrap">اقدام</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100">
@@ -75,12 +75,12 @@ const sampleLeads = [
                 <div class="text-[11px] text-slate-400 font-mono" dir="ltr">{lead.phone}</div>
               </td>
               <td class="p-3.5">
-                <span class="inline-block px-2 py-0.5 rounded bg-primary-100 text-primary-800 font-semibold">
+                <span class="inline-block px-2 py-0.5 rounded bg-primary-100 text-primary-800 font-semibold whitespace-nowrap">
                   {lead.requestType}
                 </span>
               </td>
               <td class="p-3.5 text-slate-500">
-                <span class="inline-block px-2 py-0.5 rounded bg-slate-100 border text-[11px]">
+                <span class="inline-block px-2 py-0.5 rounded bg-slate-100 border text-[11px] whitespace-nowrap">
                   {lead.sourceLabel}
                 </span>
               </td>
@@ -88,18 +88,18 @@ const sampleLeads = [
                 {lead.propertyTitle !== '—' ? lead.propertyTitle : lead.budget}
               </td>
               <td class="p-3.5">
-                <span class={`px-2 py-0.5 rounded-full font-bold text-[11px] ${lead.status === 'new' ? 'bg-amber-100 text-amber-800' : lead.status === 'contacted' ? 'bg-blue-100 text-blue-800' : 'bg-emerald-100 text-emerald-800'}`}>
+                <span class={`px-2 py-0.5 rounded-full font-bold text-[11px] whitespace-nowrap ${lead.status === 'new' ? 'bg-amber-100 text-amber-800' : lead.status === 'contacted' ? 'bg-blue-100 text-blue-800' : 'bg-emerald-100 text-emerald-800'}`}>
                   {lead.statusLabel}
                 </span>
               </td>
-              <td class="p-3.5 text-slate-400 font-mono">
+              <td class="p-3.5 text-slate-400 font-mono whitespace-nowrap">
                 {lead.createdAt}
               </td>
-              <td class="p-3.5">
+              <td class="p-3.5 whitespace-nowrap">
                 <button
                   type="button"
                   onclick="alert('امکان تغییر وضعیت لید و ثبت یادداشت پیگیری ذخیره شد.')"
-                  class="px-2.5 py-1 rounded-lg border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold"
+                  class="px-2.5 py-1 rounded-lg border border-slate-300 hover:bg-slate-100 text-slate-700 font-bold whitespace-nowrap shrink-0"
                 >
                   پیگیری
                 </button>

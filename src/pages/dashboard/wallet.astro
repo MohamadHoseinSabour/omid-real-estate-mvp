@@ -130,7 +130,7 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
         <div class="flex justify-end pt-2">
           <button
             type="submit"
-            class="px-6 py-3 bg-gradient-to-l from-primary-950 to-primary-900 hover:from-primary-900 hover:to-primary-800 text-white rounded-xl font-bold shadow-md transition-all flex items-center gap-2 text-xs"
+            class="px-6 py-3 bg-gradient-to-l from-primary-950 to-primary-900 hover:from-primary-900 hover:to-primary-800 text-white rounded-xl font-bold shadow-md transition-all flex items-center gap-2 text-xs whitespace-nowrap shrink-0"
           >
             <span>💾</span>
             <span>ثبت قطعی تغییر موجودی در دفتر کل</span>
@@ -166,12 +166,12 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
       <table class="w-full text-xs text-start" id="walletTable">
         <thead class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200">
           <tr>
-            <th class="p-3.5 text-start">شناسه / تاریخ</th>
-            <th class="p-3.5 text-start">مشاور ذینفع</th>
-            <th class="p-3.5 text-start">نوع عملیات</th>
-            <th class="p-3.5 text-start">شرح و دلیل تراکنش</th>
-            <th class="p-3.5 text-start">مبلغ (تومان)</th>
-            <th class="p-3.5 text-start">تاییدکننده / ثبت‌کننده</th>
+            <th class="p-3.5 text-start whitespace-nowrap">شناسه / تاریخ</th>
+            <th class="p-3.5 text-start whitespace-nowrap">مشاور ذینفع</th>
+            <th class="p-3.5 text-start whitespace-nowrap">نوع عملیات</th>
+            <th class="p-3.5 text-start whitespace-nowrap">شرح و دلیل تراکنش</th>
+            <th class="p-3.5 text-start whitespace-nowrap">مبلغ (تومان)</th>
+            <th class="p-3.5 text-start whitespace-nowrap">تاییدکننده / ثبت‌کننده</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100" id="walletTableBody">

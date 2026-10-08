@@ -1,5 +1,6 @@
 ---
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <DashboardLayout title="پیشخوان مدیریت" activeNav="overview">
@@ -11,24 +12,24 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
       <p class="text-xs text-slate-500 mt-1">خلاصه پرونده‌های ملکی، معاملات جاری، فایلینگ مشارکتی و امور مالی در گلستان اهواز</p>
     </div>
     <div class="flex items-center gap-2">
-      <span id="overviewDateBadge" class="text-xs bg-white border border-slate-200 px-3 py-1.5 rounded-xl font-mono text-slate-600 shadow-sm">
+      <span id="overviewDateBadge" class="text-xs bg-white border border-slate-200 px-3 py-1.5 rounded-xl font-mono text-slate-600 shadow-sm whitespace-nowrap shrink-0">
         ۱۴۰۳/۰۷/۱۸
       </span>
     </div>
   </div>
 
   <!-- بنر هشدار تسویه‌های معوق برای مدیرکل و منشی -->
-  <div id="pendingPayoutBanner" class="hidden mb-8 p-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-primary-950 font-bold text-xs shadow-md flex items-center justify-between">
+  <div id="pendingPayoutBanner" class="hidden mb-8 p-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold text-xs shadow-md flex flex-wrap sm:flex-nowrap items-center justify-between gap-3">
     <div class="flex items-center gap-3">
-      <span class="text-2xl">⚡</span>
+      <span class="text-2xl shrink-0">⚡</span>
       <div>
         <strong class="text-sm block">توجه مدیریت: تسویه کارمزد معوق در انتظار اقدام</strong>
-        <span class="font-normal text-[11px] text-primary-950/90" id="pendingPayoutBannerText"></span>
+        <span class="font-normal text-[11px] text-slate-950/90" id="pendingPayoutBannerText"></span>
       </div>
     </div>
     <a
-      href="../sales/"
-      class="bg-primary-950 hover:bg-primary-900 text-white font-bold text-xs py-2 px-4 rounded-xl shadow transition-colors shrink-0"
+      href={`${baseUrl}/dashboard/sales/`}
+      class="bg-slate-950 hover:bg-slate-900 text-white font-bold text-xs py-2 px-4 rounded-xl shadow transition-colors whitespace-nowrap shrink-0 ms-auto sm:ms-0"
     >
       بررسی و واریز آنی ↗
     </a>
@@ -38,8 +39,8 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
       <div class="flex items-center justify-between mb-2">
-        <span class="text-xs text-slate-500 font-bold" id="card1Label">فایل‌های فعال</span>
-        <span class="text-2xl">🏢</span>
+        <span class="text-xs text-slate-500 font-bold whitespace-nowrap" id="card1Label">فایل‌های فعال</span>
+        <span class="text-2xl shrink-0">🏢</span>
       </div>
       <div class="text-2xl font-black text-slate-900 font-mono" id="card1Val">۰ ملک</div>
       <div class="text-[11px] text-emerald-600 font-semibold mt-1">آماده معامله در گلستان</div>
@@ -47,8 +48,8 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
 
     <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
       <div class="flex items-center justify-between mb-2">
-        <span class="text-xs text-slate-500 font-bold">قراردادهای ثبت‌شده</span>
-        <span class="text-2xl">🤝</span>
+        <span class="text-xs text-slate-500 font-bold whitespace-nowrap">قراردادهای ثبت‌شده</span>
+        <span class="text-2xl shrink-0">🤝</span>
       </div>
       <div class="text-2xl font-black text-slate-900 font-mono" id="card2Val">۰ معامله</div>
       <div class="text-[11px] text-blue-600 font-semibold mt-1">شامل مستقیم و مشارکتی</div>
@@ -56,8 +57,8 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
 
     <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
       <div class="flex items-center justify-between mb-2">
-        <span class="text-xs text-slate-500 font-bold" id="card3Label">موجودی کیف پول</span>
-        <span class="text-2xl">💳</span>
+        <span class="text-xs text-slate-500 font-bold whitespace-nowrap" id="card3Label">موجودی کیف پول</span>
+        <span class="text-2xl shrink-0">💳</span>
       </div>
       <div class="text-xl font-black text-amber-600 font-mono" id="card3Val">۰ تومان</div>
       <div class="text-[11px] text-slate-400 mt-1">محاسبه بر مبنای نرخ ۳۰٪ پورسانت</div>
@@ -65,8 +66,8 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
 
     <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
       <div class="flex items-center justify-between mb-2">
-        <span class="text-xs text-slate-500 font-bold">فایلینگ اشتراکی همکاران</span>
-        <span class="text-2xl">🌐</span>
+        <span class="text-xs text-slate-500 font-bold whitespace-nowrap">فایلینگ اشتراکی همکاران</span>
+        <span class="text-2xl shrink-0">🌐</span>
       </div>
       <div class="text-2xl font-black text-slate-900 font-mono" id="card4Val">۰ فایل</div>
       <div class="text-[11px] text-emerald-600 font-semibold mt-1">فرصت‌های فروش مشارکتی</div>
@@ -81,7 +82,7 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
           <h2 class="text-base font-black text-slate-900" id="recentPropsTitle">آخرین وضعیت پرونده‌های ملکی</h2>
           <p class="text-[11px] text-slate-400">به‌روزرسانی همگام با سیستم RLS</p>
         </div>
-        <a href="../properties/" class="text-xs text-primary-700 font-bold hover:underline">مشاهده همه ↗</a>
+        <a href={`${baseUrl}/dashboard/properties/`} class="text-xs text-primary-700 font-bold hover:underline whitespace-nowrap shrink-0">مشاهده همه ↗</a>
       </div>
 
       <div class="divide-y divide-slate-100 text-xs" id="overviewPropsList">
@@ -92,68 +93,68 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
     <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 flex flex-col justify-between">
       <div>
         <h2 class="text-base font-black text-slate-900 mb-1">عملیات سریع و میانبرها</h2>
-        <p class="text-[11px] text-slate-400 mb-5">دسترسی سریع به امکانات پرکاربرد پنل</p>
+        <p class="text-[11px] text-slate-400 mb-5">دسترسی سریع به بخش‌های اصلی پنل</p>
 
         <div class="space-y-3">
           <a
-            href="../properties/"
+            href={`${baseUrl}/dashboard/properties/`}
             class="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
           >
             <div class="flex items-center gap-3">
-              <span class="text-lg">➕</span>
-              <span>ثبت یا مدیریت فایل ملکی</span>
+              <span class="text-lg shrink-0">🏢</span>
+              <span class="whitespace-nowrap">ثبت و مدیریت فایل‌های ملکی</span>
             </div>
-            <span class="text-slate-400">←</span>
+            <span class="text-slate-400 shrink-0">←</span>
           </a>
 
           <a
-            href="../co-filing/"
+            href={`${baseUrl}/dashboard/co-filing/`}
             class="w-full flex items-center justify-between p-3.5 rounded-2xl bg-emerald-50/70 hover:bg-emerald-100/80 border border-emerald-200 text-xs font-bold text-emerald-900 transition-colors"
           >
             <div class="flex items-center gap-3">
-              <span class="text-lg">🤝</span>
-              <span>فایلینگ اشتراکی و فروش مشارکتی</span>
+              <span class="text-lg shrink-0">🤝</span>
+              <span class="whitespace-nowrap">فایلینگ اشتراکی همکاران (MLS)</span>
             </div>
-            <span class="text-emerald-500">←</span>
+            <span class="text-emerald-500 shrink-0">←</span>
           </a>
 
           <a
-            href="../sales/"
+            href={`${baseUrl}/dashboard/sales/`}
             class="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
           >
             <div class="flex items-center gap-3">
-              <span class="text-lg">✍️</span>
-              <span>قراردادها و تسویه کارمزد</span>
+              <span class="text-lg shrink-0">✍️</span>
+              <span class="whitespace-nowrap">قراردادها و تسویه فروش</span>
             </div>
-            <span class="text-slate-400">←</span>
+            <span class="text-slate-400 shrink-0">←</span>
           </a>
 
           <a
-            href="../wallet/"
+            href={`${baseUrl}/dashboard/wallet/`}
             class="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
           >
             <div class="flex items-center gap-3">
-              <span class="text-lg">💳</span>
-              <span>کیف پول و دفتر کل تراکنش‌ها</span>
+              <span class="text-lg shrink-0">💳</span>
+              <span class="whitespace-nowrap">کیف پول و حسابداری کارمزد</span>
             </div>
-            <span class="text-slate-400">←</span>
+            <span class="text-slate-400 shrink-0">←</span>
           </a>
 
           <a
-            href="../leads/"
+            href={`${baseUrl}/dashboard/leads/`}
             class="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
           >
             <div class="flex items-center gap-3">
-              <span class="text-lg">👥</span>
-              <span>باشگاه متقاضیان و لیدها</span>
+              <span class="text-lg shrink-0">👥</span>
+              <span class="whitespace-nowrap">باشگاه مشتریان و تقاضاها</span>
             </div>
-            <span class="text-slate-400">←</span>
+            <span class="text-slate-400 shrink-0">←</span>
           </a>
         </div>
       </div>
 
       <!-- باکس یادآوری امنیتی -->
-      <div class="mt-6 p-4 rounded-2xl bg-primary-950 text-white text-[11px] leading-relaxed">
+      <div class="mt-6 p-4 rounded-2xl bg-slate-900 text-white text-[11px] leading-relaxed border border-slate-800" style="background-color: #0b1a2e;">
         <div class="text-accent-400 font-bold mb-1">🔒 نظارت و انضباط مالی:</div>
         <p class="text-slate-300">
           تمامی تغییرات کیف پول و تسویه‌ها به صورت غیرقابل تغییر در دفتر کل ثبت شده و دارای ردیابی کاربر است.

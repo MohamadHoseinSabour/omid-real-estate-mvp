@@ -1,5 +1,6 @@
 ---
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <DashboardLayout title="مدیریت املاک و فایل‌ها" activeNav="properties">
@@ -8,22 +9,22 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
     <div>
       <div class="flex items-center gap-3">
         <h1 class="text-2xl font-black text-slate-900" id="pageTitleHeading">مدیریت املاک و فایل‌ها</h1>
-        <span id="accessLevelBadge" class="text-xs px-2.5 py-0.5 rounded-full font-bold"></span>
+        <span id="accessLevelBadge" class="text-xs px-2.5 py-0.5 rounded-full font-bold whitespace-nowrap shrink-0"></span>
       </div>
       <p class="text-xs text-slate-500 mt-1" id="pageDescription">
         مشاهده، ویرایش، حذف و کنترل پرونده‌های ملکی در محله گلستان اهواز
       </p>
     </div>
-    <div class="flex items-center gap-3">
+    <div class="flex items-center gap-3 shrink-0">
       <a
-        href="../co-filing/"
-        class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs py-2.5 px-4 rounded-xl transition-colors flex items-center gap-2"
+        href={`${baseUrl}/dashboard/co-filing/`}
+        class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs py-2.5 px-4 rounded-xl transition-colors flex items-center gap-2 whitespace-nowrap shrink-0"
       >
         <span>🤝</span> فایلینگ اشتراکی همکاران
       </a>
       <button
         id="openNewPropBtn"
-        class="bg-gradient-to-l from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-primary-950 font-black text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-2"
+        class="bg-accent-500 hover:bg-accent-600 text-slate-950 font-black text-xs py-2.5 px-4 rounded-xl shadow-md transition-all flex items-center gap-2 whitespace-nowrap shrink-0"
       >
         <span>➕</span> ثبت ملک جدید
       </button>
@@ -31,15 +32,15 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
   </div>
 
   <!-- بنر راهنمای دسترسی برای مشاوران -->
-  <div id="advisorAccessNotice" class="hidden mb-6 p-4 rounded-2xl bg-blue-50 border border-blue-200 text-xs text-blue-900 flex items-start justify-between">
+  <div id="advisorAccessNotice" class="hidden mb-6 p-4 rounded-2xl bg-blue-50 border border-blue-200 text-xs text-blue-900 flex flex-wrap sm:flex-nowrap items-center justify-between gap-3">
     <div class="flex items-center gap-3">
-      <span class="text-xl">ℹ️</span>
+      <span class="text-xl shrink-0">ℹ️</span>
       <div>
         <strong class="font-bold">حالت نمایش مشاور:</strong>
         <span>شما در این صفحه فقط فایل‌های شخصی خودتان را مشاهده و مدیریت می‌کنید. برای فایل‌های سایر همکاران به بخش فایلینگ اشتراکی بروید.</span>
       </div>
     </div>
-    <a href="../co-filing/" class="text-primary-700 font-bold hover:underline shrink-0">ورود به فایلینگ اشتراکی ↗</a>
+    <a href={`${baseUrl}/dashboard/co-filing/`} class="text-primary-700 font-bold hover:underline whitespace-nowrap shrink-0 ms-auto sm:ms-0">ورود به فایلینگ اشتراکی ↗</a>
   </div>
 
   <!-- نوار جستجو و فیلترهای پیشرفته -->
@@ -91,12 +92,12 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
       <table class="w-full text-xs text-start" id="propertiesTable">
         <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
           <tr>
-            <th class="p-3.5 text-start">کد / عنوان ملک</th>
-            <th class="p-3.5 text-start">قیمت کل (تومان)</th>
-            <th class="p-3.5 text-start">متراژ و نوع</th>
-            <th class="p-3.5 text-start">مشاور مسئول (مالک فایل)</th>
-            <th class="p-3.5 text-start">وضعیت</th>
-            <th class="p-3.5 text-center">عملیات مدیریتی</th>
+            <th class="p-3.5 text-start whitespace-nowrap">کد / عنوان ملک</th>
+            <th class="p-3.5 text-start whitespace-nowrap">قیمت کل (تومان)</th>
+            <th class="p-3.5 text-start whitespace-nowrap">متراژ و نوع</th>
+            <th class="p-3.5 text-start whitespace-nowrap">مشاور مسئول (مالک فایل)</th>
+            <th class="p-3.5 text-start whitespace-nowrap">وضعیت</th>
+            <th class="p-3.5 text-center whitespace-nowrap">عملیات مدیریتی</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-slate-100" id="propertiesTableBody">
@@ -385,15 +386,15 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
             </td>
 
             <!-- ستون عملیات مدیریتی -->
-            <td class="p-3.5 text-center">
-              <div class="flex items-center justify-center gap-1.5">
+            <td class="p-3.5 text-center whitespace-nowrap">
+              <div class="flex items-center justify-center gap-1.5 whitespace-nowrap">
                 ${
                   canEdit
                     ? `<button
                         type="button"
                         data-action="edit"
                         data-id="${prop.id}"
-                        class="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 font-bold text-[11px] transition-colors"
+                        class="px-2.5 py-1 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 font-bold text-[11px] transition-colors whitespace-nowrap shrink-0"
                         title="ویرایش مشخصات"
                       >
                         ✏️ ویرایش
@@ -408,7 +409,7 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
                         data-action="delete"
                         data-id="${prop.id}"
                         data-title="${prop.title}"
-                        class="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-[11px] transition-colors"
+                        class="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-bold text-[11px] transition-colors whitespace-nowrap shrink-0"
                         title="حذف ملک"
                       >
                         🗑️ حذف
@@ -417,9 +418,9 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
                 }
 
                 <a
-                  href="../../properties/${prop.slug}/"
+                  href="${window.location.origin}${baseUrl}/properties/${prop.slug}/"
                   target="_blank"
-                  class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-[11px] transition-colors"
+                  class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-[11px] transition-colors whitespace-nowrap shrink-0"
                   title="مشاهده صفحه ملک در سایت"
                 >
                   👁️ سایت

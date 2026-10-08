@@ -162,8 +162,8 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
         </div>
 
         <div class="flex justify-end gap-3 pt-3 border-t border-slate-100">
-          <button type="button" id="cancelCoModalBtn" class="px-5 py-2.5 border rounded-xl text-slate-600 font-bold hover:bg-slate-50">انصراف</button>
-          <button type="submit" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-md">
+          <button type="button" id="cancelCoModalBtn" class="px-5 py-2.5 border rounded-xl text-slate-600 font-bold hover:bg-slate-50 whitespace-nowrap shrink-0">انصراف</button>
+          <button type="submit" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold shadow-md whitespace-nowrap shrink-0">
             ثبت نهایی معامله مشارکتی
           </button>
         </div>
@@ -317,15 +317,15 @@ import DashboardLayout from '../../layouts/DashboardLayout.astro';
                   type="button"
                   data-action="co-sale"
                   data-id="${prop.id}"
-                  class="flex-grow py-2.5 px-3 rounded-xl bg-gradient-to-l from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5"
+                  class="flex-grow py-2.5 px-3 rounded-xl bg-gradient-to-l from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white font-bold text-xs shadow-sm transition-all flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0"
                 >
                   <span>🤝</span>
-                  <span>اعلام مشتری یا فروش مشارکتی</span>
+                  <span class="whitespace-nowrap">اعلام مشتری یا فروش مشارکتی</span>
                 </button>
                 <a
-                  href="../../properties/${prop.slug}/"
+                  href="${window.__BASE_URL__ || ''}/properties/${prop.slug}/"
                   target="_blank"
-                  class="p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs"
+                  class="p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs whitespace-nowrap shrink-0"
                   title="مشاهده مشخصات عمومی"
                 >
                   👁️
