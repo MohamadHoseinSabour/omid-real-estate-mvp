@@ -1,0 +1,187 @@
+---
+interface Props {
+  type: 'agency' | 'property' | 'article' | 'website';
+  data?: any;
+}
+
+const { type, data } = Astro.props;
+const siteUrl = 'https://MohamadHoseinSabour.github.io/omid-real-estate-mvp';
+
+let schemaJson = {};
+
+if (type === 'agency' || type === 'website') {
+  schemaJson = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "RealEstateAgent",
+        "@id": `${siteUrl}/#agency`,
+        "name": "آژانس املاک امید",
+        "description": "تخصصی‌ترین مرکز معاملات ملکی، خرید، فروش و رهن در محله گلستان اهواز",
+        "url": siteUrl,
+        "telephone": "+98-61-33333333",
+        "priceRange": "$$",
+        "image": "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=80",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "خیابان اصلی فروردین، بین اقبال و اصفهان، پلاک ۱۱۸",
+          "addressLocality": "اهواز",
+          "addressRegion": "خوزستان",
+          "addressCountry": "IR"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 31.3055,
+          "longitude": 48.6645
+        },
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
+            "opens": "09:00",
+            "closes": "22:00"
+          }
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        "url": siteUrl,
+        "name": "املاک امید گلستان اهواز",
+        "inLanguage": "fa-IR"
+      }
+    ]
+  };
+} else if (type === 'property' && data) {
+  const property = data;
+  const isAvailable = property.status === 'available';
+  const availability = isAvailable
+    ? "https://schema.org/InStock"
+    : "https://schema.org/SoldOut";
+
+  schemaJson = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "خانه",
+            "item": `${siteUrl}/`
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "املاک گلستان",
+            "item": `${siteUrl}/properties/`
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": property.title,
+            "item": `${siteUrl}/properties/${property.slug}/`
+          }
+        ]
+      },
+      {
+        "@type": "RealEstateListing",
+        "@id": `${siteUrl}/properties/${property.slug}/#listing`,
+        "name": property.title,
+        "description": property.description,
+        "url": `${siteUrl}/properties/${property.slug}/`,
+        "datePosted": property.createdAt,
+        "image": property.images.map((img: any) => img.url),
+        "offers": {
+          "@type": "Offer",
+          "price": property.priceToman,
+          "priceCurrency": "IRR",
+          "priceSpecification": {
+            "@type": "UnitPriceSpecification",
+            "price": property.priceToman,
+            "priceCurrency": "TOMAN",
+            "unitText": "کل معامله"
+          },
+          "availability": availability
+        },
+        "itemOffered": {
+          "@type": "Accommodation",
+          "name": property.title,
+          "numberOfRooms": property.bedrooms,
+          "floorSize": {
+            "@type": "QuantitativeValue",
+            "value": property.areaSqm,
+            "unitCode": "MTK"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": property.address,
+            "addressLocality": "اهواز",
+            "addressRegion": "خوزستان",
+            "addressCountry": "IR"
+          },
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": property.coordinates.lat,
+            "longitude": property.coordinates.lng
+          }
+        }
+      }
+    ]
+  };
+} else if (type === 'article' && data) {
+  const post = data;
+  schemaJson = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "خانه",
+            "item": `${siteUrl}/`
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "وبلاگ",
+            "item": `${siteUrl}/blog/`
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": post.title,
+            "item": `${siteUrl}/blog/${post.slug}/`
+          }
+        ]
+      },
+      {
+        "@type": "Article",
+        "@id": `${siteUrl}/blog/${post.slug}/#article`,
+        "headline": post.title,
+        "description": post.excerpt,
+        "image": post.image,
+        "datePublished": "2026-10-01",
+        "inLanguage": "fa-IR",
+        "author": {
+          "@type": "Person",
+          "name": post.author
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "املاک امید",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=400&q=80"
+          }
+        }
+      }
+    ]
+  };
+}
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schemaJson, null, 2)} />

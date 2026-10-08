@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
 import ConsultationForm from '../../components/ConsultationForm.astro';
 import PropertyCard from '../../components/PropertyCard.astro';
+import SchemaMarkup from '../../components/SchemaMarkup.astro';
 import propertiesData from '../../data/properties.json';
 import { formatToman } from '../../utils/calculators';
 import type { Property } from '../../types/property';
@@ -34,6 +35,8 @@ const isSold = property.status === 'sold';
   description={property.description.slice(0, 160)}
   ogImage={property.images[0]?.url}
 >
+  <SchemaMarkup type="property" data={property} />
+
   <!-- بردکرامب و عنوان بالای صفحه -->
   <div class="bg-primary-900 text-white py-8 border-b-2 border-accent-500/20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
