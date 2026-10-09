@@ -152,7 +152,7 @@ export function ImageStreamHero({
       <div
         aria-hidden
         dir="ltr"
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 hidden sm:block"
         style={{
           perspective: `${p.perspective}cqw`,
           perspectiveOrigin: `50% ${axis}%`,

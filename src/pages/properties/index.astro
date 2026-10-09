@@ -101,9 +101,12 @@ const properties = propertiesData as Property[];
         ))}
       </div>
 
-      <!-- پیام عدم وجود نتیجه -->
       <div id="noResultsMsg" class="hidden text-center py-16 bg-white rounded-2xl border border-slate-200">
-        <div class="text-4xl mb-3">🔍</div>
+        <div class="w-12 h-12 mx-auto mb-3 rounded-full bg-slate-100 text-slate-400 flex items-center justify-center">
+          <svg class="w-6 h-6 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+          </svg>
+        </div>
         <h3 class="text-base font-bold text-slate-800 mb-1">ملکی با مشخصات انتخابی یافت نشد</h3>
         <p class="text-xs text-slate-500 mb-4">می‌توانید فیلترها را تغییر دهید یا مستقیماً با کارشناسان ما تماس بگیرید.</p>
         <a href={`${baseUrl}/#consultation`} class="inline-flex text-xs font-bold bg-accent-500 text-primary-900 px-4 py-2 rounded-xl">

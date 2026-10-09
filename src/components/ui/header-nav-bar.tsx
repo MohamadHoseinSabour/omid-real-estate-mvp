@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
   Home,
@@ -30,7 +30,7 @@ const NAV_LINKS: NavLink[] = [
   { label: "تماس با ما", icon: PhoneCall, path: "/contact/" },
 ];
 
-const LABEL_MAX_WIDTH = 110;
+const LABEL_MAX_WIDTH = 140;
 
 type HeaderNavBarProps = {
   baseUrl?: string;
@@ -46,46 +46,113 @@ export function HeaderNavBar({
   isMobileFloating = false,
 }: HeaderNavBarProps) {
   const cleanBase = baseUrl.replace(/\/$/, "");
-  
-  // Find initial active index
-  const getInitialIndex = () => {
+
+  // Determine active index based on current window location or currentPath
+  const getIndexFromUrl = useCallback(() => {
     if (typeof window !== "undefined") {
-      const path = window.location.pathname;
       const hash = window.location.hash;
-      if (hash === "#calculators") return 2;
+      if (hash && (hash.includes("calc") || hash === "#calculators")) {
+        return 2;
+      }
+
+      const path = window.location.pathname.replace(/\/$/, "");
       const idx = NAV_LINKS.findIndex((link) => {
         if (link.isHash) return false;
         const target = `${cleanBase}${link.path}`.replace(/\/$/, "");
-        const current = path.replace(/\/$/, "");
-        if (link.path === "/") return current === cleanBase || current === "";
-        return current.includes(target);
+        if (link.path === "/") {
+          return path === cleanBase || path === "" || path === "/";
+        }
+        return path === target || path.startsWith(target + "/");
       });
       return idx !== -1 ? idx : 0;
     }
+
+    const current = currentPath.replace(/\/$/, "");
     const idx = NAV_LINKS.findIndex((link) => {
       if (link.isHash) return false;
       const target = `${cleanBase}${link.path}`.replace(/\/$/, "");
-      const current = currentPath.replace(/\/$/, "");
-      if (link.path === "/") return current === cleanBase || current === "";
-      return current.includes(target);
+      if (link.path === "/") {
+        return current === cleanBase || current === "" || current === "/";
+      }
+      return current === target || current.startsWith(target + "/");
     });
     return idx !== -1 ? idx : 0;
-  };
+  }, [cleanBase, currentPath]);
 
-  const [activeIndex, setActiveIndex] = useState(getInitialIndex);
+  const [activeIndex, setActiveIndex] = useState(getIndexFromUrl);
 
-  // Sync with browser navigation
+  // Sync with browser navigation and scroll position
   useEffect(() => {
+    // Immediately sync index on mount (fixes SSR hydration difference)
+    setActiveIndex(getIndexFromUrl());
+
     const handleUrlChange = () => {
-      setActiveIndex(getInitialIndex());
+      setActiveIndex(getIndexFromUrl());
     };
+
     window.addEventListener("popstate", handleUrlChange);
     window.addEventListener("hashchange", handleUrlChange);
+
+    // Scroll-spy observer for the calculators section on homepage
+    const calcEl = document.getElementById("calculators");
+    let observer: IntersectionObserver | null = null;
+
+    if (calcEl) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setActiveIndex(2);
+            } else {
+              // If user scrolled back up towards hero / top of page
+              if (window.scrollY < 350) {
+                setActiveIndex(0);
+              }
+            }
+          });
+        },
+        { rootMargin: "-10% 0px -40% 0px", threshold: 0.1 }
+      );
+      observer.observe(calcEl);
+    }
+
     return () => {
       window.removeEventListener("popstate", handleUrlChange);
       window.removeEventListener("hashchange", handleUrlChange);
+      if (observer && calcEl) observer.unobserve(calcEl);
     };
-  }, [cleanBase]);
+  }, [getIndexFromUrl]);
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, item: NavLink, idx: number) => {
+    if (typeof window === "undefined") return;
+
+    const currentPathClean = window.location.pathname.replace(/\/$/, "");
+    const isHomePage = currentPathClean === cleanBase || currentPathClean === "" || currentPathClean === "/";
+
+    if (item.isHash && isHomePage) {
+      e.preventDefault();
+      setActiveIndex(idx);
+      const calcEl = document.getElementById("calculators");
+      if (calcEl) {
+        calcEl.scrollIntoView({ behavior: "smooth" });
+        window.history.pushState(null, "", `${cleanBase}/#calculators`);
+      }
+      return;
+    }
+
+    if (item.path === "/") {
+      const isCurrentHome = currentPathClean === cleanBase || currentPathClean === "" || currentPathClean === "/";
+      if (isCurrentHome) {
+        e.preventDefault();
+        setActiveIndex(0);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.history.pushState(null, "", `${cleanBase}/`);
+        return;
+      }
+    }
+
+    setActiveIndex(idx);
+  };
 
   return (
     <motion.nav
@@ -118,13 +185,13 @@ export function HeaderNavBar({
                 : "bg-transparent text-slate-300 hover:text-white hover:bg-slate-800/80",
               "focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400",
             )}
-            onClick={() => setActiveIndex(idx)}
+            onClick={(e) => handleLinkClick(e, item, idx)}
             aria-label={item.label}
             aria-current={isActive ? "page" : undefined}
           >
             <Icon
-              size={19}
-              strokeWidth={isActive ? 2.4 : 1.9}
+              size={18}
+              strokeWidth={isActive ? 2.1 : 1.8}
               aria-hidden="true"
               className={cn(
                 "transition-colors duration-200 shrink-0",
@@ -139,22 +206,24 @@ export function HeaderNavBar({
               animate={{
                 width: isActive ? "auto" : "0px",
                 opacity: isActive ? 1 : 0,
-                marginRight: isActive ? "6px" : "0px",
+                marginRight: isActive ? "7px" : "0px",
               }}
               transition={{
                 width: { type: "spring", stiffness: 350, damping: 32 },
                 opacity: { duration: 0.18 },
                 marginRight: { duration: 0.18 },
               }}
-              className="overflow-hidden flex items-center"
-              style={{ maxWidth: `${LABEL_MAX_WIDTH}px` }}
+              className="overflow-hidden flex items-center justify-center"
+              style={{
+                maxWidth: isMobileFloating ? "85px" : `${LABEL_MAX_WIDTH}px`,
+              }}
             >
               <span
                 className={cn(
-                  "font-bold text-xs whitespace-nowrap select-none transition-opacity duration-200 overflow-hidden text-ellipsis leading-tight",
+                  "text-xs whitespace-nowrap select-none transition-opacity duration-200 leading-none py-0.5",
                   isActive
-                    ? "text-primary-950 font-black"
-                    : "opacity-0 text-slate-400",
+                    ? "text-primary-950 font-extrabold"
+                    : "opacity-0 text-slate-400 font-medium",
                 )}
                 title={item.label}
               >

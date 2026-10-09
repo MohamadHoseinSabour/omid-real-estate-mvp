@@ -143,23 +143,11 @@ export function TiltedGridHero({
   const id = React.useId().replace(/[^a-zA-Z0-9]/g, "");
   const orbit = `tgh-o-${id}`;
   const tile = `tgh-t-${id}`;
-  function getResponsiveBend(w: number, baseCurve: number) {
-    if (w < 480) return (Math.min(baseCurve, 40) * Math.PI) / 180;
-    if (w < 768) return (Math.min(baseCurve, 55) * Math.PI) / 180;
-    return (Math.min(85, Math.max(5, baseCurve)) * Math.PI) / 180;
-  }
-
-  function getResponsiveTileHeight(w: number, baseTile: number) {
-    if (w < 480) return Math.min(baseTile, 22);
-    if (w < 768) return Math.min(baseTile, 25);
-    return baseTile;
-  }
-
   const bend = (Math.min(85, Math.max(5, curve)) * Math.PI) / 180;
 
-  // Initialized with a default layout so first paint is immediately rendered without flash
-  const [layout, setLayout] = React.useState<ReturnType<typeof measure> | null>(
-    () => measure(1200, 600, tileHeight, aspectRatio, gap, bend),
+  // Stable layout calculation to ensure tiles never jump, overlap, or drift apart
+  const [layout, setLayout] = React.useState<ReturnType<typeof measure>>(() =>
+    measure(1200, 600, tileHeight, aspectRatio, gap, bend),
   );
 
   // The image each tile shows, as a position in the run of images. It
@@ -172,9 +160,7 @@ export function TiltedGridHero({
     if (!el) return;
 
     const updateLayout = (w: number, h: number) => {
-      const effBend = getResponsiveBend(w, curve);
-      const effTile = getResponsiveTileHeight(w, tileHeight);
-      setLayout(measure(w, h, effTile, aspectRatio, gap, effBend));
+      setLayout(measure(w, h, tileHeight, aspectRatio, gap, bend));
     };
 
     // Measure immediately on mount
@@ -195,7 +181,7 @@ export function TiltedGridHero({
     });
     ro.observe(el);
     return () => ro.disconnect();
-  }, [tileHeight, aspectRatio, gap, curve]);
+  }, [tileHeight, aspectRatio, gap, bend]);
 
   // Fetch every image up front. A tile picks up its next one just before
   // it comes back into view, too late to start loading it then.
@@ -208,8 +194,9 @@ export function TiltedGridHero({
     }
   }, [images]);
 
-  const { columns, sweep, unit, limit } =
-    layout ?? measure(1200, 600, tileHeight, aspectRatio, gap, bend);
+  const { sweep, unit, limit } = layout;
+  // Keep columns stable so running CSS animations never get phase-shifted or jump
+  const columns = Math.max(12, layout.columns);
 
   // Every length is a multiple of the tile's height, which follows the
   // hero's height until MAX_WIDTH caps it on narrow screens.
@@ -225,18 +212,13 @@ export function TiltedGridHero({
   const turn = (deg: number) =>
     `translateZ(${radius}) rotateY(${+deg.toFixed(4)}deg) translateZ(-${radius})`;
 
-  // Beyond `limit` a tile is wholly off-screen, so it is hidden there. The
-  // loop's ends, where it wraps, fall inside that stretch, and so do tiles
-  // swinging round behind the camera.
+  // Beyond `limit` a tile is wholly off-screen, so it is hidden there.
   const hide = +(((sweep - limit) / (2 * sweep || 1)) * 100).toFixed(4);
   const css =
     `@keyframes ${orbit}{` +
     `from{transform:${turn(-sweep)}}to{transform:${turn(sweep)}}` +
     `0%,${hide}%,${100 - hide}%,100%{visibility:hidden}` +
     `${hide + 0.001}%,${100 - hide - 0.001}%{visibility:visible}}` +
-    // Pausing rather than removing the motion keeps the band whole: every
-    // tile is already placed by its negative delay, so it freezes as a
-    // finished still.
     `@media(prefers-reduced-motion:reduce){.${tile}{animation-play-state:paused}}`;
 
   const share = aspectRatio / SLICES;
@@ -245,8 +227,7 @@ export function TiltedGridHero({
     100 - fade
   }%,transparent)`;
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
-  const effectiveAxis = isMobile ? Math.min(axis, 45) : axis;
+  const effectiveAxis = axis;
 
   return (
     <div

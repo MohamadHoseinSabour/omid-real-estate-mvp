@@ -7,107 +7,200 @@ const heroImages = [
   {
     src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
     alt: "آپارتمان ۱۶۵ متری ۳ خواب فول‌امکانات خیابان اردیبهشت گلستان اهواز",
+    title: "آپارتمان ۱۶۵م اردیبهشت",
+    location: "خیابان اردیبهشت • فول‌امکانات",
+    badge: "معامله موفق (۴.۲ میلیارد)",
   },
   {
     src: "https://images.unsplash.com/photo-1512915922686-57c11dde9b6b?auto=format&fit=crop&w=1200&q=80",
     alt: "پنت‌هاوس ۲۱۰ متری لوکس با روف‌گاردن اختصاصی خیابان آبان",
+    title: "پنت‌هاوس ۲۱۰م آبان",
+    location: "خیابان آبان • روف‌گاردن اختصاصی",
+    badge: "فروخته شد (۶.۲ میلیارد)",
   },
   {
     src: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1200&q=80",
     alt: "ویلایی ۲۵۰ متری بازسازی کامل کوی بوستان گلستان",
+    title: "ویلایی ۲۵۰م بوستان",
+    location: "کوی بوستان • بازسازی کامل",
+    badge: "معامله موفق (۶.۷ میلیارد)",
   },
   {
     src: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80",
     alt: "نمای داخلی آپارتمان ۱۱۰ متری خیابان فروردین",
+    title: "آپارتمان ۱۱۰م فروردین",
+    location: "خیابان فروردین • ۲ خواب مستر",
+    badge: "سند تک‌برگ",
   },
   {
     src: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80",
     alt: "واحد اداری تجاری ۴۵ متری بر اصلی بلوار گلستان",
+    title: "واحد اداری ۴۵م بلوار گلستان",
+    location: "بر اصلی بلوار • موقعیت اداری",
+    badge: "واگذار شد",
   },
   {
     src: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80",
     alt: "عمارت مسکونی ویلایی مدرن گلستان اهواز",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=800&q=80",
-    alt: "آشپزخانه مدرن های‌گلاس آپارتمان اردیبهشت",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80",
-    alt: "حیاط مشجر و استخر روباز ویلایی بوستان",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
-    alt: "سالن نشیمن مدرن و دلباز با نور طبیعی",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&q=80",
-    alt: "اتاق خواب مستر با کمد دیواری سرتاسری",
+    title: "عمارت ویلایی اسفند",
+    location: "خیابان اسفند • مدرن شخصی‌ساز",
+    badge: "معامله موفق (۸.۵ میلیارد)",
   },
 ];
+
+// Double images for seamless infinite loop on mobile
+const mobileStreamImages = [...heroImages, ...heroImages];
 ---
 
 <section class="relative bg-[#07090e] text-white overflow-hidden border-b border-slate-800/80">
   <!-- Subtle ambient decorative glow -->
   <div class="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-accent-500/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-  <!-- Tilted Grid 3D Cylinder Hero (Exact layout matching the demo with mobile optimization) -->
-  <TiltedGridHero
-    client:load
-    images={heroImages}
-    speed={4}
-    tileHeight={28}
-    aspectRatio={16 / 9}
-    gap={6}
-    axis={54}
-    curve={80}
-    fade={12}
-    className="h-[550px] sm:h-[640px] lg:h-[700px] w-full bg-[#07090e]"
-  >
-    <div class="relative z-10 flex h-full flex-col items-center justify-between py-6 sm:py-10 lg:py-14 text-center px-4">
-      
-      <!-- Top: Heading & Badge (Above the 3D ribbon) -->
-      <div class="px-2 sm:px-6 max-w-4xl mx-auto">
-        <div class="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-accent-500/10 border border-accent-500/30 text-accent-400 text-[11px] sm:text-sm font-semibold mb-2 sm:mb-4">
-          <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-accent-400 animate-ping"></span>
-          تخصصی‌ترین مرجع خرید، فروش و رهن در محله گلستان اهواز
+  <!-- ۱. نسخه دسکتاپ و تبلت: اسلایدر سه‌بعدی استوانه‌ای TiltedGridHero با محاسبات هندسی دقیق -->
+  <div class="hidden sm:block">
+    <TiltedGridHero
+      client:load
+      images={heroImages}
+      speed={5}
+      tileHeight={20}
+      aspectRatio={16 / 9}
+      gap={6}
+      axis={50}
+      curve={45}
+      fade={15}
+      className="h-[650px] lg:h-[720px] w-full bg-[#07090e] relative"
+    >
+      <!-- لایه‌های محافظ گرادیان تیره در بالا و پایین جهت جلوگیری کامل از هرگونه تداخل با تیتر و دکمه‌ها -->
+      <div class="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-[#07090e] via-[#07090e]/85 to-transparent pointer-events-none z-[5]"></div>
+      <div class="absolute inset-x-0 bottom-0 h-44 bg-gradient-to-t from-[#07090e] via-[#07090e]/85 to-transparent pointer-events-none z-[5]"></div>
+
+      <div class="relative z-10 flex h-full flex-col items-center justify-between py-10 lg:py-14 text-center px-4">
+        <!-- بالا: نشان و تیتر اصلی (بدون هرگونه تداخل) -->
+        <div class="px-4 max-w-4xl mx-auto pt-2">
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-500/10 border border-accent-500/30 text-accent-400 text-xs sm:text-sm font-semibold mb-3 shadow-sm">
+            <svg class="w-4 h-4 text-accent-400 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.5 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.352-.272-2.64-.765-3.81a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.085zm2.764 8.09a.75.75 0 00-1.06-1.06L10.5 12.94l-1.72-1.72a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.06 0l4.25-4.25z" clip-rule="evenodd" />
+            </svg>
+            <span>تخصصی‌ترین مرجع خرید، فروش و رهن در محله گلستان اهواز</span>
+          </div>
+          <h1 class="text-balance text-3xl sm:text-4xl lg:text-6xl font-black tracking-tight text-white leading-tight drop-shadow-md">
+            معاملات هوشمند و مطمئن ملک
+            <br />
+            در <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 via-accent-300 to-accent-500">گلستان اهواز</span>
+          </h1>
         </div>
-        <h1 class="text-balance text-2xl sm:text-4xl lg:text-6xl font-black tracking-tight text-white leading-tight">
-          معاملات هوشمند و مطمئن ملک
-          <br />
-          در <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 via-accent-300 to-accent-500">گلستان اهواز</span>
-        </h1>
-      </div>
 
-      <!-- Bottom: Subtitle & Dual Action Buttons (Below the 3D ribbon) -->
-      <div class="px-2 sm:px-6 max-w-xl mx-auto flex flex-col items-center w-full">
-        <p class="max-w-md text-balance text-xs sm:text-sm text-slate-300 mb-3 sm:mb-5 leading-relaxed font-normal px-3 py-1 rounded-lg bg-[#07090e]/75 backdrop-blur-sm sm:bg-transparent">
-          مشاوره تخصصی و حقوقی در تمامی مراحل معامله با همراهی بیش از ۸ کارشناس زبده و مورد اعتماد در منطقه گلستان، بوستان و سعدی.
-        </p>
+        <!-- پایین: زیرنویس و دکمه‌های دوگانه (بدون هرگونه تداخل) -->
+        <div class="px-4 max-w-2xl mx-auto flex flex-col items-center w-full pb-2">
+          <p class="max-w-xl text-balance text-sm sm:text-base text-slate-300 mb-6 leading-relaxed font-normal">
+            مشاوره تخصصی و حقوقی در تمامی مراحل معامله با همراهی بیش از ۸ کارشناس زبده و مورد اعتماد در منطقه گلستان، بوستان و سعدی.
+          </p>
 
-        <!-- دکمه‌های دوگانه هیرو با رفتار تعاملی بهینه برای موبایل و دسکتاپ -->
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-4 w-full max-w-xs sm:max-w-none">
-          <button
-            type="button"
-            data-intent="sell"
-            class="hero-intent-btn inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-accent-400 to-accent-600 hover:from-accent-500 hover:to-accent-700 text-primary-950 font-black text-sm sm:text-base shadow-xl shadow-accent-500/30 hover:shadow-accent-500/50 transition-all transform hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-accent-400 cursor-pointer whitespace-nowrap"
-          >
-            🏷️ می‌خواهم بفروشم
-          </button>
-          <button
-            type="button"
-            data-intent="buy"
-            class="hero-intent-btn inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-white border border-accent-400/60 hover:border-accent-400 font-black text-sm sm:text-base shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-accent-400 cursor-pointer whitespace-nowrap"
-          >
-            🔍 می‌خواهم بخرم
-          </button>
+          <div class="flex items-center justify-center gap-4 w-full">
+            <button
+              type="button"
+              data-intent="sell"
+              class="hero-intent-btn inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-gradient-to-r from-accent-400 to-accent-600 hover:from-accent-500 hover:to-accent-700 text-primary-950 font-black text-base shadow-xl shadow-accent-500/30 hover:shadow-accent-500/50 transition-all transform hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-accent-400 cursor-pointer whitespace-nowrap"
+            >
+              <svg class="w-4 h-4 text-primary-950 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.25 2.25a3 3 0 00-3 3v4.318a3 3 0 00.879 2.121l9.58 9.581c.92.92 2.39.94 3.328.002l5.438-5.438c.937-.938.918-2.409-.002-3.328L11.893 3.129a3 3 0 00-2.121-.879H5.25zM6.375 7.5a1.125 1.125 0 100-2.25 1.125 1.125 0 000 2.25z" clip-rule="evenodd" />
+              </svg>
+              <span>می‌خواهم بفروشم</span>
+            </button>
+            <button
+              type="button"
+              data-intent="buy"
+              class="hero-intent-btn inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-white border border-accent-400/60 hover:border-accent-400 font-black text-base shadow-lg transition-all transform hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-accent-400 cursor-pointer whitespace-nowrap"
+            >
+              <svg class="w-4 h-4 text-accent-400 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z" clip-rule="evenodd" />
+              </svg>
+              <span>می‌خواهم بخرم</span>
+            </button>
+          </div>
         </div>
       </div>
+    </TiltedGridHero>
+  </div>
 
+  <!-- ۲. نسخه اختصاصی و بهینه‌سازی‌شده برای موبایل: ویترین روان املاک لوکس بدون اعوجاج سه‌بعدی -->
+  <div class="block sm:hidden relative bg-[#07090e] pt-6 pb-8 px-4 text-center">
+    <!-- تیتر و برچسب بالا -->
+    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-500/10 border border-accent-500/30 text-accent-400 text-[11px] font-bold mb-3 shadow-sm">
+      <svg class="w-3.5 h-3.5 text-accent-400 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+        <path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 00-1.032 0 11.209 11.209 0 01-7.877 3.08.75.75 0 00-.722.515A12.74 12.74 0 002.5 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 00.374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.352-.272-2.64-.765-3.81a.75.75 0 00-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.085zm2.764 8.09a.75.75 0 00-1.06-1.06L10.5 12.94l-1.72-1.72a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.06 0l4.25-4.25z" clip-rule="evenodd" />
+      </svg>
+      <span>تخصصی‌ترین مرجع ملکی گلستان اهواز</span>
     </div>
-  </TiltedGridHero>
+    
+    <h1 class="text-2xl font-black text-white leading-tight tracking-tight mb-2">
+      معاملات هوشمند و مطمئن ملک
+      <br />
+      در <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-400 via-accent-300 to-accent-500">گلستان اهواز</span>
+    </h1>
 
-  <!-- نوار آمار کلیدی آژانس (در زیر هیرو، بدون مسدود کردن استوانه سه‌بعدی) -->
+    <p class="text-xs text-slate-300 max-w-xs mx-auto mb-5 leading-relaxed">
+      مشاوره تخصصی و حقوقی در تمامی مراحل معامله با ۸ کارشناس زبده منطقه گلستان
+    </p>
+
+    <!-- نوار افقی متحرک و بی‌نهایت املاک لوکس گلستان در موبایل (بسیار چشم‌نواز و بدون اعوجاج) -->
+    <div class="relative w-full overflow-hidden my-4 py-2" dir="ltr">
+      <div class="mobile-marquee-track flex gap-3.5">
+        {mobileStreamImages.map((prop) => (
+          <div class="w-[230px] h-[145px] shrink-0 rounded-2xl overflow-hidden border border-amber-500/25 bg-slate-900/90 shadow-xl relative group">
+            <img
+              src={prop.src}
+              alt={prop.alt}
+              loading="lazy"
+              class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent pointer-events-none"></div>
+            
+            <div dir="rtl" class="absolute bottom-2.5 right-2.5 left-2.5 text-right flex flex-col gap-1 pointer-events-none">
+              <span class="inline-flex items-center gap-1 w-fit px-2 py-0.5 rounded text-[10px] font-black bg-gradient-to-r from-accent-400 to-amber-500 text-primary-950 shadow-sm">
+                <svg class="w-2.5 h-2.5 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                </svg>
+                {prop.badge}
+              </span>
+              <span class="text-xs font-bold text-white truncate drop-shadow">
+                {prop.title}
+              </span>
+              <span class="text-[10px] text-slate-300 truncate">
+                {prop.location}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- دکمه‌های اقدام دوتایی ارگونومیک مخصوص موبایل -->
+    <div class="flex flex-col gap-2.5 w-full max-w-xs mx-auto mt-4">
+      <button
+        type="button"
+        data-intent="sell"
+        class="hero-intent-btn inline-flex items-center justify-center gap-2 py-3.5 rounded-xl bg-gradient-to-r from-accent-400 to-accent-600 active:from-accent-500 active:to-accent-700 text-primary-950 font-black text-sm shadow-xl shadow-accent-500/30 active:scale-[0.98] cursor-pointer"
+      >
+        <svg class="w-4 h-4 text-primary-950 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+          <path fill-rule="evenodd" d="M5.25 2.25a3 3 0 00-3 3v4.318a3 3 0 00.879 2.121l9.58 9.581c.92.92 2.39.94 3.328.002l5.438-5.438c.937-.938.918-2.409-.002-3.328L11.893 3.129a3 3 0 00-2.121-.879H5.25zM6.375 7.5a1.125 1.125 0 100-2.25 1.125 1.125 0 000 2.25z" clip-rule="evenodd" />
+        </svg>
+        <span>می‌خواهم بفروشم</span>
+      </button>
+      <button
+        type="button"
+        data-intent="buy"
+        class="hero-intent-btn inline-flex items-center justify-center gap-2 py-3.5 rounded-xl bg-slate-900/95 text-white border border-accent-400/70 active:border-accent-400 font-black text-sm shadow-md active:scale-[0.98] cursor-pointer"
+      >
+        <svg class="w-4 h-4 text-accent-400 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+          <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z" clip-rule="evenodd" />
+        </svg>
+        <span>می‌خواهم بخرم</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- نوار آمار کلیدی آژانس (در زیر هیرو، هماهنگ در موبایل و دسکتاپ) -->
   <div class="bg-[#0b0e17] border-t border-slate-800/90 py-4 sm:py-8">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-6 text-center">
@@ -131,3 +224,23 @@ const heroImages = [
     </div>
   </div>
 </section>
+
+<style>
+  @keyframes marquee-mobile {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .mobile-marquee-track {
+    width: max-content;
+    animation: marquee-mobile 24s linear infinite;
+  }
+
+  .mobile-marquee-track:active {
+    animation-play-state: paused;
+  }
+</style>

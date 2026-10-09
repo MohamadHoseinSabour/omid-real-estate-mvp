@@ -45,13 +45,32 @@ const currentCanonical = canonicalUrl || `${siteUrl}${Astro.url.pathname}`;
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
 
-    <!-- Font: Vazirmatn (Self-hosted fallback with swap) -->
+    <!-- Font: Standard IRANYekan (ایران یکان) self-hosted with fallback -->
+    <link rel="stylesheet" href={`${baseUrl}/fonts/iranyekan/iranyekan.css`} />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/AmirAbbasVafaee/persian-fonts-cdn@main/css/iran-yekan.css"
+    />
     <link
       href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"
       rel="stylesheet"
       type="text/css"
     />
+
+    <style is:global>
+      @font-face {
+        font-family: 'IRANYekan';
+        src: local('IRANYekan'), local('IRANYekanX'), local('IranYekan'), local('Iran Yekan');
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      html, body, button, input, select, textarea {
+        font-family: 'IRANYekan', 'IranYekan', 'IRANYekanX', 'Vazirmatn', system-ui, -apple-system, sans-serif !important;
+      }
+    </style>
 
     <!-- Leaflet & Neshan Maps CSS -->
     <link
@@ -61,7 +80,7 @@ const currentCanonical = canonicalUrl || `${siteUrl}${Astro.url.pathname}`;
       crossorigin=""
     />
   </head>
-  <body class="bg-neutral-100 text-slate-800 font-vazir antialiased min-h-screen flex flex-col selection:bg-accent-400 selection:text-primary-900">
+  <body class="bg-neutral-100 text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-accent-400 selection:text-primary-900">
     <Header baseUrl={baseUrl} />
     <main class="flex-grow">
       <slot />

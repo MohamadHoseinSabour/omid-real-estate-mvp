@@ -63,7 +63,10 @@ const isSold = property.status === 'sold';
             {property.title}
           </h1>
           <p class="text-xs sm:text-sm text-slate-300 mt-1 flex items-center gap-1.5">
-            📍 {property.address}
+            <svg class="w-4 h-4 text-accent-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+            </svg>
+            <span>{property.address}</span>
           </p>
         </div>
 
@@ -120,20 +123,32 @@ const isSold = property.status === 'sold';
               مشخصات و متراژ ملک
             </h2>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                <span class="block text-xs text-slate-400 mb-1">📐 متراژ مفید</span>
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col items-center">
+                <svg class="w-5 h-5 text-accent-600 mb-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm1 5a1 1 0 00-1 1v6a1 1 0 001 1h12a1 1 0 001-1v-6a1 1 0 00-1-1H4zm3 3a1 1 0 100-2 1 1 0 000 2zm4 0a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                </svg>
+                <span class="block text-xs text-slate-500 mb-1">متراژ مفید</span>
                 <strong class="text-base text-slate-900">{property.areaSqm} متر مربع</strong>
               </div>
-              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                <span class="block text-xs text-slate-400 mb-1">🛏️ تعداد اتاق خواب</span>
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col items-center">
+                <svg class="w-5 h-5 text-accent-600 mb-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M3 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 8a3 3 0 00-3 3v1a1 1 0 001 1h14a1 1 0 001-1v-1a3 3 0 00-3-3H5zm9-8a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1V4z" />
+                </svg>
+                <span class="block text-xs text-slate-500 mb-1">تعداد اتاق خواب</span>
                 <strong class="text-base text-slate-900">{property.bedrooms} خواب</strong>
               </div>
-              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                <span class="block text-xs text-slate-400 mb-1">🏢 سال ساخت</span>
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col items-center">
+                <svg class="w-5 h-5 text-accent-600 mb-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h2v2H7V5zm4 0h2v2h-2V5zm-4 4h2v2H7V9zm4 0h2v2h-2V9zm-4 4h2v2H7v-2zm4 0h2v2h-2v-2z" clip-rule="evenodd" />
+                </svg>
+                <span class="block text-xs text-slate-500 mb-1">سال ساخت</span>
                 <strong class="text-base text-slate-900">{property.yearBuilt}</strong>
               </div>
-              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                <span class="block text-xs text-slate-400 mb-1">🪜 طبقه / کل طبقات</span>
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col items-center">
+                <svg class="w-5 h-5 text-accent-600 mb-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M3 3a1 1 0 000 2h14a1 1 0 100-2H3zm2 4a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm2 4a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm2 4a1 1 0 100 2h1a1 1 0 100-2h-1z" clip-rule="evenodd" />
+                </svg>
+                <span class="block text-xs text-slate-500 mb-1">طبقه / کل طبقات</span>
                 <strong class="text-base text-slate-900">{property.floor || 1} از {property.totalFloors || 1}</strong>
               </div>
             </div>
@@ -206,7 +221,10 @@ const isSold = property.status === 'sold';
                 href={`tel:${property.advisor.phone}`}
                 class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary-700 hover:bg-primary-800 text-white text-sm font-bold shadow-md transition-colors"
               >
-                <span>📞 تماس مستقیم با مشاور</span>
+                <svg class="w-4 h-4 text-accent-300 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 4V3z" />
+                </svg>
+                <span>تماس مستقیم با مشاور</span>
                 <span dir="ltr" class="font-mono text-xs text-accent-300">({property.advisor.phone})</span>
               </a>
 

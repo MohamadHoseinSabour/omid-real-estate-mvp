@@ -1,0 +1,73 @@
+/* Self-hosted Standard IRANYekan Font (فونت استاندارد ایران یکان) */
+@font-face {
+  font-family: 'IRANYekan';
+  src: local('IRANYekan'), local('IRANYekanX'), local('IranYekan'), local('Iran Yekan'),
+       url('./IRANYekanWebRegular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IRANYekan';
+  src: local('IRANYekan-Medium'), local('IRANYekanX-Medium'), local('IranYekan-Medium'),
+       url('./IRANYekanWebMedium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IRANYekan';
+  src: local('IRANYekan-Bold'), local('IRANYekanX-Bold'), local('IranYekan-Bold'),
+       url('./IRANYekanWebBold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IRANYekan';
+  src: local('IRANYekan-Black'), local('IRANYekanX-Black'), local('IranYekan-Black'),
+       url('./IRANYekanWebBlack.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Fallback aliases for IranYekan and IRANYekanX */
+@font-face {
+  font-family: 'IranYekan';
+  src: local('IRANYekan'), local('IRANYekanX'), local('IranYekan'), local('Iran Yekan'),
+       url('./IRANYekanWebRegular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranYekan';
+  src: local('IRANYekan-Medium'), local('IRANYekanX-Medium'), local('IranYekan-Medium'),
+       url('./IRANYekanWebMedium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranYekan';
+  src: local('IRANYekan-Bold'), local('IRANYekanX-Bold'), local('IranYekan-Bold'),
+       url('./IRANYekanWebBold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IranYekan';
+  src: local('IRANYekan-Black'), local('IRANYekanX-Black'), local('IranYekan-Black'),
+       url('./IRANYekanWebBlack.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}

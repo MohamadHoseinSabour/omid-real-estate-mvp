@@ -40,7 +40,9 @@ export default {
         }
       },
       fontFamily: {
-        vazir: ['Vazirmatn', 'system-ui', 'sans-serif'],
+        iranyekan: ['IRANYekan', 'IranYekan', 'IRANYekanX', 'IranYekanX', 'Vazirmatn', 'system-ui', 'sans-serif'],
+        sans: ['IRANYekan', 'IranYekan', 'IRANYekanX', 'IranYekanX', 'Vazirmatn', 'system-ui', 'sans-serif'],
+        vazir: ['IRANYekan', 'IranYekan', 'IRANYekanX', 'Vazirmatn', 'system-ui', 'sans-serif'],
       },
     },
   },

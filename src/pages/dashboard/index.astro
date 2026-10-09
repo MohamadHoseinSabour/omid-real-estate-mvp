@@ -21,7 +21,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   <!-- بنر هشدار تسویه‌های معوق برای مدیرکل و منشی -->
   <div id="pendingPayoutBanner" class="hidden mb-8 p-4 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold text-xs shadow-md flex flex-wrap sm:flex-nowrap items-center justify-between gap-3">
     <div class="flex items-center gap-3">
-      <span class="text-2xl shrink-0">⚡</span>
+      <div class="w-8 h-8 rounded-lg bg-slate-950 text-amber-400 flex items-center justify-center shrink-0">
+        <svg class="w-5 h-5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
+        </svg>
+      </div>
       <div>
         <strong class="text-sm block">توجه مدیریت: تسویه کارمزد معوق در انتظار اقدام</strong>
         <span class="font-normal text-[11px] text-slate-950/90" id="pendingPayoutBannerText"></span>
@@ -40,7 +44,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
       <div class="flex items-center justify-between mb-2">
         <span class="text-xs text-slate-500 font-bold whitespace-nowrap" id="card1Label">فایل‌های فعال</span>
-        <span class="text-2xl shrink-0">🏢</span>
+        <div class="w-9 h-9 rounded-xl bg-primary-100 text-primary-700 flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h2v2H7V5zm4 0h2v2h-2V5zm-4 4h2v2H7V9zm4 0h2v2h-2V9zm-4 4h2v2H7v-2zm4 0h2v2h-2v-2z" clip-rule="evenodd" />
+          </svg>
+        </div>
       </div>
       <div class="text-2xl font-black text-slate-900 font-mono" id="card1Val">۰ ملک</div>
       <div class="text-[11px] text-emerald-600 font-semibold mt-1">آماده معامله در گلستان</div>
@@ -49,7 +57,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
       <div class="flex items-center justify-between mb-2">
         <span class="text-xs text-slate-500 font-bold whitespace-nowrap">قراردادهای ثبت‌شده</span>
-        <span class="text-2xl shrink-0">🤝</span>
+        <div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 16v-1a4 4 0 00-1.78-3.32 4.004 4.004 0 011.78 4.32zM4 16v-1c0-.73.2-1.41.55-2A4.004 4.004 0 002 16h2z" />
+          </svg>
+        </div>
       </div>
       <div class="text-2xl font-black text-slate-900 font-mono" id="card2Val">۰ معامله</div>
       <div class="text-[11px] text-blue-600 font-semibold mt-1">شامل مستقیم و مشارکتی</div>
@@ -58,7 +70,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
       <div class="flex items-center justify-between mb-2">
         <span class="text-xs text-slate-500 font-bold whitespace-nowrap" id="card3Label">موجودی کیف پول</span>
-        <span class="text-2xl shrink-0">💳</span>
+        <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+            <path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd" />
+          </svg>
+        </div>
       </div>
       <div class="text-xl font-black text-amber-600 font-mono" id="card3Val">۰ تومان</div>
       <div class="text-[11px] text-slate-400 mt-1">محاسبه بر مبنای نرخ ۳۰٪ پورسانت</div>
@@ -67,7 +84,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
       <div class="flex items-center justify-between mb-2">
         <span class="text-xs text-slate-500 font-bold whitespace-nowrap">فایلینگ اشتراکی همکاران</span>
-        <span class="text-2xl shrink-0">🌐</span>
+        <div class="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+          <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v.183A5.992 5.992 0 0110 16a5.973 5.973 0 01-4-1.528v-1.722a2 2 0 00-1.668-1.975z" clip-rule="evenodd" />
+          </svg>
+        </div>
       </div>
       <div class="text-2xl font-black text-slate-900 font-mono" id="card4Val">۰ فایل</div>
       <div class="text-[11px] text-emerald-600 font-semibold mt-1">فرصت‌های فروش مشارکتی</div>
@@ -101,7 +122,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
             class="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
           >
             <div class="flex items-center gap-3">
-              <span class="text-lg shrink-0">🏢</span>
+              <svg class="w-5 h-5 text-primary-700 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h2v2H7V5zm4 0h2v2h-2V5zm-4 4h2v2H7V9zm4 0h2v2h-2V9zm-4 4h2v2H7v-2zm4 0h2v2h-2v-2z" clip-rule="evenodd" />
+              </svg>
               <span class="whitespace-nowrap">ثبت و مدیریت فایل‌های ملکی</span>
             </div>
             <span class="text-slate-400 shrink-0">←</span>
@@ -112,7 +135,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
             class="w-full flex items-center justify-between p-3.5 rounded-2xl bg-emerald-50/70 hover:bg-emerald-100/80 border border-emerald-200 text-xs font-bold text-emerald-900 transition-colors"
           >
             <div class="flex items-center gap-3">
-              <span class="text-lg shrink-0">🤝</span>
+              <svg class="w-5 h-5 text-emerald-600 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 16v-1a4 4 0 00-1.78-3.32 4.004 4.004 0 011.78 4.32zM4 16v-1c0-.73.2-1.41.55-2A4.004 4.004 0 002 16h2z" />
+              </svg>
               <span class="whitespace-nowrap">فایلینگ اشتراکی همکاران (MLS)</span>
             </div>
             <span class="text-emerald-500 shrink-0">←</span>
@@ -123,7 +148,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
             class="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
           >
             <div class="flex items-center gap-3">
-              <span class="text-lg shrink-0">✍️</span>
+              <svg class="w-5 h-5 text-blue-700 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+              </svg>
               <span class="whitespace-nowrap">قراردادها و تسویه فروش</span>
             </div>
             <span class="text-slate-400 shrink-0">←</span>
@@ -134,7 +162,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
             class="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
           >
             <div class="flex items-center gap-3">
-              <span class="text-lg shrink-0">💳</span>
+              <svg class="w-5 h-5 text-amber-600 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                <path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd" />
+              </svg>
               <span class="whitespace-nowrap">کیف پول و حسابداری کارمزد</span>
             </div>
             <span class="text-slate-400 shrink-0">←</span>
@@ -145,7 +176,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
             class="w-full flex items-center justify-between p-3.5 rounded-2xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-xs font-bold text-slate-800 transition-colors"
           >
             <div class="flex items-center gap-3">
-              <span class="text-lg shrink-0">👥</span>
+              <svg class="w-5 h-5 text-purple-600 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+              </svg>
               <span class="whitespace-nowrap">باشگاه مشتریان و تقاضاها</span>
             </div>
             <span class="text-slate-400 shrink-0">←</span>
@@ -155,7 +188,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       <!-- باکس یادآوری امنیتی -->
       <div class="mt-6 p-4 rounded-2xl bg-slate-900 text-white text-[11px] leading-relaxed border border-slate-800" style="background-color: #0b1a2e;">
-        <div class="text-accent-400 font-bold mb-1">🔒 نظارت و انضباط مالی:</div>
+        <div class="text-accent-400 font-bold mb-1 flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 1a4.5 4.5 0 00-4.5 4.5V9H5a2 2 0 00-2 2v6a2 2 0 002 2h10a2 2 0 002-2v-6a2 2 0 00-2-2h-.5V5.5A4.5 4.5 0 0010 1zm3 8V5.5a3 3 0 10-6 0V9h6z" clip-rule="evenodd" />
+          </svg>
+          <span>نظارت و انضباط مالی:</span>
+        </div>
         <p class="text-slate-300">
           تمامی تغییرات کیف پول و تسویه‌ها به صورت غیرقابل تغییر در دفتر کل ثبت شده و دارای ردیابی کاربر است.
         </p>
@@ -220,7 +258,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
           <div>
             <strong class="block text-slate-900 text-sm mb-0.5">${p.title}</strong>
             <div class="text-slate-400 text-[11px] flex items-center gap-2">
-              <span>📍 ${p.address}</span>
+              <span class="flex items-center gap-1">
+                <svg class="w-3 h-3 text-accent-500 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                </svg>
+                <span>${p.address}</span>
+              </span>
               ${isStaff ? `<span class="bg-primary-50 text-primary-800 px-2 py-0.5 rounded font-bold">مشاور: ${p.advisor.name}</span>` : ''}
             </div>
           </div>

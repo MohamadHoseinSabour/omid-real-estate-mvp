@@ -52,17 +52,31 @@ const { baseUrl } = Astro.props;
       <!-- اطلاعات تماس -->
       <div>
         <h4 class="text-base font-bold text-white mb-4 border-s-2 border-accent-500 ps-2">ارتباط با دفتر</h4>
-        <p class="text-sm leading-relaxed mb-3">
-          📍 {agencyData.address}
+        <p class="text-sm leading-relaxed mb-3 flex items-start gap-2">
+          <svg class="w-4 h-4 text-accent-400 mt-1 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+          </svg>
+          <span>{agencyData.address}</span>
         </p>
-        <p class="text-sm mb-2">
-          📞 تلفن دفتر: <span class="text-white font-mono" dir="ltr">{agencyData.phone}</span>
+        <p class="text-sm mb-2 flex items-center gap-2">
+          <svg class="w-4 h-4 text-accent-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 4V3z" />
+          </svg>
+          <span>تلفن دفتر:</span>
+          <span class="text-white font-mono" dir="ltr">{agencyData.phone}</span>
         </p>
-        <p class="text-sm mb-2">
-          📱 تلفن همراه: <span class="text-white font-mono" dir="ltr">{agencyData.mobile}</span>
+        <p class="text-sm mb-2 flex items-center gap-2">
+          <svg class="w-4 h-4 text-accent-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M7 2a2 2 0 00-2 2v12a2 2 0 002 2h6a2 2 0 002-2V4a2 2 0 00-2-2H7zm3 14a1 1 0 100-2 1 1 0 000 2z" />
+          </svg>
+          <span>تلفن همراه:</span>
+          <span class="text-white font-mono" dir="ltr">{agencyData.mobile}</span>
         </p>
-        <p class="text-xs text-slate-400 mt-2">
-          ⏰ ساعات کاری: {agencyData.workingHours}
+        <p class="text-xs text-slate-400 mt-2 flex items-center gap-2">
+          <svg class="w-3.5 h-3.5 text-accent-400/80 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+          </svg>
+          <span>ساعات کاری: {agencyData.workingHours}</span>
         </p>
       </div>
 

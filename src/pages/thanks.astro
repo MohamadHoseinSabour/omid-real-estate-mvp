@@ -17,11 +17,28 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
         اطلاعات شما در دبیرخانه آژانس املاک امید اهواز ثبت شد. کارشناس ارشد منطقه در کمتر از ۱ ساعت کاری جهت بررسی نیازها و هماهنگی جلسه مشاوره با شما تماس خواهد گرفت.
       </p>
 
-      <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm text-xs text-slate-500 mb-8 text-start space-y-2">
-        <div class="font-bold text-slate-800 text-sm mb-2">اطلاعات هماهنگی دفتر:</div>
-        <div>📞 تلفن پاسخگویی: <span class="font-mono" dir="ltr">۰۶۱-۳۳۳۳۳۳۳۳</span></div>
-        <div>📱 تماس ضروری: <span class="font-mono" dir="ltr">۰۹۱۶۱۱۱۱۲۳۴</span></div>
-        <div>📍 آدرس: اهواز، محله گلستان، خیابان اصلی فروردین، پلاک ۱۱۸</div>
+      <div class="p-6 bg-white rounded-2xl border border-slate-200 shadow-sm text-xs text-slate-500 mb-8 text-start space-y-2.5">
+        <div class="font-bold text-slate-800 text-sm mb-3">اطلاعات هماهنگی دفتر:</div>
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-accent-600 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 4V3z" />
+          </svg>
+          <span>تلفن پاسخگویی:</span>
+          <span class="font-mono text-slate-700" dir="ltr">۰۶۱-۳۳۳۳۳۳۳۳</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-accent-600 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M7 2a2 2 0 00-2 2v12a2 2 0 002 2h6a2 2 0 002-2V4a2 2 0 00-2-2H7zm3 14a1 1 0 100-2 1 1 0 000 2z" />
+          </svg>
+          <span>تماس ضروری:</span>
+          <span class="font-mono text-slate-700" dir="ltr">۰۹۱۶۱۱۱۱۲۳۴</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-accent-600 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+          </svg>
+          <span>آدرس: اهواز، محله گلستان، خیابان اصلی فروردین، پلاک ۱۱۸</span>
+        </div>
       </div>
 
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">

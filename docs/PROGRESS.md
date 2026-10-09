@@ -48,15 +48,16 @@
   - [x] Database Migration: `supabase/migrations/003_co_brokering_and_wallet_adjustments.sql`.
   - [x] Test Suite Expanded: 17/17 tests passing in Vitest (`tests/e2e.test.ts`).
 
-## Phase 9: Dashboard Design Polish & Route 404 Resolution ✅
+## Phase 10: Luxury Navigation Bar & Calculator Button Fix ✅
 - Completed: 2026-10-09
 - Fixes delivered:
-  - [x] Header Style Restoration: Extended Tailwind color palette to full 50-950 scales for `primary` and `accent`; added inline fallbacks (`#0a192f` with `#cda34f` bottom border) to header.
-  - [x] Button Wrapping Prevention: Added `whitespace-nowrap shrink-0` across all action buttons, pills, badges, and table headers (`<th>`) in all dashboard views.
-  - [x] Direct Route 404 Resolution: Converted all relative internal links to absolute `${baseUrl}/dashboard/...` and added instant fallback redirect pages (`/sales/`, `/wallet/`, `/co-filing/`, `/leads/`).
-  - [x] Client Base URL Injection: Global `window.__BASE_URL__` injected in `DashboardLayout.astro` for dynamic client-side links.
-  - [x] Sold Properties Exclusion in Co-Filing MLS: Peer filing grid strictly filters out `status === 'sold'` files and prevents co-sale registration on sold properties.
-  - [x] All 18 automated tests passing (including `E2E-11: Co-filing MLS strictly excludes sold properties`); clean static build with 28 static HTML routes.
+  - [x] Header Navigation Active State Sync: Fixed client hydration discrepancy where visiting `#calculators` kept "خانه" selected; added mount sync and hash inspection (`window.location.hash.includes('calc')`).
+  - [x] Scroll-Spy for Homepage: Added `IntersectionObserver` to automatically activate the calculator button when scrolling into the calculator section and revert to "خانه" when scrolling back to hero.
+  - [x] Smooth Hash Navigation: Instant client-side smooth scroll when clicking `#calculators` and "خانه" without full-page reloads.
+  - [x] Label Width & Overflow Fix: Expanded `LABEL_MAX_WIDTH` to 140px and adjusted line metrics so "محاسبه کمیسیون" renders completely without ellipsis or clipping.
+  - [x] Icon Stroke Refinement: Balanced `strokeWidth` on `Calculator` icon to 2.1 so keypad and display geometry remain crisp and do not bloom into a dark smudge.
+  - [x] Typography Harmony: Standardized on IRANYekan `font-extrabold` text-xs with `leading-none py-0.5` for exact vertical alignment with the icon.
+  - [x] All 20 automated tests passing; clean static build with 28 static HTML routes.
 
 ## Phase 10: Tilted Grid 3D Hero Integration & Landing Redesign ✅
 - Completed: 2026-10-09
@@ -123,8 +124,43 @@
     - Mobile: Implemented modern floating bottom navigation bar (`isMobileFloating={true}` pinned to bottom-4) giving phone users instantaneous thumb access.
   - [x] Testing & Quality: Added `E2E-13` verifying `BottomNavBar` and `HeaderNavBar`; 20/20 Vitest tests passing; 28 static routes built cleanly.
 
+## Phase 15: Fixes for Desktop Hero Alignment, Mobile Real Estate Showcase, and Trust Section Polish ✅
+- Completed: 2026-10-09
+- Deliverables completed:
+  - [x] Mathematical Fix for 3D Tilted Grid Hero (`src/components/ui/tilted-grid-hero.tsx`):
+    - Resolved mathematical discrepancy between JS measurement and CSS cylinder radius.
+    - Stabilized `columns` calculation so active CSS animation timelines never reset, jump, or cause tiles to overlap or drift apart.
+  - [x] Desktop Hero Alignment & Vertical Harmony (`src/components/HeroSection.astro`):
+    - Calibrated cylinder curve to 45 degrees and tile height to 20% to prevent fish-eye distortion.
+    - Added protective dark gradient masks at top and bottom so 3D tiles float gracefully in the center band without touching or blocking title or CTA buttons.
+  - [x] Native Mobile Real Estate Showcase (`src/components/HeroSection.astro`):
+    - Replaced awkward mobile 3D cylinder slices with a dedicated, ultra-sleek continuous horizontal property card stream showing full high-res property photos, gold badges, titles, and locations.
+    - Full-width ergonomic action buttons and clean 2x2 statistics grid.
+  - [x] Mobile Trust Section Polish (`src/components/TrustSection.astro` & `src/components/ui/image-stream-hero.tsx`):
+    - Hid 3D background corridor on mobile (`hidden sm:block`) to prevent sliced background images from poking out behind trust cards.
+    - Set 100% full-width cards with `gap-0` on mobile, eliminating 5px border bleed of adjacent cards and providing clean tab-to-card scrolling via `scrollIntoView`.
+  - [x] Testing & Quality: 20/20 Vitest tests passing; production build verified (`npm run build`).
+
+## Phase 16: Standard IRANYekan Font & Solid Sleek SVG Icons Integration ✅
+- Completed: 2026-10-09
+- Deliverables completed:
+  - [x] Standard IRANYekan Font Integration:
+    - Downloaded and self-hosted complete IRANYekan font family (Regular 400, Medium 500, Bold 700, Black 900) into `public/fonts/iranyekan/`.
+    - Created `public/fonts/iranyekan/iranyekan.css` with `@font-face` definitions linking to local WOFF2 files and system font fallbacks (`local('IRANYekan')`, `local('IranYekan')`).
+    - Configured `tailwind.config.mjs` with `iranyekan`, `sans`, and `vazir` prioritizing `'IRANYekan'`, `'IranYekan'`.
+    - Applied global font rules across all public and dashboard views (`Layout.astro`, `DashboardLayout.astro`).
+  - [x] Full Elimination of Emojis and 3D Icons:
+    - Replaced all colorful emojis and cartoonish icons across every page and component with solid, chic, minimalist SVGs.
+    - Public Pages: Hero section buttons and badges, Trust section tabs and guarantee badges, Mortgage and Commission calculators, Consultation form, Property detail specifications and call CTA, Property search no-results state, Contact page info cards, About page highlights and team cards, Thanks page contact box, Blog post meta tags.
+    - Dashboard: Navigation sidebar icons, 4-stat KPI summary cards, quick action buttons, user switcher, co-filing MLS cards and modal, contracts/sales approval actions, wallet transaction ledger, and toast notifications in `dashboard-engine.js`.
+  - [x] Quality & Verification:
+    - 0 emojis remain in source code.
+    - 20/20 Vitest tests pass.
+    - 28 static HTML routes built cleanly in 12.60s without errors.
+    - Visual inspection via browser subagent confirms crisp rendering of IRANYekan and luxury solid icons.
+
 ### Current Status
-🎉 **Phase 14: Animated Pill Header & Bottom Nav Bar Complete & Verified!**
+🎉 **Phase 16: Standard IRANYekan Font & Solid Sleek SVG Icons Complete!**
 
 ---
 

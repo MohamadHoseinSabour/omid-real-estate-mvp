@@ -14,7 +14,13 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title} | پنل مدیریت املاک امید</title>
+    <!-- Font: Standard IRANYekan (ایران یکان) self-hosted with fallback -->
+    <link rel="stylesheet" href={`${baseUrl}/fonts/iranyekan/iranyekan.css`} />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/AmirAbbasVafaee/persian-fonts-cdn@main/css/iran-yekan.css"
+    />
     <link
       href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css"
       rel="stylesheet"
@@ -24,7 +30,19 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     <script is:inline define:vars={{ baseUrl }}>
       window.__BASE_URL__ = baseUrl;
     </script>
-    <style>
+    <style is:global>
+      @font-face {
+        font-family: 'IRANYekan';
+        src: local('IRANYekan'), local('IRANYekanX'), local('IranYekan'), local('Iran Yekan');
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: swap;
+      }
+
+      html, body, button, input, select, textarea {
+        font-family: 'IRANYekan', 'IranYekan', 'IRANYekanX', 'Vazirmatn', system-ui, -apple-system, sans-serif !important;
+      }
+
       /* تضمین عدم شکستن متن دکمه‌ها و نشان‌ها */
       .no-wrap-btn {
         white-space: nowrap !important;
@@ -32,7 +50,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
       }
     </style>
   </head>
-  <body class="bg-slate-100 text-slate-800 font-vazir min-h-screen flex flex-col antialiased selection:bg-accent-500 selection:text-slate-900">
+  <body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-accent-500 selection:text-slate-900">
     <!-- نوار بالای داشبورد: تضمین استایل و رنگ زمینه پایدار -->
     <header class="bg-slate-900 text-white border-b-2 border-accent-500 sticky top-0 z-40 shadow-lg" style="background-color: #0a192f; border-bottom: 2px solid #cda34f;">
       <div class="px-4 sm:px-6 lg:px-8 min-h-16 py-2.5 sm:py-0 flex flex-wrap sm:flex-nowrap items-center justify-between gap-3">
@@ -55,8 +73,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
             <span id="roleBadge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-accent-500/20 text-accent-300 border border-accent-400/40 whitespace-nowrap shrink-0">
               نقش: مشاور
             </span>
-            <span id="pendingApprovalBadge" class="hidden text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/50 animate-pulse whitespace-nowrap shrink-0">
-              ⚡ تسویه در انتظار تایید
+            <span id="pendingApprovalBadge" class="hidden text-[10px] font-black px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/50 animate-pulse whitespace-nowrap shrink-0 items-center gap-1">
+              <svg class="w-3 h-3 inline shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
+              </svg>
+              <span>تسویه در انتظار تایید</span>
             </span>
           </div>
         </div>
@@ -101,7 +122,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
         <!-- سوئیچ پیشرفته کاربر برای شبیه‌سازی نقش‌ها -->
         <div class="mb-6 p-3.5 rounded-2xl bg-slate-950/80 border border-accent-500/30 text-xs shadow-inner">
           <div class="flex items-center justify-between mb-1.5">
-            <label class="block text-accent-400 font-extrabold text-[11px] whitespace-nowrap">👤 کاربر فعال (شبیه‌ساز):</label>
+            <label class="text-accent-400 font-extrabold text-[11px] whitespace-nowrap flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+              </svg>
+              <span>کاربر فعال (شبیه‌ساز):</span>
+            </label>
             <span class="text-[9px] bg-accent-500/20 text-accent-300 px-1.5 py-0.5 rounded font-mono shrink-0">Demo</span>
           </div>
           <select
@@ -119,8 +145,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
               <option value="user-adm-301">حاج امید صبور (مدیرکل آژانس)</option>
             </optgroup>
           </select>
-          <div class="text-[10px] text-slate-400 mt-2 leading-relaxed">
-            💡 با تغییر کاربر، دسترسی‌ها و فایل‌ها بلافاصله تغییر می‌کنند.
+          <div class="text-[10px] text-slate-400 mt-2 leading-relaxed flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-accent-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            </svg>
+            <span>با تغییر کاربر، دسترسی‌ها و فایل‌ها بلافاصله تغییر می‌کنند.</span>
           </div>
         </div>
 
@@ -129,7 +158,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
             href={`${baseUrl}/dashboard/`}
             class={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all ${activeNav === 'overview' ? 'bg-accent-500 text-slate-950 font-black shadow-md' : 'hover:bg-slate-800 text-slate-300'}`}
           >
-            <span class="text-base shrink-0">📊</span>
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+            </svg>
             <span class="whitespace-nowrap">پیشخوان و آمار</span>
           </a>
 
@@ -139,7 +170,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
             class={`flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${activeNav === 'properties' ? 'bg-accent-500 text-slate-950 font-black shadow-md' : 'hover:bg-slate-800 text-slate-300'}`}
           >
             <div class="flex items-center gap-2.5 min-w-0">
-              <span class="text-base shrink-0">🏢</span>
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4zm3 1h2v2H7V5zm4 0h2v2h-2V5zm-4 4h2v2H7V9zm4 0h2v2h-2V9zm-4 4h2v2H7v-2zm4 0h2v2h-2v-2z" clip-rule="evenodd" />
+              </svg>
               <span id="propertiesNavText" class="whitespace-nowrap">مدیریت املاک</span>
             </div>
             <span id="propCountPill" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 whitespace-nowrap shrink-0"></span>
@@ -151,7 +184,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
             class={`flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${activeNav === 'co-filing' ? 'bg-accent-500 text-slate-950 font-black shadow-md' : 'hover:bg-slate-800 text-slate-300'}`}
           >
             <div class="flex items-center gap-2.5 min-w-0">
-              <span class="text-base shrink-0">🤝</span>
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v1h8v-1zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 16v-1a4 4 0 00-1.78-3.32 4.004 4.004 0 011.78 4.32zM4 16v-1c0-.73.2-1.41.55-2A4.004 4.004 0 002 16h2z" />
+              </svg>
               <span class="whitespace-nowrap">فایلینگ همکاران (MLS)</span>
             </div>
             <span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-bold whitespace-nowrap shrink-0">همکاری</span>
@@ -163,7 +198,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
             class={`flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${activeNav === 'sales' ? 'bg-accent-500 text-slate-950 font-black shadow-md' : 'hover:bg-slate-800 text-slate-300'}`}
           >
             <div class="flex items-center gap-2.5 min-w-0">
-              <span class="text-base shrink-0">✍️</span>
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+              </svg>
               <span class="whitespace-nowrap">قراردادها و تسویه</span>
             </div>
             <span id="pendingSalesCountPill" class="hidden text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 whitespace-nowrap shrink-0"></span>
@@ -174,7 +212,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
             href={`${baseUrl}/dashboard/wallet/`}
             class={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all ${activeNav === 'wallet' ? 'bg-accent-500 text-slate-950 font-black shadow-md' : 'hover:bg-slate-800 text-slate-300'}`}
           >
-            <span class="text-base shrink-0">💳</span>
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+              <path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd" />
+            </svg>
             <span class="whitespace-nowrap">کیف پول و کارمزد</span>
           </a>
 
@@ -183,7 +224,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
             href={`${baseUrl}/dashboard/leads/`}
             class={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all ${activeNav === 'leads' ? 'bg-accent-500 text-slate-950 font-black shadow-md' : 'hover:bg-slate-800 text-slate-300'}`}
           >
-            <span class="text-base shrink-0">👥</span>
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+            </svg>
             <span class="whitespace-nowrap">باشگاه لیدها و تقاضا</span>
           </a>
         </nav>
@@ -272,7 +315,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
         if (pendingSales.length > 0) {
           if (pendingBadge && (role === 'admin' || role === 'secretary')) {
             pendingBadge.classList.remove('hidden');
-            pendingBadge.innerText = `⚡ ${pendingSales.length} تسویه معوق`;
+            pendingBadge.classList.add('inline-flex');
+            pendingBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0"></span><span>${pendingSales.length} تسویه معوق</span>`;
           }
           if (pendingPill) {
             pendingPill.classList.remove('hidden');
